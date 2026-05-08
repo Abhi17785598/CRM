@@ -1,0 +1,52 @@
+/* Work Orders Component - Enterprise Styles */
+
+/* Import enterprise styles from production orders */
+@import '../production-orders/production-orders.component.css';
+
+/* Page Header Fixes */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e2e8f0;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.page-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 0;
+  flex-basis: 100%;
+}
+
+.page-title-section {
+  flex: 1;
+  min-width: 300px;
+}
+
+/* Additional styles specific to work orders */
+.priority-critical {
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+.priority-high {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.priority-medium {
+  background-color: #f3f4f6;
+  color: #6b7280;
+}
+
+.priority-low {
+  background-color: #f0f9ff;
+  color: #0284c7;
+}

@@ -1,0 +1,387 @@
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-12">
+      <h1 class="page-title">Customer Management</h1>
+      <p class="text-muted">Manage customer relationships and order processing for seamless settlement integration</p>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-12">
+      <button class="btn btn-primary me-2" (click)="showCreateForm = !showCreateForm">
+        <i class="fas fa-plus me-2"></i>Add Customer
+      </button>
+      <button class="btn btn-success me-2" (click)="exportCustomers()">
+        <i class="fas fa-download me-2"></i>Export CSV
+      </button>
+      <button class="btn btn-info me-2" (click)="showUpdateForm = false; selectedCustomer = null">
+        <i class="fas fa-refresh me-2"></i>Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Create Form -->
+  <div class="row mb-4" *ngIf="showCreateForm">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Add New Customer</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="createCustomer()">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Customer Code</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.customerCode" name="customerCode" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Company Name</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.companyName" name="companyName" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Industry</label>
+                <select class="form-control" [(ngModel)]="newCustomer.industry" name="industry">
+                  <option value="">Select Industry</option>
+                  <option value="Technology">Technology</option>
+                  <option value="Manufacturing">Manufacturing</option>
+                  <option value="Retail">Retail</option>
+                  <option value="Consulting">Consulting</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Education">Education</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Contact Person</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.contactPerson" name="contactPerson" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" [(ngModel)]="newCustomer.email" name="email">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Phone</label>
+                <input type="tel" class="form-control" [(ngModel)]="newCustomer.phone" name="phone">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Mobile</label>
+                <input type="tel" class="form-control" [(ngModel)]="newCustomer.mobile" name="mobile">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Customer Type</label>
+                <select class="form-control" [(ngModel)]="newCustomer.customerType" name="customerType">
+                  <option [ngValue]="CustomerType.Business">Business</option>
+                  <option [ngValue]="CustomerType.Individual">Individual</option>
+                  <option [ngValue]="CustomerType.Government">Government</option>
+                  <option [ngValue]="CustomerType.NGO">NGO</option>
+                </select>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Status</label>
+                <select class="form-control" [(ngModel)]="newCustomer.status" name="status">
+                  <option [ngValue]="CustomerStatus.Active">Active</option>
+                  <option [ngValue]="CustomerStatus.Inactive">Inactive</option>
+                  <option [ngValue]="CustomerStatus.Prospect">Prospect</option>
+                  <option [ngValue]="CustomerStatus.Lost">Lost</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Credit Limit (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newCustomer.creditLimit" name="creditLimit">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Payment Terms</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.paymentTerms" name="paymentTerms" placeholder="Net 30, Net 45, etc">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Assigned To</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.assignedTo" name="assignedTo">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Address</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.address" name="address">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">City</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.city" name="city">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">State</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.state" name="state">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Country</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.country" name="country">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Postal Code</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.postalCode" name="postalCode">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Website</label>
+                <input type="url" class="form-control" [(ngModel)]="newCustomer.website" name="website">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">GST Number</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.gstNumber" name="gstNumber">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">PAN Number</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.panNumber" name="panNumber">
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Notes</label>
+                <textarea class="form-control" [(ngModel)]="newCustomer.notes" name="notes" rows="2"></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-success me-2">Add Customer</button>
+                <button type="button" class="btn btn-secondary" (click)="showCreateForm = false; resetForm()">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Form -->
+  <div class="row mb-4" *ngIf="showUpdateForm && selectedCustomer">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Update Customer: {{ selectedCustomer.customerCode }}</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="updateCustomer()">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Company Name</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.companyName" name="companyName" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Industry</label>
+                <select class="form-control" [(ngModel)]="newCustomer.industry" name="industry">
+                  <option value="Technology">Technology</option>
+                  <option value="Manufacturing">Manufacturing</option>
+                  <option value="Retail">Retail</option>
+                  <option value="Consulting">Consulting</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Education">Education</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Contact Person</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.contactPerson" name="contactPerson" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" [(ngModel)]="newCustomer.email" name="email">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Phone</label>
+                <input type="tel" class="form-control" [(ngModel)]="newCustomer.phone" name="phone">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Mobile</label>
+                <input type="tel" class="form-control" [(ngModel)]="newCustomer.mobile" name="mobile">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Customer Type</label>
+                <select class="form-control" [(ngModel)]="newCustomer.customerType" name="customerType">
+                  <option [ngValue]="CustomerType.Business">Business</option>
+                  <option [ngValue]="CustomerType.Individual">Individual</option>
+                  <option [ngValue]="CustomerType.Government">Government</option>
+                  <option [ngValue]="CustomerType.NGO">NGO</option>
+                </select>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Status</label>
+                <select class="form-control" [(ngModel)]="newCustomer.status" name="status">
+                  <option [ngValue]="CustomerStatus.Active">Active</option>
+                  <option [ngValue]="CustomerStatus.Inactive">Inactive</option>
+                  <option [ngValue]="CustomerStatus.Prospect">Prospect</option>
+                  <option [ngValue]="CustomerStatus.Lost">Lost</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Credit Limit (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newCustomer.creditLimit" name="creditLimit">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Payment Terms</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.paymentTerms" name="paymentTerms">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Assigned To</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.assignedTo" name="assignedTo">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Address</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.address" name="address">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">City</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.city" name="city">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">State</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.state" name="state">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Country</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.country" name="country">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Postal Code</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.postalCode" name="postalCode">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Website</label>
+                <input type="url" class="form-control" [(ngModel)]="newCustomer.website" name="website">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">GST Number</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.gstNumber" name="gstNumber">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">PAN Number</label>
+                <input type="text" class="form-control" [(ngModel)]="newCustomer.panNumber" name="panNumber">
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Notes</label>
+                <textarea class="form-control" [(ngModel)]="newCustomer.notes" name="notes" rows="2"></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-success me-2">Update Customer</button>
+                <button type="button" class="btn btn-secondary" (click)="showUpdateForm = false; resetForm()">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customers List -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Customers</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>Customer Code</th>
+                  <th>Company Name</th>
+                  <th>Contact Person</th>
+                  <th>Industry</th>
+                  <th>Credit Limit</th>
+                  <th>Current Balance</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let customer of customers" [class.table-active]="selectedCustomer?.id === customer.id" class="text-dark">
+                  <td>{{ customer.customerCode }}</td>
+                  <td>{{ customer.companyName }}</td>
+                  <td>{{ customer.contactPerson }}</td>
+                  <td>{{ customer.industry }}</td>
+                  <td>₹{{ customer.creditLimit.toLocaleString() }}</td>
+                  <td>
+                    <span [ngClass]="getBalanceStatusClass(customer)">
+                      ₹{{ customer.currentBalance.toLocaleString() }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge" [ngClass]="getStatusClass(customer.status)">
+                      {{ getStatusText(customer.status) }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="btn-group btn-group-sm">
+                      <button class="btn btn-info" (click)="selectCustomer(customer)" title="View Details">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="btn btn-warning" (click)="editCustomer(customer)" title="Edit">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-success" (click)="createDeliveryForCustomer(customer)" title="Create Delivery">
+                        <i class="fas fa-truck"></i>
+                      </button>
+                      <button class="btn btn-danger" (click)="deleteCustomer(customer.id)" title="Delete">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Customer Details -->
+  <div class="row mt-4" *ngIf="selectedCustomer">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Customer Details: {{ selectedCustomer.customerCode }}</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Customer Code:</strong> {{ selectedCustomer.customerCode }}</p>
+              <p><strong>Company Name:</strong> {{ selectedCustomer.companyName }}</p>
+              <p><strong>Contact Person:</strong> {{ selectedCustomer.contactPerson }}</p>
+              <p><strong>Industry:</strong> {{ selectedCustomer.industry }}</p>
+              <p><strong>Email:</strong> {{ selectedCustomer.email }}</p>
+              <p><strong>Phone:</strong> {{ selectedCustomer.phone }}</p>
+              <p><strong>Mobile:</strong> {{ selectedCustomer.mobile }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Customer Type:</strong> {{ getTypeText(selectedCustomer.customerType) }}</p>
+              <p><strong>Status:</strong> 
+                <span class="badge ms-2" [ngClass]="getStatusClass(selectedCustomer.status)">
+                  {{ getStatusText(selectedCustomer.status) }}
+                </span>
+              </p>
+              <p><strong>Credit Limit:</strong> ₹{{ selectedCustomer.creditLimit.toLocaleString() }}</p>
+              <p><strong>Current Balance:</strong> 
+                <span [ngClass]="getBalanceStatusClass(selectedCustomer)">
+                  ₹{{ selectedCustomer.currentBalance.toLocaleString() }}
+                </span>
+              </p>
+              <p><strong>Payment Terms:</strong> {{ selectedCustomer.paymentTerms }}</p>
+              <p><strong>Assigned To:</strong> {{ selectedCustomer.assignedTo }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Address:</strong> {{ selectedCustomer.address }}</p>
+              <p><strong>City:</strong> {{ selectedCustomer.city }}</p>
+              <p><strong>State:</strong> {{ selectedCustomer.state }}</p>
+              <p><strong>Country:</strong> {{ selectedCustomer.country }}</p>
+              <p><strong>Postal Code:</strong> {{ selectedCustomer.postalCode }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Website:</strong> 
+                <a *ngIf="selectedCustomer.website" [href]="selectedCustomer.website" target="_blank">
+                  {{ selectedCustomer.website }}
+                </a>
+                <span *ngIf="!selectedCustomer.website" class="text-muted">Not provided</span>
+              </p>
+              <p><strong>GST Number:</strong> {{ selectedCustomer.gstNumber }}</p>
+              <p><strong>PAN Number:</strong> {{ selectedCustomer.panNumber }}</p>
+            </div>
+            <div class="col-12" *ngIf="selectedCustomer.notes">
+              <p><strong>Notes:</strong> {{ selectedCustomer.notes }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

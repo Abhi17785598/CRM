@@ -1,0 +1,153 @@
+<div class="enterprise-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <div class="page-breadcrumb">
+        <span class="breadcrumb-item">Manufacturing</span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item">Production Orders</span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item active">Create Production Order</span>
+      </div>
+      <div class="page-title-section">
+        <h1 class="page-title">Create Production Order</h1>
+        <p class="page-subtitle">Set up a new manufacturing production order</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-ghost" (click)="cancel()">
+        <i class="fas fa-times"></i>
+        Cancel
+      </button>
+    </div>
+  </div>
+
+  <!-- Progress Steps -->
+  <div class="steps-container">
+    <div class="steps-header">
+      <div class="step-item" [class.completed]="true">
+        <div class="step-number">
+          <i class="fas fa-check"></i>
+        </div>
+        <div class="step-info">
+          <div class="step-title">Basic Information</div>
+          <div class="step-icon">
+            <i class="fas fa-info-circle"></i>
+          </div>
+        </div>
+      </div>
+      <div class="step-item active">
+        <div class="step-number">2</div>
+        <div class="step-info">
+          <div class="step-title">Materials & BOM</div>
+          <div class="step-icon">
+            <i class="fas fa-boxes"></i>
+          </div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">3</div>
+        <div class="step-info">
+          <div class="step-title">Scheduling</div>
+          <div class="step-icon">
+            <i class="fas fa-calendar"></i>
+          </div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">4</div>
+        <div class="step-info">
+          <div class="step-title">Review & Confirm</div>
+          <div class="step-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Content -->
+  <div class="form-container">
+    <div class="step-card">
+      <div class="card-header">
+        <h3 class="card-title">
+          <i class="fas fa-boxes"></i>
+          Materials & Bill of Materials
+        </h3>
+        <p class="card-subtitle">Specify the materials required for production</p>
+      </div>
+      <div class="card-content">
+        <div class="materials-section">
+          <div class="section-header">
+            <h4>Required Materials</h4>
+            <button type="button" class="btn btn-primary" (click)="addMaterial()">
+              <i class="fas fa-plus"></i>
+              Add Material
+            </button>
+          </div>
+          
+          <div *ngFor="let material of formData.materials; let i = index" class="material-row">
+            <div class="material-grid">
+              <div class="form-field">
+                <label class="form-label">Material</label>
+                <select class="form-control" [(ngModel)]="material.materialId" 
+                        name="material_{{ i }}" 
+                        (change)="onMaterialChange(i, material.materialId)">
+                  <option value="">Select material</option>
+                  <option *ngFor="let mat of availableMaterials" [value]="mat.id">{{ mat.name }}</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Required Quantity</label>
+                <input type="number" class="form-control" [(ngModel)]="material.requiredQuantity" 
+                       name="quantity_{{ i }}" min="0">
+              </div>
+              <div class="form-field">
+                <label class="form-label">Unit</label>
+                <input type="text" class="form-control" [(ngModel)]="material.unit" name="unit_{{ i }}" readonly>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Cost per Unit</label>
+                <input type="number" class="form-control" [(ngModel)]="material.cost" name="cost_{{ i }}" readonly>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Actions</label>
+                <button type="button" class="btn btn-danger" (click)="removeMaterial(i)">
+                  <i class="fas fa-trash"></i>
+                  Remove
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="formData.materials.length === 0" class="no-materials">
+            <p>No materials added yet. Click "Add Material" to get started.</p>
+          </div>
+        </div>
+
+        <!-- Cost Summary -->
+        <div class="cost-summary">
+          <h4>Cost Summary</h4>
+          <div class="summary-grid">
+            <div class="summary-item">
+              <label>Total Materials Cost:</label>
+              <span class="cost-value">${{ getTotalCost() | number:'1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="form-navigation">
+      <button type="button" class="btn btn-ghost" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i>
+        Previous
+      </button>
+      <button type="button" class="btn btn-primary" (click)="goToNext()">
+        Next
+        <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+</div>

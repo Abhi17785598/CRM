@@ -1,0 +1,234 @@
+<div class="logistics-container">
+  <!-- Header -->
+  <div class="page-header">
+    <h1 class="page-title">Delivery & Logistics Tracking</h1>
+    <p class="page-subtitle">Real-time logistics management with delivery status tracking and warehouse coordination</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p>Loading logistics data...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-container">
+    <div class="alert alert-danger">
+      <i class="fas fa-exclamation-triangle me-2"></i>
+      {{ error }}
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div *ngIf="!loading && !error">
+    <!-- Available Orders Section -->
+    <div class="available-orders-section" *ngIf="getAvailableOrders().length > 0">
+      <h2 class="section-title">Available Orders for Delivery</h2>
+      <div class="orders-grid">
+        <div class="order-card" *ngFor="let order of getAvailableOrders()">
+          <div class="card-body">
+            <div class="order-info">
+              <h5 class="order-number">{{ getOrderNumber(order) }}</h5>
+              <p class="customer-name">{{ getCustomerName(order) }}</p>
+              <div class="order-products">
+                <div *ngFor="let product of getOrderProducts(order)" class="product-item">
+                  {{ product.name }} ({{ product.quantity }})
+                </div>
+              </div>
+            </div>
+            <div class="order-actions">
+              <button class="btn btn-primary btn-sm" (click)="openCreateDeliveryModal(order)">
+                <i class="fas fa-truck me-1"></i>
+                Create Delivery
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Available Orders -->
+    <div *ngIf="getAvailableOrders().length === 0" class="no-orders">
+      <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i>
+        No available orders for delivery creation. 
+        <a href="javascript:void(0)" (click)="navigateToOrders()">Go to Orders</a> to create new orders first.
+      </div>
+    </div>
+
+    <!-- Deliveries Section -->
+    <div class="deliveries-section" *ngIf="deliveries.length > 0">
+      <h2 class="section-title">Active Deliveries</h2>
+      <div class="deliveries-table-container">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>Order Number</th>
+              <th>Customer Name</th>
+              <th>Product(s)</th>
+              <th>Quantity</th>
+              <th>Transporter</th>
+              <th>Vehicle</th>
+              <th>Dispatch Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let delivery of deliveries">
+              <td>
+                <span class="order-number">{{ delivery.orderNumber }}</span>
+                <small class="text-muted d-block">Delivery created from Order</small>
+              </td>
+              <td>{{ delivery.customerName }}</td>
+              <td>
+                <div *ngFor="let product of delivery.products" class="product-list">
+                  {{ product.name }} ({{ product.quantity }})
+                </div>
+              </td>
+              <td>{{ delivery.quantity }}</td>
+              <td>{{ delivery.transporterName }}</td>
+              <td>{{ delivery.vehicleNumber }}</td>
+              <td>{{ delivery.dispatchDate }}</td>
+              <td>
+                <span [class]="getStatusBadgeClass(delivery.status)">
+                  {{ getStatusText(delivery.status) }}
+                </span>
+              </td>
+              <td>
+                <div class="btn-group btn-group-sm">
+                  <button 
+                    *ngIf="canUpdateStatus(delivery.status, 'dispatched')"
+                    class="btn btn-info btn-sm"
+                    (click)="updateDeliveryStatus(delivery.id, 'dispatched')"
+                    title="Mark as Dispatched">
+                    <i class="fas fa-shipping-fast"></i>
+                  </button>
+                  <button 
+                    *ngIf="canUpdateStatus(delivery.status, 'in-transit')"
+                    class="btn btn-warning btn-sm"
+                    (click)="updateDeliveryStatus(delivery.id, 'in-transit')"
+                    title="Mark as In Transit">
+                    <i class="fas fa-truck"></i>
+                  </button>
+                  <button 
+                    *ngIf="canUpdateStatus(delivery.status, 'delivered')"
+                    class="btn btn-success btn-sm"
+                    (click)="updateDeliveryStatus(delivery.id, 'delivered')"
+                    title="Mark as Delivered">
+                    <i class="fas fa-check-circle"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- No Deliveries -->
+    <div *ngIf="deliveries.length === 0" class="no-deliveries">
+      <div class="alert alert-warning">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        No deliveries created yet. Create deliveries from available orders to start tracking.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Create Delivery Modal -->
+<div *ngIf="createDeliveryModal.isVisible" class="modal fade show" style="display: block; background-color: rgba(0,0,0,0.5);">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Create Delivery</h5>
+        <button type="button" class="btn-close" (click)="closeCreateDeliveryModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <!-- Read-only Order Information -->
+          <div class="form-section">
+            <h6>Order Information (Read-only)</h6>
+            <div class="row">
+              <div class="col-md-6">
+                <label class="form-label">Order Number</label>
+                <input type="text" class="form-control" [value]="getOrderNumber(createDeliveryModal.selectedOrder)" readonly>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Customer Name</label>
+                <input type="text" class="form-control" [value]="getCustomerName(createDeliveryModal.selectedOrder)" readonly>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <label class="form-label">Product(s)</label>
+                <div *ngFor="let product of getOrderProducts(createDeliveryModal.selectedOrder)" class="product-display">
+                  {{ product.name }} ({{ product.quantity }})
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label class="form-label">Total Quantity</label>
+                <input type="number" class="form-control" [value]="getOrderQuantity(createDeliveryModal.selectedOrder)" readonly>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Input Fields -->
+          <div class="form-section">
+            <h6>Delivery Information</h6>
+            <div class="row">
+              <div class="col-md-6">
+                <label class="form-label">Transporter Name *</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  [(ngModel)]="createDeliveryModal.transporterName"
+                  placeholder="Enter transporter name"
+                  required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Vehicle Number *</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  [(ngModel)]="createDeliveryModal.vehicleNumber"
+                  placeholder="Enter vehicle number"
+                  required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label class="form-label">Dispatch Date *</label>
+                <input 
+                  type="date" 
+                  class="form-control" 
+                  [(ngModel)]="createDeliveryModal.dispatchDate"
+                  required>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeCreateDeliveryModal()">
+          <i class="fas fa-times me-1"></i>
+          Cancel
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-primary" 
+          (click)="createDelivery()"
+          [disabled]="!createDeliveryModal.transporterName || !createDeliveryModal.vehicleNumber || !createDeliveryModal.dispatchDate">
+          <i class="fas fa-check me-1"></i>
+          Create Delivery
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

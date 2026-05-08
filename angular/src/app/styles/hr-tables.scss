@@ -1,0 +1,304 @@
+/* Professional HR Tables Styling */
+/* Applies to: All Employees, Payslips, Payroll */
+/* Excludes: Employees (hrms), Attendance, Leave Management */
+
+/* Base Table Container */
+.hr-professional-table {
+  background: #374151;
+  border: 1px solid #4b5563;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+/* Scrollable Table Container */
+.hr-professional-table.scrollable {
+  max-height: 450px;
+  overflow: auto;
+}
+
+.hr-professional-table.scrollable .table {
+  margin-bottom: 0;
+  min-width: 100%;
+}
+
+.hr-professional-table.scrollable .table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Ensure table maintains proper width for horizontal scroll */
+.hr-professional-table.scrollable .table th,
+.hr-professional-table.scrollable .table td {
+  min-width: 120px;
+  white-space: nowrap;
+}
+
+.hr-professional-table.scrollable .table th:first-child,
+.hr-professional-table.scrollable .table td:first-child {
+  min-width: 140px;
+}
+
+.hr-professional-table.scrollable .table th:nth-child(2),
+.hr-professional-table.scrollable .table td:nth-child(2) {
+  min-width: 200px;
+}
+
+/* Table Header */
+.hr-professional-table .table {
+  margin-bottom: 0;
+}
+
+.hr-professional-table .table thead th {
+  background: #334155;
+  color: #ffffff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.75px;
+  font-size: 0.85rem;
+  padding: 1.1rem 1.25rem;
+  border: none;
+  white-space: nowrap;
+}
+
+.hr-professional-table .table thead th:first-child {
+  border-top-left-radius: 10px;
+}
+
+.hr-professional-table .table thead th:last-child {
+  border-top-right-radius: 10px;
+}
+
+/* Table Body */
+.hr-professional-table .table tbody {
+  background: #374151;
+}
+
+.hr-professional-table .table tbody tr {
+  transition: background-color 0.15s ease-in-out;
+  border-bottom: 1px solid #4b5563;
+}
+
+.hr-professional-table .table tbody tr:nth-child(odd) {
+  background: #374151;
+}
+
+.hr-professional-table .table tbody tr:nth-child(even) {
+  background: #1f2937;
+}
+
+.hr-professional-table .table tbody tr:hover {
+  background: #111827;
+}
+
+.hr-professional-table .table tbody tr:last-child {
+  border-bottom: none;
+}
+
+/* Table Cells */
+.hr-professional-table .table tbody td {
+  padding: 1rem 1.25rem;
+  vertical-align: middle;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: none;
+}
+
+/* Primary Text (Names, Important Values) */
+.hr-professional-table .table tbody td .fw-medium,
+.hr-professional-table .table tbody td .fw-bold,
+.hr-professional-table .table tbody td strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* Secondary Text (Emails, Addresses) */
+.hr-professional-table .table tbody td .text-muted,
+.hr-professional-table .table tbody td small {
+  color: #d1d5db;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Numeric Values - Right Aligned */
+.hr-professional-table .table tbody td.text-end,
+.hr-professional-table .table tbody td:has(.text-end) {
+  text-align: right;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* Status Badges */
+.hr-professional-table .table tbody td .badge {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.375rem 0.75rem;
+  border-radius: 20px;
+  text-transform: capitalize;
+  letter-spacing: 0.025em;
+  border: none;
+}
+
+/* Status Badge Colors - Soft Professional Palette */
+.hr-professional-table .table tbody td .badge.bg-primary {
+  background: #dbeafe !important;
+  color: #1e40af !important;
+}
+
+.hr-professional-table .table tbody td .badge.bg-success {
+  background: #dcfce7 !important;
+  color: #166534 !important;
+}
+
+.hr-professional-table .table tbody td .badge.bg-warning {
+  background: #fef3c7 !important;
+  color: #92400e !important;
+}
+
+.hr-professional-table .table tbody td .badge.bg-danger {
+  background: #fee2e2 !important;
+  color: #991b1b !important;
+}
+
+.hr-professional-table .table tbody td .badge.bg-info {
+  background: #e0f2fe !important;
+  color: #0369a1 !important;
+}
+
+.hr-professional-table .table tbody td .badge.bg-secondary {
+  background: #f1f5f9 !important;
+  color: #475569 !important;
+}
+
+/* Custom Status Classes */
+.hr-professional-table .table tbody td .badge.status-active {
+  background: #dcfce7 !important;
+  color: #166534 !important;
+}
+
+.hr-professional-table .table tbody td .badge.status-inactive {
+  background: #f1f5f9 !important;
+  color: #475569 !important;
+}
+
+.hr-professional-table .table tbody td .badge.status-pending {
+  background: #fef3c7 !important;
+  color: #92400e !important;
+}
+
+.hr-professional-table .table tbody td .badge.status-paid {
+  background: #dcfce7 !important;
+  color: #166534 !important;
+}
+
+.hr-professional-table .table tbody td .badge.status-cancelled {
+  background: #fee2e2 !important;
+  color: #991b1b !important;
+}
+
+/* Action Buttons */
+.hr-professional-table .table tbody td .btn-group .btn {
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  color: #64748b;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.8rem;
+  transition: all 0.15s ease-in-out;
+}
+
+.hr-professional-table .table tbody td .btn-group .btn:hover {
+  background: #f8fafc;
+  color: #475569;
+  border-color: #cbd5e1;
+}
+
+.hr-professional-table .table tbody td .btn-group .btn.btn-outline-primary:hover {
+  background: #dbeafe;
+  color: #1e40af;
+  border-color: #93c5fd;
+}
+
+.hr-professional-table .table tbody td .btn-group .btn.btn-outline-warning:hover {
+  background: #fef3c7;
+  color: #92400e;
+  border-color: #fde68a;
+}
+
+.hr-professional-table .table tbody td .btn-group .btn.btn-outline-danger:hover {
+  background: #fee2e2;
+  color: #991b1b;
+  border-color: #fca5a5;
+}
+
+.hr-professional-table .table tbody td .btn-group .btn.btn-outline-info:hover {
+  background: #e0f2fe;
+  color: #0369a1;
+  border-color: #7dd3fc;
+}
+
+/* Avatar Styling */
+.hr-professional-table .table tbody td .avatar-sm {
+  width: 32px;
+  height: 32px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #3b82f6, #1e40af);
+  border: 2px solid #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Links */
+.hr-professional-table .table tbody td a {
+  color: #60a5fa;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.hr-professional-table .table tbody td a:hover {
+  color: #93c5fd;
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hr-professional-table .table thead th {
+    padding: 0.75rem;
+    font-size: 0.8rem;
+  }
+  
+  .hr-professional-table .table tbody td {
+    padding: 0.75rem;
+    font-size: 0.85rem;
+  }
+  
+  .hr-professional-table .table tbody td .badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+  }
+  
+  .hr-professional-table .table tbody td .btn-group .btn {
+    padding: 0.25rem 0.375rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .hr-professional-table {
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+  
+  .hr-professional-table .table thead th {
+    background: #000 !important;
+    color: #fff !important;
+  }
+  
+  .hr-professional-table .table tbody tr:nth-child(even) {
+    background: #f5f5f5 !important;
+  }
+}

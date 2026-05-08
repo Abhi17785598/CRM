@@ -1,0 +1,328 @@
+<div class="container-fluid">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2>Payslip Management</h2>
+      <p class="fw-medium">Generate and manage employee payslips</p>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-12">
+      <button class="btn btn-success me-2" (click)="generateMonthlyPayslips()">
+        <i class="fas fa-calendar-alt me-2"></i>Generate Monthly
+      </button>
+      <button class="btn btn-primary me-2" (click)="showCreateForm = !showCreateForm">
+        <i class="fas fa-plus me-2"></i>Add Payslip
+      </button>
+      <button class="btn btn-warning me-2" (click)="exportPayslips()">
+        <i class="fas fa-download me-2"></i>Export CSV
+      </button>
+      <button class="btn btn-info" (click)="showUpdateForm = false; selectedPayslip = null">
+        <i class="fas fa-refresh me-2"></i>Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Create Form -->
+  <div class="row mb-4" *ngIf="showCreateForm">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Add New Payslip</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="createPayslip()">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Payslip Number</label>
+                <input type="text" class="form-control" [(ngModel)]="newPayslip.payslipNumber" name="payslipNumber" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Employee ID</label>
+                <input type="text" class="form-control" [(ngModel)]="newPayslip.employeeId" name="employeeId" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Employee Name</label>
+                <input type="text" class="form-control" [(ngModel)]="newPayslip.employeeName" name="employeeName" required>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Pay Period Start</label>
+                <input type="date" class="form-control" [(ngModel)]="newPayslip.payPeriodStart" name="payPeriodStart" required>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Pay Period End</label>
+                <input type="date" class="form-control" [(ngModel)]="newPayslip.payPeriodEnd" name="payPeriodEnd" required>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Payment Date</label>
+                <input type="date" class="form-control" [(ngModel)]="newPayslip.paymentDate" name="paymentDate" required>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Payment Status</label>
+                <select class="form-control" [(ngModel)]="newPayslip.paymentStatus" name="paymentStatus">
+                  <option value="Pending">Pending</option>
+                  <option value="Paid">Paid</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Base Salary (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newPayslip.baseSalary" name="baseSalary" (change)="newPayslip.grossSalary = (newPayslip.baseSalary || 0) + (newPayslip.overtimePay || 0) + (newPayslip.allowances || 0)">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Overtime Hours</label>
+                <input type="number" class="form-control" [(ngModel)]="newPayslip.overtimeHours" name="overtimeHours" (change)="newPayslip.overtimePay = (newPayslip.overtimeHours || 0) * (newPayslip.overtimeRate || 0); newPayslip.grossSalary = (newPayslip.baseSalary || 0) + (newPayslip.overtimePay || 0) + (newPayslip.allowances || 0)">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Overtime Rate (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newPayslip.overtimeRate" name="overtimeRate" (change)="newPayslip.overtimePay = (newPayslip.overtimeHours || 0) * (newPayslip.overtimeRate || 0); newPayslip.grossSalary = (newPayslip.baseSalary || 0) + (newPayslip.overtimePay || 0) + (newPayslip.allowances || 0)">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Allowances (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newPayslip.allowances" name="allowances" (change)="newPayslip.grossSalary = (newPayslip.baseSalary || 0) + (newPayslip.overtimePay || 0) + (newPayslip.allowances || 0)">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">PF Contribution (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newPayslip.pfContribution" name="pfContribution" (change)="newPayslip.totalDeductions = (newPayslip.pfContribution || 0) + (newPayslip.professionalTax || 0) + (newPayslip.incomeTax || 0) + (newPayslip.otherDeductions || 0); newPayslip.netSalary = (newPayslip.grossSalary || 0) - (newPayslip.totalDeductions || 0)">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Professional Tax (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newPayslip.professionalTax" name="professionalTax" (change)="newPayslip.totalDeductions = (newPayslip.pfContribution || 0) + (newPayslip.professionalTax || 0) + (newPayslip.incomeTax || 0) + (newPayslip.otherDeductions || 0); newPayslip.netSalary = (newPayslip.grossSalary || 0) - (newPayslip.totalDeductions || 0)">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Income Tax (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newPayslip.incomeTax" name="incomeTax" (change)="newPayslip.totalDeductions = (newPayslip.pfContribution || 0) + (newPayslip.professionalTax || 0) + (newPayslip.incomeTax || 0) + (newPayslip.otherDeductions || 0); newPayslip.netSalary = (newPayslip.grossSalary || 0) - (newPayslip.totalDeductions || 0)">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Other Deductions (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newPayslip.otherDeductions" name="otherDeductions" (change)="newPayslip.totalDeductions = (newPayslip.pfContribution || 0) + (newPayslip.professionalTax || 0) + (newPayslip.incomeTax || 0) + (newPayslip.otherDeductions || 0); newPayslip.netSalary = (newPayslip.grossSalary || 0) - (newPayslip.totalDeductions || 0)">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Notes</label>
+                <textarea class="form-control" [(ngModel)]="newPayslip.notes" name="notes" rows="2"></textarea>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Gross Salary (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newPayslip.grossSalary" name="grossSalary" readonly>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Net Salary (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newPayslip.netSalary" name="netSalary" readonly>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-success me-2">Add Payslip</button>
+                <button type="button" class="btn btn-secondary" (click)="showCreateForm = false; resetForm()">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Form -->
+  <div class="row mb-4" *ngIf="showUpdateForm && selectedPayslip">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Update Payslip: {{ selectedPayslip.payslipNumber }}</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="updatePayslip()">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Employee Name</label>
+                <input type="text" class="form-control" [(ngModel)]="newPayslip.employeeName" name="employeeName" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Payment Status</label>
+                <select class="form-control" [(ngModel)]="newPayslip.paymentStatus" name="paymentStatus">
+                  <option value="Pending">Pending</option>
+                  <option value="Paid">Paid</option>
+                  <option value="Cancelled">Cancelled</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Payment Date</label>
+                <input type="date" class="form-control" [(ngModel)]="newPayslip.paymentDate" name="paymentDate" required>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Base Salary (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newPayslip.baseSalary" name="baseSalary">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Overtime Hours</label>
+                <input type="number" class="form-control" [(ngModel)]="newPayslip.overtimeHours" name="overtimeHours">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Overtime Rate (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newPayslip.overtimeRate" name="overtimeRate">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Allowances (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newPayslip.allowances" name="allowances">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">PF Contribution (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newPayslip.pfContribution" name="pfContribution">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Professional Tax (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newPayslip.professionalTax" name="professionalTax">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Income Tax (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newPayslip.incomeTax" name="incomeTax">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Other Deductions (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newPayslip.otherDeductions" name="otherDeductions">
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Notes</label>
+                <textarea class="form-control" [(ngModel)]="newPayslip.notes" name="notes" rows="2"></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-success me-2">Update Payslip</button>
+                <button type="button" class="btn btn-secondary" (click)="showUpdateForm = false; resetForm()">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payslips List -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header" style="background: #334155; border-radius: 10px 10px 0 0;">
+          <h5 class="card-title mb-0 fw-bold" style="color: #ffffff;">Payslips</h5>
+        </div>
+        <div class="card-body p-0">
+          <div class="hr-professional-table scrollable">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="min-width: 140px;">Payslip Number</th>
+                  <th style="min-width: 200px;">Employee Code</th>
+                  <th style="min-width: 250px;">Employee Name</th>
+                  <th style="min-width: 150px;">Pay Period</th>
+                  <th style="min-width: 120px;" class="text-end">Gross Salary</th>
+                  <th style="min-width: 120px;" class="text-end">Deductions</th>
+                  <th style="min-width: 120px;" class="text-end">Net Salary</th>
+                  <th style="min-width: 120px;">Payment Date</th>
+                  <th style="min-width: 100px;">Status</th>
+                  <th style="min-width: 120px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let payslip of payslips" [class.table-active]="selectedPayslip?.id === payslip.id">
+                  <td>
+                    <strong class="text-white">{{ payslip.payslipNumber }}</strong>
+                  </td>
+                  <td>
+                    <strong class="text-info">EMP-{{ payslip.employeeId }}</strong>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="avatar-sm bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3">
+                        {{ payslip.employeeName.charAt(0) }}{{ payslip.employeeName.split(' ')[1]?.charAt(0) || '' }}
+                      </div>
+                      <div>
+                        <div class="fw-medium text-white">{{ payslip.employeeName }}</div>
+                        <small class="text-white-50">ID: {{ payslip.employeeId }}</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="text-white">
+                    {{ payslip.payPeriodStart | date:'shortDate' }} - {{ payslip.payPeriodEnd | date:'shortDate' }}
+                  </td>
+                  <td class="text-end">
+                    <strong class="text-white">₹{{ payslip.grossSalary.toLocaleString() }}</strong>
+                  </td>
+                  <td class="text-end">
+                    <strong class="text-white">₹{{ payslip.totalDeductions.toLocaleString() }}</strong>
+                  </td>
+                  <td class="text-end">
+                    <strong class="text-success">₹{{ payslip.netSalary.toLocaleString() }}</strong>
+                  </td>
+                  <td class="text-white">
+                    {{ payslip.paymentDate | date:'shortDate' }}
+                  </td>
+                  <td>
+                    <span class="badge" [ngClass]="getStatusClass(payslip.paymentStatus)">
+                      {{ payslip.paymentStatus }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="btn-group btn-group-sm">
+                      <button class="btn btn-outline-info" (click)="selectPayslip(payslip)" title="View Details">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="btn btn-outline-warning" (click)="editPayslip(payslip)" title="Edit">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-outline-danger" (click)="deletePayslip(payslip.id)" title="Delete">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payslip Details -->
+  <div class="row mt-4" *ngIf="selectedPayslip">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Payslip Details: {{ selectedPayslip.payslipNumber }}</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Payslip Number:</strong> {{ selectedPayslip.payslipNumber }}</p>
+              <p><strong>Employee Name:</strong> {{ selectedPayslip.employeeName }}</p>
+              <p><strong>Pay Period:</strong> {{ selectedPayslip.payPeriodStart | date:'mediumDate' }} - {{ selectedPayslip.payPeriodEnd | date:'mediumDate' }}</p>
+              <p><strong>Payment Date:</strong> {{ selectedPayslip.paymentDate | date:'mediumDate' }}</p>
+              <p><strong>Status:</strong> 
+                <span class="badge ms-2" [ngClass]="getStatusClass(selectedPayslip.paymentStatus)">
+                  {{ selectedPayslip.paymentStatus }}
+                </span>
+              </p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-success">Earnings</h6>
+              <p><strong>Base Salary:</strong> ₹{{ selectedPayslip.baseSalary.toLocaleString() }}</p>
+              <p><strong>Overtime Pay:</strong> ₹{{ selectedPayslip.overtimePay.toLocaleString() }}</p>
+              <p><strong>Allowances:</strong> ₹{{ selectedPayslip.allowances.toLocaleString() }}</p>
+              <p><strong>Gross Salary:</strong> ₹{{ selectedPayslip.grossSalary.toLocaleString() }}</p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-danger">Deductions</h6>
+              <p><strong>PF Contribution:</strong> ₹{{ selectedPayslip.pfContribution.toLocaleString() }}</p>
+              <p><strong>Professional Tax:</strong> ₹{{ selectedPayslip.professionalTax.toLocaleString() }}</p>
+              <p><strong>Income Tax:</strong> ₹{{ selectedPayslip.incomeTax.toLocaleString() }}</p>
+              <p><strong>Other Deductions:</strong> ₹{{ selectedPayslip.otherDeductions.toLocaleString() }}</p>
+              <p><strong>Total Deductions:</strong> ₹{{ selectedPayslip.totalDeductions.toLocaleString() }}</p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-primary">Net Amount</h6>
+              <p><strong>Net Salary:</strong> ₹{{ selectedPayslip.netSalary.toLocaleString() }}</p>
+            </div>
+            <div class="col-12" *ngIf="selectedPayslip.notes">
+              <p><strong>Notes:</strong> {{ selectedPayslip.notes }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,181 @@
+<div class="container-fluid">
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h2 class="mb-3">Product Details</h2>
+          <p class="text-muted">Complete product information and management</p>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-outline-secondary" (click)="goBack()">
+            <i class="fas fa-arrow-left"></i> Back to Catalog
+          </button>
+          <button class="btn btn-primary" (click)="editProduct()">
+            <i class="fas fa-edit"></i> Edit Product
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading product details...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="text-center py-5">
+    <div class="alert alert-danger">
+      <i class="fas fa-exclamation-triangle"></i>
+      {{ error }}
+    </div>
+    <button class="btn btn-primary" (click)="loadProduct()">
+      <i class="fas fa-redo"></i> Retry
+    </button>
+  </div>
+
+  <!-- Product Details -->
+  <div *ngIf="!loading && !error && product" class="row">
+    <!-- Product Image and Basic Info -->
+    <div class="col-md-4">
+      <div class="card">
+        <img [src]="getProductImage(product.productName)" 
+             [alt]="product.productName" 
+             class="card-img-top product-image-large"
+             (error)="onImageError($event)">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.productName }}</h5>
+          <p class="card-text text-muted">{{ product.description }}</p>
+          <div class="mb-3">
+            <span class="badge" [ngClass]="getProductStatusClass(product.status)">
+              {{ product.status }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Information -->
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h6 class="mb-0">Product Information</h6>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Product Code / SKU</label>
+              <div class="form-control-plaintext">{{ product.productCode }}</div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Category</label>
+              <div class="form-control-plaintext">{{ product.category }}</div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Unit of Measure</label>
+              <div class="form-control-plaintext">pcs</div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Status</label>
+              <div class="form-control-plaintext">
+                <span class="badge" [ngClass]="getProductStatusClass(product.status)">
+                  {{ product.status }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stock Information -->
+      <div class="card mt-3">
+        <div class="card-header">
+          <h6 class="mb-0">Stock Information</h6>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Current Stock</label>
+              <div class="form-control-plaintext" [ngClass]="stockStatusClass">
+                {{ product.currentStock }}
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Reorder Level</label>
+              <div class="form-control-plaintext">{{ product.minimumStock }}</div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Maximum Stock</label>
+              <div class="form-control-plaintext">{{ product.maximumStock }}</div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Stock Status</label>
+              <div class="form-control-plaintext">
+                <span class="badge" [ngClass]="stockStatusClass">
+                  {{ stockStatus }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Financial Information -->
+      <div class="card mt-3">
+        <div class="card-header">
+          <h6 class="mb-0">Financial Information</h6>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Cost Price</label>
+              <div class="form-control-plaintext">₹{{ product.costPrice }}</div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Selling Price</label>
+              <div class="form-control-plaintext">₹{{ product.sellingPrice }}</div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Total Value</label>
+              <div class="form-control-plaintext">₹{{ totalValue }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="card mt-3">
+        <div class="card-header">
+          <h6 class="mb-0">Actions</h6>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3 mb-2">
+              <button class="btn btn-outline-primary w-100" (click)="viewStockLedger()">
+                <i class="fas fa-book"></i> Stock Ledger
+              </button>
+            </div>
+            <div class="col-md-3 mb-2">
+              <button class="btn btn-outline-success w-100" (click)="viewMovements()">
+                <i class="fas fa-exchange-alt"></i> Stock Movements
+              </button>
+            </div>
+            <div class="col-md-3 mb-2">
+              <button class="btn btn-outline-info w-100" (click)="generateReport()">
+                <i class="fas fa-file-alt"></i> Generate Report
+              </button>
+            </div>
+            <div class="col-md-3 mb-2">
+              <button class="btn btn-outline-warning w-100" (click)="addToProcurement()">
+                <i class="fas fa-shopping-cart"></i> Add to Procurement
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

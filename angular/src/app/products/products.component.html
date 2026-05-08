@@ -1,0 +1,236 @@
+<div class="products-container">
+  <!-- Header -->
+  <div class="products-header">
+    <h1>LG Products</h1>
+    <p>Discover our premium LG electronics collection</p>
+  </div>
+
+  <!-- Statistics Cards -->
+  <div class="statistics-cards">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="card bg-primary">
+          <div class="card-body">
+            <div class="stat-content">
+              <div>
+                <h4 class="stat-number">{{ stats.totalProducts }}</h4>
+                <p class="stat-label">Total Products</p>
+              </div>
+            </div>
+            <div class="stat-icon">
+              <i class="fas fa-box"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-success">
+          <div class="card-body">
+            <div class="stat-content">
+              <div>
+                <h4 class="stat-number">{{ stats.activeProducts }}</h4>
+                <p class="stat-label">Active Products</p>
+              </div>
+            </div>
+            <div class="stat-icon">
+              <i class="fas fa-check-circle"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-warning">
+          <div class="card-body">
+            <div class="stat-content">
+              <div>
+                <h4 class="stat-number">{{ stats.lowStockProducts }}</h4>
+                <p class="stat-label">Low Stock</p>
+              </div>
+            </div>
+            <div class="stat-icon">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-info">
+          <div class="card-body">
+            <div class="stat-content">
+              <div>
+                <h4 class="stat-number">₹{{ stats.totalValue | number }}</h4>
+                <p class="stat-label">Total Value</p>
+              </div>
+            </div>
+            <div class="stat-icon">
+              <i class="fas fa-rupee-sign"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filters -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  placeholder="Search products..."
+                  [(ngModel)]="searchQuery"
+                  (input)="onSearch()"
+                >
+              </div>
+            </div>
+            <div class="col-md-3">
+              <select class="form-control" [(ngModel)]="selectedCategory" (change)="onFilterChange()">
+                <option value="">All Categories</option>
+                <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <select class="form-control" [(ngModel)]="selectedStatus" (change)="onFilterChange()">
+                <option value="">All Status</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="discontinued">Discontinued</option>
+              </select>
+            </div>
+            <div class="col-md-2">
+              <button class="btn btn-outline-secondary w-100" (click)="resetFilters()">
+                <i class="fas fa-redo"></i> Reset
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <i class="pi pi-spin pi-spinner"></i>
+    <h3>Loading...</h3>
+  </div>
+
+  <!-- Products Grid -->
+  <div *ngIf="!loading" class="products-grid">
+    <div *ngIf="filteredProducts.length === 0" class="no-products">
+      <i class="pi pi-search"></i>
+      <h3>No products found</h3>
+      <p>Try adjusting your filters or search criteria</p>
+    </div>
+
+    <div 
+      *ngFor="let product of filteredProducts" 
+      class="product-card"
+      pCard
+    >
+      <div class="product-image">
+        <img 
+          [src]="getProductImage(product.productName)"
+          [alt]="product.productName"
+          width="300"
+          height="200"
+          class="product-img"
+          (error)="onImageError($event)"
+        />
+        <div class="stock-badge" [ngClass]="getStockStatus(product).severity">
+          {{ getStockStatus(product).text }}
+        </div>
+      </div>
+
+      <div class="product-content">
+        <div class="product-header">
+          <h3>{{ product.productName }}</h3>
+          <div class="product-meta">
+            <span class="brand">{{ product.brand }}</span>
+            <span class="category">{{ product.category }}</span>
+          </div>
+        </div>
+
+        <p class="product-description">{{ product.description }}</p>
+
+        <div class="product-tags">
+          <p-tag 
+            *ngFor="let tag of getTags(product)" 
+            [value]="tag" 
+            [rounded]="true"
+            severity="info"
+          ></p-tag>
+        </div>
+
+        <div class="product-specs" *ngIf="product.specifications">
+          <h4>Specifications:</h4>
+          <p>{{ product.specifications }}</p>
+        </div>
+
+        <div class="product-details">
+          <div class="detail-item" *ngIf="product.dimensions">
+            <i class="pi pi-ruler"></i>
+            <span>{{ product.dimensions }}</span>
+          </div>
+          <div class="detail-item" *ngIf="product.weight">
+            <i class="pi pi-box"></i>
+            <span>{{ product.weight }} lbs</span>
+          </div>
+          <div class="detail-item" *ngIf="product.color">
+            <i class="pi pi-palette"></i>
+            <span>{{ product.color }}</span>
+          </div>
+          <div class="detail-item" *ngIf="product.material">
+            <i class="pi pi-info-circle"></i>
+            <span>{{ product.material }}</span>
+          </div>
+        </div>
+
+        <div class="product-footer">
+          <div class="price-section">
+            <div class="price">
+              <span class="currency">₹</span>
+              <span class="amount">{{ formatPrice(product.sellingPrice) }}</span>
+            </div>
+            <div class="stock-info">
+              <small *ngIf="product.currentStock > 0" class="text-success">
+                <i class="pi pi-check-circle"></i> In Stock
+              </small>
+              <small *ngIf="product.currentStock === 0" class="text-danger">
+                <i class="pi pi-times-circle"></i> Out of Stock
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <p-button 
+            icon="pi pi-eye" 
+            label="View Details" 
+            class="p-button-outlined"
+            (click)="viewProduct(product)"
+          ></p-button>
+          <p-button 
+            icon="pi pi-shopping-cart" 
+            label="Add to Cart" 
+            class="p-button-raised"
+            [disabled]="product.currentStock === 0"
+            (click)="addToCart(product)"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Summary -->
+  <div *ngIf="!loading && filteredProducts.length > 0" class="results-summary">
+    <p>Showing {{ filteredProducts.length }} of {{ products.length }} products</p>
+  </div>
+
+  <!-- Router outlet for child routes -->
+  <router-outlet></router-outlet>
+</div>

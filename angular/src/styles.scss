@@ -1,0 +1,175 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Import HR Professional Tables */
+@import './app/styles/hr-tables.scss';
+
+@keyframes donut-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+:root {
+  --lpx-logo: url('/assets/images/logo/apptad-technologies-pvt-ltd-original-removebg-preview.png');
+  --lpx-logo-icon: url('/assets/images/logo/apptad-technologies-pvt-ltd-original-removebg-preview.png');
+}
+
+/* Logo styles - Make it visible and larger */
+.lpx-logo,
+.lpx-logo-icon,
+.logo,
+.navbar-brand,
+.brand-logo {
+  background-image: var(--lpx-logo) !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  width: 800px !important;
+  height: 200px !important;
+  display: block !important;
+  max-height: none !important;
+  max-width: none !important;
+  min-height: 200px !important;
+  min-width: 800px !important;
+  margin-bottom: 20px !important;
+  margin-right: 20px !important;
+}
+
+/* Override ABP theme logo styles */
+:host ::ng-deep .lpx-logo,
+:host ::ng-deep .lpx-logo-icon,
+:root ::ng-deep .lpx-logo,
+:root ::ng-deep .lpx-logo-icon,
+::ng-deep .lpx-logo,
+::ng-deep .lpx-logo-icon {
+  background-image: var(--lpx-logo) !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  width: 800px !important;
+  height: 200px !important;
+  display: block !important;
+  max-height: none !important;
+  max-width: none !important;
+  min-height: 200px !important;
+  min-width: 800px !important;
+  margin-bottom: 20px !important;
+  margin-right: 20px !important;
+}
+
+/* Navbar logo specific */
+.navbar-brand img,
+.navbar .logo,
+header .logo {
+  content: url('/assets/images/logo/apptad-technologies-pvt-ltd-original-removebg-preview.png') !important;
+  width: 1200px !important;
+  height: 300px !important;
+  object-fit: contain !important;
+  max-height: none !important;
+  min-height: 300px !important;
+  margin-right: 20px !important;
+}
+
+/* AGGRESSIVE ABP FRAMEWORK OVERRIDES */
+:host ::ng-deep .navbar,
+:host ::ng-deep .navbar-header,
+:host ::ng-deep .sidebar,
+:host ::ng-deep .sidebar-header,
+:host ::ng-deep .brand,
+:host ::ng-deep .logo-wrapper {
+  max-height: none !important;
+  overflow: visible !important;
+  height: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 20px !important;
+  padding: 20px !important;
+}
+
+:host ::ng-deep .navbar-brand,
+:host ::ng-deep .logo-container,
+:host ::ng-deep .brand-logo {
+  height: auto !important;
+  min-height: 300px !important;
+  max-height: none !important;
+  width: 1200px !important;
+  margin-right: 20px !important;
+  display: block !important;
+}
+
+/* Force any image with logo in alt/src to be large */
+:host ::ng-deep img[alt*="logo"],
+:host ::ng-deep img[src*="logo"],
+:host ::ng-deep img[alt*="Logo"],
+:host ::ng-deep img[src*="Logo"] {
+  width: 1200px !important;
+  height: 300px !important;
+  max-height: none !important;
+  min-height: 300px !important;
+  object-fit: contain !important;
+  margin-right: 20px !important;
+}
+
+/* Separate logo from text - create space */
+:host ::ng-deep .navbar .navbar-brand,
+:host ::ng-deep .sidebar .brand {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 20px !important;
+}
+
+/* Make ERP text separate and smaller */
+:host ::ng-deep .navbar .app-title,
+:host ::ng-deep .sidebar .app-name {
+  font-size: 16px !important;
+  margin-top: 10px !important;
+  display: block !important;
+}
+.donut {
+  display: inline-block;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #7983ff;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: donut-spin 1.2s linear infinite;
+
+  &.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.abp-logo {
+  background-repeat: no-repeat;
+}
+
+.abp-support {
+  width: 178px;
+  height: 30px;
+  background-image: url('/assets/images/getting-started/abp-support.svg');
+}
+
+.abp-community {
+  width: 215px;
+  height: 30px;
+  background-image: url('/assets/images/getting-started/abp-community.svg');
+}
+
+.abp-blog {
+  width: 142px;
+  height: 30px;
+  background-image: url('/assets/images/getting-started/abp-blog.svg');
+}
+
+.logo-x {
+  width: 20px;
+  height: 20px;
+  background-image: url('/assets/images/getting-started/x.svg');
+}

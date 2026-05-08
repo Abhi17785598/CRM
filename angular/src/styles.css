@@ -1,0 +1,92 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom base styles */
+@layer base {
+  html {
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  }
+  
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+}
+
+/* Custom component styles */
+@layer components {
+  .dashboard-card {
+    @apply bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+  }
+  
+  .kpi-card {
+    @apply bg-white rounded-xl shadow-lg p-6 flex items-center gap-4 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 cursor-pointer border-2 border-transparent hover:border-primary-500;
+  }
+  
+  .kpi-icon {
+    @apply w-16 h-16 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-colorful;
+  }
+  
+  .icon-revenue {
+    @apply bg-gradient-to-br from-primary-500 to-primary-700;
+  }
+  
+  .icon-orders {
+    @apply bg-gradient-to-br from-success-500 to-success-700;
+  }
+  
+  .icon-efficiency {
+    @apply bg-gradient-to-br from-warning-500 to-warning-700;
+  }
+  
+  .icon-customers {
+    @apply bg-gradient-to-br from-purple-500 to-purple-700;
+  }
+  
+  .icon-employees {
+    @apply bg-gradient-to-br from-cyan-500 to-cyan-700;
+  }
+  
+  .icon-products {
+    @apply bg-gradient-to-br from-danger-500 to-danger-700;
+  }
+  
+  .inventory-card {
+    @apply bg-white rounded-lg shadow-md p-5 flex items-center gap-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer border-l-4;
+  }
+  
+  .inventory-warning {
+    @apply border-l-warning-500 bg-gradient-to-br from-warning-50 to-warning-100;
+  }
+  
+  .inventory-danger {
+    @apply border-l-danger-500 bg-gradient-to-br from-danger-50 to-danger-100;
+  }
+  
+  .inventory-success {
+    @apply border-l-success-500 bg-gradient-to-br from-success-50 to-success-100;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-primary-500 to-primary-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:from-primary-600 hover:to-primary-700 hover:shadow-lg hover:-translate-y-1;
+  }
+  
+  .btn-success {
+    @apply bg-gradient-to-r from-success-500 to-success-600 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:from-success-600 hover:to-success-700 hover:shadow-lg hover:-translate-y-1;
+  }
+}
+
+/* Custom utility styles */
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-transparent;
+  }
+  
+  .shadow-colorful {
+    box-shadow: 0 4px 15px rgba(var(--color), 0.4);
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+}

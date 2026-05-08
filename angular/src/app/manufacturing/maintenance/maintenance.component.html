@@ -1,0 +1,292 @@
+<div class="container-fluid">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2>Maintenance Management</h2>
+      <p class="text-muted">Equipment maintenance and facility management</p>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-12">
+      <button class="btn btn-primary me-2" (click)="showCreateForm = !showCreateForm">
+        <i class="fas fa-plus me-2"></i>Add Maintenance Task
+      </button>
+      <button class="btn btn-success me-2" (click)="exportMaintenanceTasks()">
+        <i class="fas fa-download me-2"></i>Export CSV
+      </button>
+      <button class="btn btn-info" (click)="showUpdateForm = false; selectedTask = null">
+        <i class="fas fa-refresh me-2"></i>Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Create Form -->
+  <div class="row mb-4" *ngIf="showCreateForm">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Add New Maintenance Task</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="createTask()">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Task Number</label>
+                <input type="text" class="form-control" [(ngModel)]="newTask.taskNumber" name="taskNumber" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Title</label>
+                <input type="text" class="form-control" [(ngModel)]="newTask.title" name="title" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Priority</label>
+                <select class="form-control" [(ngModel)]="newTask.priority" name="priority">
+                  <option value="Critical">Critical</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Assigned To</label>
+                <input type="text" class="form-control" [(ngModel)]="newTask.assignedTo" name="assignedTo" required>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Scheduled Date</label>
+                <input type="date" class="form-control" [(ngModel)]="newTask.scheduledDate" name="scheduledDate" required>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Estimated Duration (hours)</label>
+                <input type="number" class="form-control" [(ngModel)]="newTask.estimatedDuration" name="estimatedDuration">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Equipment</label>
+                <input type="text" class="form-control" [(ngModel)]="newTask.equipment" name="equipment">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Parts Required</label>
+                <textarea class="form-control" [(ngModel)]="newTask.parts" name="parts" rows="2"></textarea>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Tools</label>
+                <textarea class="form-control" [(ngModel)]="newTask.tools" name="tools" rows="2"></textarea>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Estimated Cost (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newTask.cost" name="cost">
+              </div>
+              <div class="col-md-12 mb-3">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" [(ngModel)]="newTask.description" name="description" rows="3"></textarea>
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Notes</label>
+                <textarea class="form-control" [(ngModel)]="newTask.notes" name="notes" rows="2"></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-success me-2">Add Maintenance Task</button>
+                <button type="button" class="btn btn-secondary" (click)="showCreateForm = false; resetForm()">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Form -->
+  <div class="row mb-4" *ngIf="showUpdateForm && selectedTask">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Update Maintenance Task: {{ selectedTask.taskNumber }}</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="updateTask()">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Title</label>
+                <input type="text" class="form-control" [(ngModel)]="newTask.title" name="title" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Priority</label>
+                <select class="form-control" [(ngModel)]="newTask.priority" name="priority">
+                  <option value="Critical">Critical</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Assigned To</label>
+                <input type="text" class="form-control" [(ngModel)]="newTask.assignedTo" name="assignedTo" required>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Scheduled Date</label>
+                <input type="date" class="form-control" [(ngModel)]="newTask.scheduledDate" name="scheduledDate" required>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Estimated Duration (hours)</label>
+                <input type="number" class="form-control" [(ngModel)]="newTask.estimatedDuration" name="estimatedDuration">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Actual Duration (hours)</label>
+                <input type="number" class="form-control" [(ngModel)]="newTask.actualDuration" name="actualDuration">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Equipment</label>
+                <input type="text" class="form-control" [(ngModel)]="newTask.equipment" name="equipment">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Parts Required</label>
+                <textarea class="form-control" [(ngModel)]="newTask.parts" name="parts" rows="2"></textarea>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Tools</label>
+                <textarea class="form-control" [(ngModel)]="newTask.tools" name="tools" rows="2"></textarea>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Estimated Cost (₹)</label>
+                <input type="number" class="form-control" [(ngModel)]="newTask.cost" name="cost">
+              </div>
+              <div class="col-md-12 mb-3">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" [(ngModel)]="newTask.description" name="description" rows="3"></textarea>
+              </div>
+              <div class="col-md-12 mb-3">
+                <label class="form-label">Notes</label>
+                <textarea class="form-control" [(ngModel)]="newTask.notes" name="notes" rows="2"></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-success me-2">Update Maintenance Task</button>
+                <button type="button" class="btn btn-secondary" (click)="showUpdateForm = false; resetForm()">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Maintenance Tasks List -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Maintenance Tasks</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>Task #</th>
+                  <th>Title</th>
+                  <th>Priority</th>
+                  <th>Assigned To</th>
+                  <th>Status</th>
+                  <th>Scheduled Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let task of maintenanceTasks" [class.table-active]="selectedTask?.id === task.id" class="text-dark">
+                  <td>{{ task.taskNumber }}</td>
+                  <td>{{ task.title }}</td>
+                  <td>
+                    <span [ngClass]="getPriorityClass(task.priority)">
+                      {{ task.priority }}
+                    </span>
+                  </td>
+                  <td>{{ task.assignedTo }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="getStatusClass(task.status)">
+                      {{ task.status }}
+                    </span>
+                  </td>
+                  <td>{{ task.scheduledDate | date:'shortDate' }}</td>
+                  <td>
+                    <div class="btn-group btn-group-sm">
+                      <button class="btn btn-info" (click)="selectTask(task)" title="View Details">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="btn btn-warning" (click)="editTask(task)" title="Edit">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-primary" (click)="startTask(task.id)" 
+                              *ngIf="task.status === 'Scheduled'" title="Start Work">
+                        <i class="fas fa-play"></i>
+                      </button>
+                      <button class="btn btn-success" (click)="completeTask(task.id)" 
+                              *ngIf="task.status === 'In Progress'" title="Complete">
+                        <i class="fas fa-check"></i>
+                      </button>
+                      <button class="btn btn-danger" (click)="deleteTask(task.id)" title="Delete">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Maintenance Task Details -->
+  <div class="row mt-4" *ngIf="selectedTask">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Maintenance Task Details: {{ selectedTask.taskNumber }}</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Task Number:</strong> {{ selectedTask.taskNumber }}</p>
+              <p><strong>Title:</strong> {{ selectedTask.title }}</p>
+              <p><strong>Priority:</strong> 
+                <span [ngClass]="getPriorityClass(selectedTask.priority)">
+                  {{ selectedTask.priority }}
+                </span>
+              </p>
+              <p><strong>Status:</strong> 
+                <span class="badge ms-2" [ngClass]="getStatusClass(selectedTask.status)">
+                  {{ selectedTask.status }}
+                </span>
+              </p>
+              <p><strong>Assigned To:</strong> {{ selectedTask.assignedTo }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Scheduled Date:</strong> {{ selectedTask.scheduledDate | date:'mediumDate' }}</p>
+              <p><strong>Completion Date:</strong> 
+                <span *ngIf="selectedTask.completionDate">{{ selectedTask.completionDate | date:'mediumDate' }}</span>
+                <span *ngIf="!selectedTask.completionDate" class="text-muted">Not completed</span>
+              </p>
+              <p><strong>Estimated Duration:</strong> {{ selectedTask.estimatedDuration }} hours</p>
+              <p><strong>Actual Duration:</strong> {{ selectedTask.actualDuration }} hours</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Equipment:</strong> {{ selectedTask.equipment }}</p>
+              <p><strong>Estimated Cost:</strong> ₹{{ selectedTask.cost.toLocaleString() }}</p>
+            </div>
+            <div class="col-md-12">
+              <p><strong>Description:</strong> {{ selectedTask.description }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Parts Required:</strong> {{ selectedTask.parts }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Tools:</strong> {{ selectedTask.tools }}</p>
+            </div>
+            <div class="col-12" *ngIf="selectedTask.notes">
+              <p><strong>Notes:</strong> {{ selectedTask.notes }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

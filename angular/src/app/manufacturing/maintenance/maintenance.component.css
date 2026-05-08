@@ -1,0 +1,54 @@
+/* Maintenance Management Styles */
+.btn-group {
+  gap: 0.5rem;
+}
+
+.table-active {
+  background-color: #e3f2fd !important;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}
+
+.text-warning {
+  color: #ffc107 !important;
+}
+
+.text-info {
+  color: #0dcaf0 !important;
+}
+
+.text-secondary {
+  color: #6c757d !important;
+}
+
+.fw-bold {
+  font-weight: 600 !important;
+}
+
+/* Ensure table content is visible */
+table tbody tr {
+  color: #212529 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  position: static !important;
+}
+
+table tbody tr td,
+table tbody tr td * {
+  color: #212529 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+/* Remove any theme overlays */
+table tbody tr::before,
+table tbody tr::after,
+.card-body::before,
+.card-body::after {
+  display: none !important;
+  content: none !important;
+}

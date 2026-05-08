@@ -1,0 +1,36 @@
+/* Production Order Edit Component Styles - Reuse Create Component Styles */
+
+/* Import all styles from create component */
+@import './production-order-create.component.css';
+
+/* Additional styles specific to edit component */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.status-planned {
+  background-color: #f1f5f9;
+  color: #475569;
+}
+
+.status-in-progress {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.status-completed {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.status-cancelled {
+  background-color: #fef2f2;
+  color: #991b1b;
+}

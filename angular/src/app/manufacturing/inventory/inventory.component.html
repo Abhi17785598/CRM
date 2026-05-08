@@ -1,0 +1,257 @@
+<div class="container-fluid">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2>Inventory Management</h2>
+      <p class="text-muted">Manage inventory items and stock levels</p>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-12">
+      <button class="btn btn-primary me-2" (click)="showCreateForm = !showCreateForm">
+        <i class="fas fa-plus me-2"></i>Add Item
+      </button>
+      <button class="btn btn-success me-2" (click)="exportInventory()">
+        <i class="fas fa-download me-2"></i>Export CSV
+      </button>
+      <button class="btn btn-info" (click)="showUpdateForm = false; selectedItem = null">
+        <i class="fas fa-refresh me-2"></i>Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Create Form -->
+  <div class="row mb-4" *ngIf="showCreateForm">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Add New Inventory Item</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="createItem()">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Item Code</label>
+                <input type="text" class="form-control" [(ngModel)]="newItem.itemCode" name="itemCode" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Item Name</label>
+                <input type="text" class="form-control" [(ngModel)]="newItem.itemName" name="itemName" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Category</label>
+                <select class="form-control" [(ngModel)]="newItem.category" name="category">
+                  <option value="">Select Category</option>
+                  <option value="Raw Materials">Raw Materials</option>
+                  <option value="Finished Goods">Finished Goods</option>
+                  <option value="Fasteners">Fasteners</option>
+                  <option value="Tools">Tools</option>
+                </select>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Unit Price ($)</label>
+                <input type="number" step="0.01" class="form-control" [(ngModel)]="newItem.unitPrice" name="unitPrice">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Current Stock</label>
+                <input type="number" class="form-control" [(ngModel)]="newItem.currentStock" name="currentStock">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Minimum Stock</label>
+                <input type="number" class="form-control" [(ngModel)]="newItem.minimumStock" name="minimumStock">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Maximum Stock</label>
+                <input type="number" class="form-control" [(ngModel)]="newItem.maximumStock" name="maximumStock">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Unit of Measure</label>
+                <input type="text" class="form-control" [(ngModel)]="newItem.unitOfMeasure" name="unitOfMeasure" placeholder="pieces, kg, meters, etc">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Location</label>
+                <input type="text" class="form-control" [(ngModel)]="newItem.location" name="location">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="newItem.description" name="description">
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-success me-2">Add Item</button>
+                <button type="button" class="btn btn-secondary" (click)="showCreateForm = false; resetForm()">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Form -->
+  <div class="row mb-4" *ngIf="showUpdateForm && selectedItem">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Update Inventory Item: {{ selectedItem.itemCode }}</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="updateItem()">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Item Name</label>
+                <input type="text" class="form-control" [(ngModel)]="newItem.itemName" name="itemName" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Category</label>
+                <select class="form-control" [(ngModel)]="newItem.category" name="category">
+                  <option value="Raw Materials">Raw Materials</option>
+                  <option value="Finished Goods">Finished Goods</option>
+                  <option value="Fasteners">Fasteners</option>
+                  <option value="Tools">Tools</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Unit Price ($)</label>
+                <input type="number" step="0.01" class="form-control" [(ngModel)]="newItem.unitPrice" name="unitPrice">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Current Stock</label>
+                <input type="number" class="form-control" [(ngModel)]="newItem.currentStock" name="currentStock">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Minimum Stock</label>
+                <input type="number" class="form-control" [(ngModel)]="newItem.minimumStock" name="minimumStock">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Maximum Stock</label>
+                <input type="number" class="form-control" [(ngModel)]="newItem.maximumStock" name="maximumStock">
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Unit of Measure</label>
+                <input type="text" class="form-control" [(ngModel)]="newItem.unitOfMeasure" name="unitOfMeasure">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Location</label>
+                <input type="text" class="form-control" [(ngModel)]="newItem.location" name="location">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Description</label>
+                <input type="text" class="form-control" [(ngModel)]="newItem.description" name="description">
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-success me-2">Update Item</button>
+                <button type="button" class="btn btn-secondary" (click)="showUpdateForm = false; resetForm()">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inventory Items List -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Inventory Items</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Item Code</th>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Current Stock</th>
+                  <th>Min/Max Stock</th>
+                  <th>Unit Price</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of inventoryItems" [class.table-active]="selectedItem?.id === item.id">
+                  <td>{{ item.itemCode }}</td>
+                  <td>{{ item.itemName }}</td>
+                  <td>{{ item.category }}</td>
+                  <td>
+                    <span [class]="item.isLowStock ? 'text-danger fw-bold' : item.isOverStock ? 'text-warning fw-bold' : ''">
+                      {{ item.currentStock }}
+                    </span>
+                  </td>
+                  <td>{{ item.minimumStock }} / {{ item.maximumStock }}</td>
+                  <td>${{ item.unitPrice.toFixed(2) }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="getStockStatusClass(item)">
+                      {{ getStockStatusText(item) }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="btn-group btn-group-sm">
+                      <button class="btn btn-info" (click)="selectItem(item)" title="View Details">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="btn btn-warning" (click)="editItem(item)" title="Edit">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-success" (click)="updateStock(item.id, 100)" title="Add Stock">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                      <button class="btn btn-secondary" (click)="updateStock(item.id, -50)" title="Remove Stock">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                      <button class="btn btn-danger" (click)="deleteItem(item.id)" title="Delete">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Item Details -->
+  <div class="row mt-4" *ngIf="selectedItem">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Item Details: {{ selectedItem.itemCode }}</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Item Code:</strong> {{ selectedItem.itemCode }}</p>
+              <p><strong>Name:</strong> {{ selectedItem.itemName }}</p>
+              <p><strong>Category:</strong> {{ selectedItem.category }}</p>
+              <p><strong>Description:</strong> {{ selectedItem.description }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Current Stock:</strong> 
+                <span [class]="selectedItem.isLowStock ? 'text-danger fw-bold' : selectedItem.isOverStock ? 'text-warning fw-bold' : ''">
+                  {{ selectedItem.currentStock }} {{ selectedItem.unitOfMeasure }}
+                </span>
+              </p>
+              <p><strong>Stock Range:</strong> {{ selectedItem.minimumStock }} - {{ selectedItem.maximumStock }} {{ selectedItem.unitOfMeasure }}</p>
+              <p><strong>Unit Price:</strong> ${{ selectedItem.unitPrice.toFixed(2) }}</p>
+              <p><strong>Location:</strong> {{ selectedItem.location }}</p>
+              <p><strong>Status:</strong> 
+                <span class="badge ms-2" [ngClass]="getStockStatusClass(selectedItem)">
+                  {{ getStockStatusText(selectedItem) }}
+                </span>
+              </p>
+            </div>
+            <div class="col-12">
+              <p><strong>Total Value:</strong> ${{ (selectedItem.currentStock * selectedItem.unitPrice).toFixed(2) }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

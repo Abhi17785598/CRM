@@ -1,0 +1,281 @@
+<div class="container-fluid">
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2>Quality Control</h2>
+      <p class="text-muted">Product quality inspection and testing</p>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-12">
+      <button class="btn btn-primary me-2" (click)="showCreateForm = !showCreateForm">
+        <i class="fas fa-plus me-2"></i>Add Quality Check
+      </button>
+      <button class="btn btn-success me-2" (click)="exportQualityChecks()">
+        <i class="fas fa-download me-2"></i>Export CSV
+      </button>
+      <button class="btn btn-info" (click)="showUpdateForm = false; selectedCheck = null">
+        <i class="fas fa-refresh me-2"></i>Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Create Form -->
+  <div class="row mb-4" *ngIf="showCreateForm">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Add New Quality Check</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="createCheck()">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Check Number</label>
+                <input type="text" class="form-control" [(ngModel)]="newCheck.checkNumber" name="checkNumber" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Product Name</label>
+                <input type="text" class="form-control" [(ngModel)]="newCheck.productName" name="productName" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Check Type</label>
+                <select class="form-control" [(ngModel)]="newCheck.checkType" name="checkType">
+                  <option value="Display Quality Test">Display Quality Test</option>
+                  <option value="Spin Cycle Performance">Spin Cycle Performance</option>
+                  <option value="Temperature Control Test">Temperature Control Test</option>
+                  <option value="Cooling Performance Test">Cooling Performance Test</option>
+                  <option value="Sound Quality Test">Sound Quality Test</option>
+                  <option value="Connectivity Test">Connectivity Test</option>
+                  <option value="Energy Efficiency Test">Energy Efficiency Test</option>
+                  <option value="Visual Inspection">Visual Inspection</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Inspector</label>
+                <input type="text" class="form-control" [(ngModel)]="newCheck.inspector" name="inspector" required>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Check Date</label>
+                <input type="date" class="form-control" [(ngModel)]="newCheck.checkDate" name="checkDate" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Specifications</label>
+                <textarea class="form-control" [(ngModel)]="newCheck.specifications" name="specifications" rows="2"></textarea>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Results</label>
+                <textarea class="form-control" [(ngModel)]="newCheck.results" name="results" rows="2"></textarea>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Defects Found</label>
+                <textarea class="form-control" [(ngModel)]="newCheck.defects" name="defects" rows="2"></textarea>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Corrective Action</label>
+                <textarea class="form-control" [(ngModel)]="newCheck.correctiveAction" name="correctiveAction" rows="2"></textarea>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Next Check Date</label>
+                <input type="date" class="form-control" [(ngModel)]="newCheck.nextCheckDate" name="nextCheckDate">
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Notes</label>
+                <textarea class="form-control" [(ngModel)]="newCheck.notes" name="notes" rows="2"></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-success me-2">Add Quality Check</button>
+                <button type="button" class="btn btn-secondary" (click)="showCreateForm = false; resetForm()">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Form -->
+  <div class="row mb-4" *ngIf="showUpdateForm && selectedCheck">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Update Quality Check: {{ selectedCheck.checkNumber }}</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="updateCheck()">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Product Name</label>
+                <input type="text" class="form-control" [(ngModel)]="newCheck.productName" name="productName" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Check Type</label>
+                <select class="form-control" [(ngModel)]="newCheck.checkType" name="checkType">
+                  <option value="Display Quality Test">Display Quality Test</option>
+                  <option value="Spin Cycle Performance">Spin Cycle Performance</option>
+                  <option value="Temperature Control Test">Temperature Control Test</option>
+                  <option value="Cooling Performance Test">Cooling Performance Test</option>
+                  <option value="Sound Quality Test">Sound Quality Test</option>
+                  <option value="Connectivity Test">Connectivity Test</option>
+                  <option value="Energy Efficiency Test">Energy Efficiency Test</option>
+                  <option value="Visual Inspection">Visual Inspection</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Inspector</label>
+                <input type="text" class="form-control" [(ngModel)]="newCheck.inspector" name="inspector" required>
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Check Date</label>
+                <input type="date" class="form-control" [(ngModel)]="newCheck.checkDate" name="checkDate" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Specifications</label>
+                <textarea class="form-control" [(ngModel)]="newCheck.specifications" name="specifications" rows="2"></textarea>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Results</label>
+                <textarea class="form-control" [(ngModel)]="newCheck.results" name="results" rows="2"></textarea>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Defects Found</label>
+                <textarea class="form-control" [(ngModel)]="newCheck.defects" name="defects" rows="2"></textarea>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Corrective Action</label>
+                <textarea class="form-control" [(ngModel)]="newCheck.correctiveAction" name="correctiveAction" rows="2"></textarea>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Next Check Date</label>
+                <input type="date" class="form-control" [(ngModel)]="newCheck.nextCheckDate" name="nextCheckDate">
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Notes</label>
+                <textarea class="form-control" [(ngModel)]="newCheck.notes" name="notes" rows="2"></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-success me-2">Update Quality Check</button>
+                <button type="button" class="btn btn-secondary" (click)="showUpdateForm = false; resetForm()">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quality Checks List -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Quality Checks</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>Check #</th>
+                  <th>Product</th>
+                  <th>Check Type</th>
+                  <th>Inspector</th>
+                  <th>Status</th>
+                  <th>Check Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let check of qualityChecks" [class.table-active]="selectedCheck?.id === check.id" class="text-dark">
+                  <td>{{ check.checkNumber }}</td>
+                  <td>{{ check.productName }}</td>
+                  <td>{{ check.checkType }}</td>
+                  <td>{{ check.inspector }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="getStatusClass(check.status)">
+                      {{ check.status }}
+                    </span>
+                  </td>
+                  <td>{{ check.checkDate | date:'shortDate' }}</td>
+                  <td>
+                    <div class="btn-group btn-group-sm">
+                      <button class="btn btn-info" (click)="selectCheck(check)" title="View Details">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="btn btn-warning" (click)="editCheck(check)" title="Edit">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-success" (click)="approveCheck(check.id)" 
+                              *ngIf="check.status === 'Pending' || check.status === 'Failed'" title="Approve">
+                        <i class="fas fa-check"></i>
+                      </button>
+                      <button class="btn btn-danger" (click)="failCheck(check.id)" 
+                              *ngIf="check.status === 'Pending'" title="Fail">
+                        <i class="fas fa-times"></i>
+                      </button>
+                      <button class="btn btn-danger" (click)="deleteCheck(check.id)" title="Delete">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quality Check Details -->
+  <div class="row mt-4" *ngIf="selectedCheck">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Quality Check Details: {{ selectedCheck.checkNumber }}</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Check Number:</strong> {{ selectedCheck.checkNumber }}</p>
+              <p><strong>Product Name:</strong> {{ selectedCheck.productName }}</p>
+              <p><strong>Check Type:</strong> {{ selectedCheck.checkType }}</p>
+              <p><strong>Inspector:</strong> {{ selectedCheck.inspector }}</p>
+              <p><strong>Status:</strong> 
+                <span class="badge ms-2" [ngClass]="getStatusClass(selectedCheck.status)">
+                  {{ selectedCheck.status }}
+                </span>
+              </p>
+              <p><strong>Check Date:</strong> {{ selectedCheck.checkDate | date:'mediumDate' }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Next Check Date:</strong> 
+                <span *ngIf="selectedCheck.nextCheckDate">{{ selectedCheck.nextCheckDate | date:'mediumDate' }}</span>
+                <span *ngIf="!selectedCheck.nextCheckDate" class="text-muted">Not scheduled</span>
+              </p>
+            </div>
+            <div class="col-md-12">
+              <h6 class="text-info">Specifications</h6>
+              <p>{{ selectedCheck.specifications }}</p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-success">Results</h6>
+              <p>{{ selectedCheck.results }}</p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-danger">Defects Found</h6>
+              <p>{{ selectedCheck.defects }}</p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-warning">Corrective Action</h6>
+              <p>{{ selectedCheck.correctiveAction }}</p>
+            </div>
+            <div class="col-12" *ngIf="selectedCheck.notes">
+              <p><strong>Notes:</strong> {{ selectedCheck.notes }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

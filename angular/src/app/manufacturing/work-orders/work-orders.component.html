@@ -1,0 +1,119 @@
+<div class="enterprise-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-breadcrumb">
+      <span class="breadcrumb-item">Manufacturing</span>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-item active">Work Orders</span>
+    </div>
+    <div class="page-title-section">
+      <h1 class="page-title">Work Orders</h1>
+      <p class="page-subtitle">Shop floor maintenance and repair operations</p>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary" (click)="createWorkOrderNavigation()">
+        <i class="fas fa-plus"></i>
+        Create Work Order
+      </button>
+    </div>
+  </div>
+
+  <!-- Advanced Filters -->
+  <div class="filter-card">
+    <div class="filter-header">
+      <h3 class="filter-title">
+        <i class="fas fa-filter"></i>
+        Filters
+      </h3>
+      <button class="btn btn-ghost" (click)="clearFilters()">Clear All</button>
+    </div>
+    <div class="filter-grid">
+      <div class="filter-field">
+        <label class="filter-label">Work Order #</label>
+        <input type="text" class="form-control" placeholder="Search work order...">
+      </div>
+      <div class="filter-field">
+        <label class="filter-label">Status</label>
+        <select class="form-control">
+          <option value="">All Statuses</option>
+          <option value="Pending">Pending</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Completed">Completed</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label class="filter-label">Priority</label>
+        <select class="form-control">
+          <option value="">All Priorities</option>
+          <option value="Critical">Critical</option>
+          <option value="High">High</option>
+          <option value="Medium">Medium</option>
+          <option value="Low">Low</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Table -->
+  <div class="data-table-card">
+    <div class="table-header">
+      <div class="table-info">
+        <h3 class="table-title">Work Orders</h3>
+        <span class="record-count">{{ workOrders.length }} records</span>
+      </div>
+      <div class="table-actions">
+        <button class="btn btn-ghost" (click)="exportWorkOrders()">
+          <i class="fas fa-download"></i>
+          Export
+        </button>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="enterprise-table">
+        <thead class="table-sticky-header">
+          <tr>
+            <th>Work Order #</th>
+            <th>Title</th>
+            <th>Priority</th>
+            <th>Assigned To</th>
+            <th>Status</th>
+            <th>Scheduled Date</th>
+            <th class="actions-column">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let workOrder of workOrders" class="table-row">
+            <td class="order-number">{{ workOrder.workOrderNumber }}</td>
+            <td class="product-name">{{ workOrder.title }}</td>
+            <td>
+              <span class="priority-badge" [ngClass]="'priority-' + workOrder.priority.toLowerCase()">
+                {{ workOrder.priority }}
+              </span>
+            </td>
+            <td>{{ workOrder.assignedTo }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(workOrder.status)">
+                {{ workOrder.status }}
+              </span>
+            </td>
+            <td class="date">{{ workOrder.scheduledDate | date:'MMM dd, yyyy' }}</td>
+            <td class="actions-column">
+              <div class="action-buttons">
+                <button class="btn-action btn-view" (click)="selectWorkOrder(workOrder)" title="View Details">
+                  View
+                </button>
+                <button class="btn-action btn-edit" (click)="editWorkOrder(workOrder)" title="Edit Work Order">
+                  Edit
+                </button>
+                <button class="btn-action btn-delete" (click)="deleteWorkOrder(workOrder.id)" title="Delete Work Order">
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

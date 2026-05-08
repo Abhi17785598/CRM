@@ -1,0 +1,288 @@
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col-12">
+      <h1 class="page-title">Leads Management</h1>
+      <p class="text-muted">Sales leads and prospect management</p>
+    </div>
+  </div>
+
+  <div class="row mb-2">
+    <div class="col-12">
+      <button class="btn btn-primary me-2" (click)="showCreateForm = !showCreateForm">
+        <i class="fas fa-plus me-2"></i>Add Lead
+      </button>
+      <button class="btn btn-success me-2" (click)="exportLeads()">
+        <i class="fas fa-download me-2"></i>Export CSV
+      </button>
+      <button class="btn btn-info me-2" (click)="showUpdateForm = false; selectedLead = null">
+        <i class="fas fa-refresh me-2"></i>Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Create Form -->
+  <div class="row mb-4" *ngIf="showCreateForm">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Add New Lead</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="createLead()">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Lead Number</label>
+                <input type="text" class="form-control" [(ngModel)]="newLead.leadNumber" name="leadNumber">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Company Name</label>
+                <input type="text" class="form-control" [(ngModel)]="newLead.companyName" name="companyName" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Contact Person</label>
+                <input type="text" class="form-control" [(ngModel)]="newLead.contactPerson" name="contactPerson" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" [(ngModel)]="newLead.email" name="email" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Phone</label>
+                <input type="tel" class="form-control" [(ngModel)]="newLead.phone" name="phone">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Source</label>
+                <select class="form-control" [(ngModel)]="newLead.source" name="source">
+                  <option value="Website">Website</option>
+                  <option value="Referral">Referral</option>
+                  <option value="Cold Call">Cold Call</option>
+                  <option value="Trade Show">Trade Show</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Status</label>
+                <select class="form-control" [(ngModel)]="newLead.status" name="status">
+                  <option value="New">New</option>
+                  <option value="Qualified">Qualified</option>
+                  <option value="Contacted">Contacted</option>
+                  <option value="Lost">Lost</option>
+                  <option value="Converted">Converted</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Priority</label>
+                <select class="form-control" [(ngModel)]="newLead.priority" name="priority">
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Assigned To</label>
+                <input type="text" class="form-control" [(ngModel)]="newLead.assignedTo" name="assignedTo">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Estimated Value ($)</label>
+                <input type="number" class="form-control" [(ngModel)]="newLead.estimatedValue" name="estimatedValue">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Created Date</label>
+                <input type="date" class="form-control" [(ngModel)]="newLead.createdDate" name="createdDate">
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Notes</label>
+                <textarea class="form-control" [(ngModel)]="newLead.notes" name="notes" rows="3"></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-success me-2">Add Lead</button>
+                <button type="button" class="btn btn-secondary" (click)="showCreateForm = false; resetForm()">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Form -->
+  <div class="row mb-4" *ngIf="showUpdateForm && selectedLead">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Update Lead: {{ selectedLead.leadNumber }}</h5>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="updateLead()">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Company Name</label>
+                <input type="text" class="form-control" [(ngModel)]="newLead.companyName" name="companyName" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Contact Person</label>
+                <input type="text" class="form-control" [(ngModel)]="newLead.contactPerson" name="contactPerson" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" [(ngModel)]="newLead.email" name="email" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Phone</label>
+                <input type="tel" class="form-control" [(ngModel)]="newLead.phone" name="phone">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Source</label>
+                <select class="form-control" [(ngModel)]="newLead.source" name="source">
+                  <option value="Website">Website</option>
+                  <option value="Referral">Referral</option>
+                  <option value="Cold Call">Cold Call</option>
+                  <option value="Trade Show">Trade Show</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Status</label>
+                <select class="form-control" [(ngModel)]="newLead.status" name="status">
+                  <option value="New">New</option>
+                  <option value="Qualified">Qualified</option>
+                  <option value="Contacted">Contacted</option>
+                  <option value="Lost">Lost</option>
+                  <option value="Converted">Converted</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Priority</label>
+                <select class="form-control" [(ngModel)]="newLead.priority" name="priority">
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Assigned To</label>
+                <input type="text" class="form-control" [(ngModel)]="newLead.assignedTo" name="assignedTo">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Estimated Value ($)</label>
+                <input type="number" class="form-control" [(ngModel)]="newLead.estimatedValue" name="estimatedValue">
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Created Date</label>
+                <input type="date" class="form-control" [(ngModel)]="newLead.createdDate" name="createdDate">
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Notes</label>
+                <textarea class="form-control" [(ngModel)]="newLead.notes" name="notes" rows="3"></textarea>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-success me-2">Update Lead</button>
+                <button type="button" class="btn btn-secondary" (click)="showUpdateForm = false; resetForm()">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leads List -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Sales Leads</h5>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>Lead #</th>
+                  <th>Company</th>
+                  <th>Contact Person</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                  <th>Priority</th>
+                  <th>Value</th>
+                  <th>Assigned To</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let lead of leads" [class.table-active]="selectedLead?.id === lead.id">
+                  <td>{{ lead.leadNumber }}</td>
+                  <td>{{ lead.companyName }}</td>
+                  <td>{{ lead.contactPerson }}</td>
+                  <td>{{ lead.email }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="getStatusClass(lead.status)">{{ lead.status }}</span>
+                  </td>
+                  <td>
+                    <span [ngClass]="getPriorityClass(lead.priority)">{{ lead.priority }}</span>
+                  </td>
+                  <td>${{ lead.estimatedValue.toLocaleString() }}</td>
+                  <td>{{ lead.assignedTo }}</td>
+                  <td>
+                    <div class="btn-group btn-group-sm">
+                      <button class="btn btn-info" (click)="selectLead(lead)" title="View Details">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="btn btn-warning" (click)="editLead(lead)" title="Edit">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-success" (click)="convertLead(lead.id)" 
+                              *ngIf="lead.status !== 'Converted'" title="Convert to Customer">
+                        <i class="fas fa-check"></i>
+                      </button>
+                      <button class="btn btn-danger" (click)="deleteLead(lead.id)" title="Delete">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lead Details -->
+  <div class="row mt-4" *ngIf="selectedLead">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Lead Details: {{ selectedLead.leadNumber }}</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Lead Number:</strong> {{ selectedLead.leadNumber }}</p>
+              <p><strong>Company Name:</strong> {{ selectedLead.companyName }}</p>
+              <p><strong>Contact Person:</strong> {{ selectedLead.contactPerson }}</p>
+              <p><strong>Email:</strong> {{ selectedLead.email }}</p>
+              <p><strong>Phone:</strong> {{ selectedLead.phone }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Source:</strong> {{ selectedLead.source }}</p>
+              <p><strong>Status:</strong> 
+                <span class="badge" [ngClass]="getStatusClass(selectedLead.status)">{{ selectedLead.status }}</span>
+              </p>
+              <p><strong>Priority:</strong> 
+                <span [ngClass]="getPriorityClass(selectedLead.priority)">{{ selectedLead.priority }}</span>
+              </p>
+              <p><strong>Estimated Value:</strong> ${{ selectedLead.estimatedValue.toLocaleString() }}</p>
+              <p><strong>Assigned To:</strong> {{ selectedLead.assignedTo }}</p>
+              <p><strong>Created Date:</strong> {{ selectedLead.createdDate | date:'mediumDate' }}</p>
+            </div>
+            <div class="col-12" *ngIf="selectedLead.notes">
+              <p><strong>Notes:</strong> {{ selectedLead.notes }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

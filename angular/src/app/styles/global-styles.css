@@ -1,0 +1,1656 @@
+/* Global Professional Background Styles */
+
+/* TARGETED LOGO SIZE OVERRIDE - ONLY LOGO ELEMENTS */
+.lpx-logo,
+.lpx-logo-icon,
+.logo,
+.navbar-brand,
+.brand-logo,
+.abp-navbar-brand,
+[abp-logo],
+.lepton-logo {
+  background-image: url('/assets/images/logo/apptad-technologies-pvt-ltd-original-removebg-preview.png') !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  width: 1000px !important;
+  height: 250px !important;
+  display: block !important;
+  max-height: none !important;
+  max-width: none !important;
+  min-height: 250px !important;
+  min-width: 1000px !important;
+  margin: 20px !important;
+  padding: 10px !important;
+  object-fit: contain !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+.lpx-logo,
+.lpx-logo-icon,
+.logo,
+.navbar-brand,
+.brand-logo,
+.abp-navbar-brand,
+[abp-logo],
+.lepton-logo {
+  background-image: url('/assets/images/logo/apptad-technologies-pvt-ltd-original-removebg-preview.png') !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  width: 1200px !important;
+  height: 300px !important;
+  display: block !important;
+  max-height: none !important;
+  max-width: none !important;
+  min-height: 300px !important;
+  min-width: 1200px !important;
+  margin: 20px !important;
+  padding: 10px !important;
+  object-fit: contain !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+/* ONLY override images that are actually logos */
+img[src*="logo"],
+img[alt*="logo"],
+img[alt*="Logo"],
+img[src*="Logo"],
+img[title*="logo"],
+img[title*="Logo"] {
+  width: 1200px !important;
+  height: 300px !important;
+  max-height: none !important;
+  min-height: 300px !important;
+  object-fit: contain !important;
+  margin-right: 20px !important;
+  border-radius: 0 !important;
+}
+
+/* ABP Framework specific logo overrides */
+:host ::ng-deep .lpx-logo,
+:host ::ng-deep .lpx-logo-icon,
+:root ::ng-deep .lpx-logo,
+:root ::ng-deep .lpx-logo-icon,
+::ng-deep .lpx-logo,
+::ng-deep .lpx-logo-icon,
+::ng-deep .abp-navbar-brand,
+::ng-deep .navbar-brand,
+::ng-deep .brand-logo {
+  background-image: url('/assets/images/logo/apptad-technologies-pvt-ltd-original-removebg-preview.png') !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  width: 1200px !important;
+  height: 300px !important;
+  display: block !important;
+  max-height: none !important;
+  max-width: none !important;
+  min-height: 300px !important;
+  min-width: 1200px !important;
+  margin: 20px !important;
+  padding: 10px !important;
+  object-fit: contain !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+/* Remove size constraints from parent containers */
+:host ::ng-deep .navbar,
+:host ::ng-deep .navbar-header,
+:host ::ng-deep .sidebar,
+:host ::ng-deep .sidebar-header {
+  max-height: none !important;
+  max-width: none !important;
+  overflow: visible !important;
+  height: auto !important;
+  min-height: 300px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 20px !important;
+  padding: 20px !important;
+}
+
+/* Force logo container to be massive */
+:host ::ng-deep .navbar-brand,
+:host ::ng-deep .logo-container,
+:host ::ng-deep .brand-logo {
+  height: auto !important;
+  min-height: 250px !important;
+  max-height: none !important;
+  width: 1000px !important;
+  min-width: 1000px !important;
+  margin: 20px !important;
+  display: block !important;
+}
+
+/* Separate logo from text - create space */
+:host ::ng-deep .navbar .navbar-brand,
+:host ::ng-deep .sidebar .brand {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 20px !important;
+}
+
+/* Add large logo to sidebar header */
+:host ::ng-deep .sidebar-header,
+:host ::ng-deep .navbar-header,
+:host ::ng-deep .lpx-sidebar-header {
+  position: relative !important;
+}
+
+:host ::ng-deep .sidebar-header::before,
+:host ::ng-deep .navbar-header::before,
+:host ::ng-deep .lpx-sidebar-header::before {
+  content: '' !important;
+  background-image: url('/assets/images/logo/apptad-technologies-pvt-ltd-original-removebg-preview.png') !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: contain !important;
+  width: 400px !important;
+  height: 120px !important;
+  display: block !important;
+  margin: 20px auto !important;
+  position: absolute !important;
+  top: 10px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
+
+/* Make ERP text separate and smaller */
+:host ::ng-deep .navbar .app-title,
+:host ::ng-deep .sidebar .app-name {
+  font-size: 16px !important;
+  margin-top: 10px !important;
+  display: block !important;
+  margin-top: 140px !important; /* Make space for logo */
+}
+
+/* ==========================================
+   DASHBOARD KPI CARD COLOR RESTORATION - AGGRESSIVE FIX
+   ========================================== */
+
+/* FORCE override all conflicting styles for dashboard KPI cards */
+:host ::ng-deep .dashboard-bg .card.bg-gradient-primary,
+:host ::ng-deep .dashboard .card.bg-gradient-primary,
+:host ::ng-deep app-dashboard .card.bg-gradient-primary,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-success,
+:host ::ng-deep .dashboard .card.bg-gradient-success,
+:host ::ng-deep app-dashboard .card.bg-gradient-success,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-warning,
+:host ::ng-deep .dashboard .card.bg-gradient-warning,
+:host ::ng-deep app-dashboard .card.bg-gradient-warning,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-info,
+:host ::ng-deep .dashboard .card.bg-gradient-info,
+:host ::ng-deep app-dashboard .card.bg-gradient-info {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Specific gradient overrides */
+:host ::ng-deep .dashboard-bg .card.bg-gradient-success,
+:host ::ng-deep .dashboard .card.bg-gradient-success,
+:host ::ng-deep app-dashboard .card.bg-gradient-success {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
+}
+
+:host ::ng-deep .dashboard-bg .card.bg-gradient-warning,
+:host ::ng-deep .dashboard .card.bg-gradient-warning,
+:host ::ng-deep app-dashboard .card.bg-gradient-warning {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+}
+
+:host ::ng-deep .dashboard-bg .card.bg-gradient-info,
+:host ::ng-deep .dashboard .card.bg-gradient-info,
+:host ::ng-deep app-dashboard .card.bg-gradient-info {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+}
+
+/* Force card body transparency */
+:host ::ng-deep .dashboard-bg .card.bg-gradient-primary .card-body,
+:host ::ng-deep .dashboard .card.bg-gradient-primary .card-body,
+:host ::ng-deep app-dashboard .card.bg-gradient-primary .card-body,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-success .card-body,
+:host ::ng-deep .dashboard .card.bg-gradient-success .card-body,
+:host ::ng-deep app-dashboard .card.bg-gradient-success .card-body,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-warning .card-body,
+:host ::ng-deep .dashboard .card.bg-gradient-warning .card-body,
+:host ::ng-deep app-dashboard .card.bg-gradient-warning .card-body,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-info .card-body,
+:host ::ng-deep .dashboard .card.bg-gradient-info .card-body,
+:host ::ng-deep app-dashboard .card.bg-gradient-info .card-body {
+  background: transparent !important;
+  padding: 1.5rem !important;
+}
+
+/* Force text colors */
+:host ::ng-deep .dashboard-bg .card.bg-gradient-primary .card-title,
+:host ::ng-deep .dashboard .card.bg-gradient-primary .card-title,
+:host ::ng-deep app-dashboard .card.bg-gradient-primary .card-title,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-success .card-title,
+:host ::ng-deep .dashboard .card.bg-gradient-success .card-title,
+:host ::ng-deep app-dashboard .card.bg-gradient-success .card-title,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-warning .card-title,
+:host ::ng-deep .dashboard .card.bg-gradient-warning .card-title,
+:host ::ng-deep app-dashboard .card.bg-gradient-warning .card-title,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-info .card-title,
+:host ::ng-deep .dashboard .card.bg-gradient-info .card-title,
+:host ::ng-deep app-dashboard .card.bg-gradient-info .card-title {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 2rem !important;
+}
+
+:host ::ng-deep .dashboard-bg .card.bg-gradient-primary .card-text,
+:host ::ng-deep .dashboard .card.bg-gradient-primary .card-text,
+:host ::ng-deep app-dashboard .card.bg-gradient-primary .card-text,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-success .card-text,
+:host ::ng-deep .dashboard .card.bg-gradient-success .card-text,
+:host ::ng-deep app-dashboard .card.bg-gradient-success .card-text,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-warning .card-text,
+:host ::ng-deep .dashboard .card.bg-gradient-warning .card-text,
+:host ::ng-deep app-dashboard .card.bg-gradient-warning .card-text,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-info .card-text,
+:host ::ng-deep .dashboard .card.bg-gradient-info .card-text,
+:host ::ng-deep app-dashboard .card.bg-gradient-info .card-text {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-weight: 600 !important;
+}
+
+/* Force icon styling */
+:host ::ng-deep .dashboard-bg .card.bg-gradient-primary .icon-box,
+:host ::ng-deep .dashboard .card.bg-gradient-primary .icon-box,
+:host ::ng-deep app-dashboard .card.bg-gradient-primary .icon-box,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-success .icon-box,
+:host ::ng-deep .dashboard .card.bg-gradient-success .icon-box,
+:host ::ng-deep app-dashboard .card.bg-gradient-success .icon-box,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-warning .icon-box,
+:host ::ng-deep .dashboard .card.bg-gradient-warning .icon-box,
+:host ::ng-deep app-dashboard .card.bg-gradient-warning .icon-box,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-info .icon-box,
+:host ::ng-deep .dashboard .card.bg-gradient-info .icon-box,
+:host ::ng-deep app-dashboard .card.bg-gradient-info .icon-box {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+:host ::ng-deep .dashboard-bg .card.bg-gradient-primary .icon-box i,
+:host ::ng-deep .dashboard .card.bg-gradient-primary .icon-box i,
+:host ::ng-deep app-dashboard .card.bg-gradient-primary .icon-box i,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-success .icon-box i,
+:host ::ng-deep .dashboard .card.bg-gradient-success .icon-box i,
+:host ::ng-deep app-dashboard .card.bg-gradient-success .icon-box i,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-warning .icon-box i,
+:host ::ng-deep .dashboard .card.bg-gradient-warning .icon-box i,
+:host ::ng-deep app-dashboard .card.bg-gradient-warning .icon-box i,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-info .icon-box i,
+:host ::ng-deep .dashboard .card.bg-gradient-info .icon-box i,
+:host ::ng-deep app-dashboard .card.bg-gradient-info .icon-box i {
+  color: #ffffff !important;
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+}
+
+/* Force small text colors */
+:host ::ng-deep .dashboard-bg .card.bg-gradient-primary small,
+:host ::ng-deep .dashboard .card.bg-gradient-primary small,
+:host ::ng-deep app-dashboard .card.bg-gradient-primary small,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-success small,
+:host ::ng-deep .dashboard .card.bg-gradient-success small,
+:host ::ng-deep app-dashboard .card.bg-gradient-success small,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-warning small,
+:host ::ng-deep .dashboard .card.bg-gradient-warning small,
+:host ::ng-deep app-dashboard .card.bg-gradient-warning small,
+:host ::ng-deep .dashboard-bg .card.bg-gradient-info small,
+:host ::ng-deep .dashboard .card.bg-gradient-info small,
+:host ::ng-deep app-dashboard .card.bg-gradient-info small {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 600 !important;
+}
+
+/* ==========================================
+   DASHBOARD KPI CARD VISUAL EMPHASIS FIXES
+   ========================================== */
+
+/* Target ONLY dashboard KPI cards - restore original gradient backgrounds */
+:host ::ng-deep .dashboard-bg .card,
+:host ::ng-deep .dashboard .card,
+:host ::ng-deep app-dashboard .card {
+  background: #ffffff !important;
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Restore gradient backgrounds for KPI cards */
+:host ::ng-deep .dashboard-bg .bg-gradient-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+:host ::ng-deep .dashboard-bg .bg-gradient-success {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+:host ::ng-deep .dashboard-bg .bg-gradient-warning {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+:host ::ng-deep .dashboard-bg .bg-gradient-info {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+/* Ensure card bodies don't override gradients */
+:host ::ng-deep .dashboard-bg .bg-gradient-primary .card-body,
+:host ::ng-deep .dashboard .bg-gradient-primary .card-body,
+:host ::ng-deep app-dashboard .bg-gradient-primary .card-body,
+:host ::ng-deep .dashboard-bg .bg-gradient-success .card-body,
+:host ::ng-deep .dashboard .bg-gradient-success .card-body,
+:host ::ng-deep app-dashboard .bg-gradient-success .card-body,
+:host ::ng-deep .dashboard-bg .bg-gradient-warning .card-body,
+:host ::ng-deep .dashboard .bg-gradient-warning .card-body,
+:host ::ng-deep app-dashboard .bg-gradient-warning .card-body,
+:host ::ng-deep .dashboard-bg .bg-gradient-info .card-body,
+:host ::ng-deep .dashboard .bg-gradient-info .card-body,
+:host ::ng-deep app-dashboard .bg-gradient-info .card-body {
+  background: transparent !important;
+}
+
+/* Make KPI numbers bold and prominent on colored backgrounds */
+:host ::ng-deep .dashboard-bg .bg-gradient-primary .card-title,
+:host ::ng-deep .dashboard .bg-gradient-primary .card-title,
+:host ::ng-deep app-dashboard .bg-gradient-primary .card-title,
+:host ::ng-deep .dashboard-bg .bg-gradient-success .card-title,
+:host ::ng-deep .dashboard .bg-gradient-success .card-title,
+:host ::ng-deep app-dashboard .bg-gradient-success .card-title,
+:host ::ng-deep .dashboard-bg .bg-gradient-warning .card-title,
+:host ::ng-deep .dashboard .bg-gradient-warning .card-title,
+:host ::ng-deep app-dashboard .bg-gradient-warning .card-title,
+:host ::ng-deep .dashboard-bg .bg-gradient-info .card-title,
+:host ::ng-deep .dashboard .bg-gradient-info .card-title,
+:host ::ng-deep app-dashboard .bg-gradient-info .card-title {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  font-size: 2rem !important;
+  line-height: 1.2 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Make KPI labels clear and readable on colored backgrounds */
+:host ::ng-deep .dashboard-bg .bg-gradient-primary .card-text,
+:host ::ng-deep .dashboard .bg-gradient-primary .card-text,
+:host ::ng-deep app-dashboard .bg-gradient-primary .card-text,
+:host ::ng-deep .dashboard-bg .bg-gradient-success .card-text,
+:host ::ng-deep .dashboard .bg-gradient-success .card-text,
+:host ::ng-deep app-dashboard .bg-gradient-success .card-text,
+:host ::ng-deep .dashboard-bg .bg-gradient-warning .card-text,
+:host ::ng-deep .dashboard .bg-gradient-warning .card-text,
+:host ::ng-deep app-dashboard .bg-gradient-warning .card-text,
+:host ::ng-deep .dashboard-bg .bg-gradient-info .card-text,
+:host ::ng-deep .dashboard .bg-gradient-info .card-text,
+:host ::ng-deep app-dashboard .bg-gradient-info .card-text {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  margin-bottom: 0.25rem !important;
+}
+
+/* Enhance icon treatment - add white circles for colored backgrounds */
+:host ::ng-deep .dashboard-bg .bg-gradient-primary .icon-box,
+:host ::ng-deep .dashboard .bg-gradient-primary .icon-box,
+:host ::ng-deep app-dashboard .bg-gradient-primary .icon-box,
+:host ::ng-deep .dashboard-bg .bg-gradient-success .icon-box,
+:host ::ng-deep .dashboard .bg-gradient-success .icon-box,
+:host ::ng-deep app-dashboard .bg-gradient-success .icon-box,
+:host ::ng-deep .dashboard-bg .bg-gradient-warning .icon-box,
+:host ::ng-deep .dashboard .bg-gradient-warning .icon-box,
+:host ::ng-deep app-dashboard .bg-gradient-warning .icon-box,
+:host ::ng-deep .dashboard-bg .bg-gradient-info .icon-box,
+:host ::ng-deep .dashboard .bg-gradient-info .icon-box,
+:host ::ng-deep app-dashboard .bg-gradient-info .icon-box {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 50% !important;
+  width: 60px !important;
+  height: 60px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Icon colors for colored backgrounds */
+:host ::ng-deep .dashboard-bg .bg-gradient-primary .icon-box i,
+:host ::ng-deep .dashboard .bg-gradient-primary .icon-box i,
+:host ::ng-deep app-dashboard .bg-gradient-primary .icon-box i,
+:host ::ng-deep .dashboard-bg .bg-gradient-success .icon-box i,
+:host ::ng-deep .dashboard .bg-gradient-success .icon-box i,
+:host ::ng-deep app-dashboard .bg-gradient-success .icon-box i,
+:host ::ng-deep .dashboard-bg .bg-gradient-warning .icon-box i,
+:host ::ng-deep .dashboard .bg-gradient-warning .icon-box i,
+:host ::ng-deep app-dashboard .bg-gradient-warning .icon-box i,
+:host ::ng-deep .dashboard-bg .bg-gradient-info .icon-box i,
+:host ::ng-deep .dashboard .bg-gradient-info .icon-box i,
+:host ::ng-deep app-dashboard .bg-gradient-info .icon-box i {
+  color: #ffffff !important;
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+}
+
+/* Enhance small text and indicators on colored backgrounds */
+:host ::ng-deep .dashboard-bg .bg-gradient-primary small,
+:host ::ng-deep .dashboard .bg-gradient-primary small,
+:host ::ng-deep app-dashboard .bg-gradient-primary small,
+:host ::ng-deep .dashboard-bg .bg-gradient-success small,
+:host ::ng-deep .dashboard .bg-gradient-success small,
+:host ::ng-deep app-dashboard .bg-gradient-success small,
+:host ::ng-deep .dashboard-bg .bg-gradient-warning small,
+:host ::ng-deep .dashboard .bg-gradient-warning small,
+:host ::ng-deep app-dashboard .bg-gradient-warning small,
+:host ::ng-deep .dashboard-bg .bg-gradient-info small,
+:host ::ng-deep .dashboard .bg-gradient-info small,
+:host ::ng-deep app-dashboard .bg-gradient-info small {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-weight: 600 !important;
+  font-size: 0.8rem !important;
+}
+
+/* Add hover effects for depth */
+:host ::ng-deep .dashboard-bg .bg-gradient-primary:hover,
+:host ::ng-deep .dashboard .bg-gradient-primary:hover,
+:host ::ng-deep app-dashboard .bg-gradient-primary:hover,
+:host ::ng-deep .dashboard-bg .bg-gradient-success:hover,
+:host ::ng-deep .dashboard .bg-gradient-success:hover,
+:host ::ng-deep app-dashboard .bg-gradient-success:hover,
+:host ::ng-deep .dashboard-bg .bg-gradient-warning:hover,
+:host ::ng-deep .dashboard .bg-gradient-warning:hover,
+:host ::ng-deep app-dashboard .bg-gradient-warning:hover,
+:host ::ng-deep .dashboard-bg .bg-gradient-info:hover,
+:host ::ng-deep .dashboard .bg-gradient-info:hover,
+:host ::ng-deep app-dashboard .bg-gradient-info:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* ==========================================
+   DASHBOARD KPI CARD SPECIFIC FIXES
+   ========================================== */
+
+/* Target ONLY dashboard KPI cards with specific gradient classes */
+:host ::ng-deep .dashboard-bg .bg-gradient-primary,
+:host ::ng-deep .dashboard .bg-gradient-primary,
+:host ::ng-deep app-dashboard .bg-gradient-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+:host ::ng-deep .dashboard-bg .bg-gradient-success,
+:host ::ng-deep .dashboard .bg-gradient-success,
+:host ::ng-deep app-dashboard .bg-gradient-success {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+:host ::ng-deep .dashboard-bg .bg-gradient-warning,
+:host ::ng-deep .dashboard .bg-gradient-warning,
+:host ::ng-deep app-dashboard .bg-gradient-warning {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+:host ::ng-deep .dashboard-bg .bg-gradient-info,
+:host ::ng-deep .dashboard .bg-gradient-info,
+:host ::ng-deep app-dashboard .bg-gradient-info {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+/* Ensure dashboard card bodies don't override backgrounds */
+:host ::ng-deep .dashboard-bg .bg-gradient-primary .card-body,
+:host ::ng-deep .dashboard .bg-gradient-primary .card-body,
+:host ::ng-deep app-dashboard .bg-gradient-primary .card-body,
+:host ::ng-deep .dashboard-bg .bg-gradient-success .card-body,
+:host ::ng-deep .dashboard .bg-gradient-success .card-body,
+:host ::ng-deep app-dashboard .bg-gradient-success .card-body,
+:host ::ng-deep .dashboard-bg .bg-gradient-warning .card-body,
+:host ::ng-deep .dashboard .bg-gradient-warning .card-body,
+:host ::ng-deep app-dashboard .bg-gradient-warning .card-body,
+:host ::ng-deep .dashboard-bg .bg-gradient-info .card-body,
+:host ::ng-deep .dashboard .bg-gradient-info .card-body,
+:host ::ng-deep app-dashboard .bg-gradient-info .card-body {
+  background: transparent !important;
+}
+
+/* Fix dashboard text colors */
+:host ::ng-deep .dashboard-bg .bg-gradient-primary .card-title,
+:host ::ng-deep .dashboard .bg-gradient-primary .card-title,
+:host ::ng-deep app-dashboard .bg-gradient-primary .card-title,
+:host ::ng-deep .dashboard-bg .bg-gradient-success .card-title,
+:host ::ng-deep .dashboard .bg-gradient-success .card-title,
+:host ::ng-deep app-dashboard .bg-gradient-success .card-title,
+:host ::ng-deep .dashboard-bg .bg-gradient-warning .card-title,
+:host ::ng-deep .dashboard .bg-gradient-warning .card-title,
+:host ::ng-deep app-dashboard .bg-gradient-warning .card-title,
+:host ::ng-deep .dashboard-bg .bg-gradient-info .card-title,
+:host ::ng-deep .dashboard .bg-gradient-info .card-title,
+:host ::ng-deep app-dashboard .bg-gradient-info .card-title {
+  color: #ffffff !important;
+}
+
+/* Fix dashboard text content */
+:host ::ng-deep .dashboard-bg .bg-gradient-primary .card-text,
+:host ::ng-deep .dashboard .bg-gradient-primary .card-text,
+:host ::ng-deep app-dashboard .bg-gradient-primary .card-text,
+:host ::ng-deep .dashboard-bg .bg-gradient-success .card-text,
+:host ::ng-deep .dashboard .bg-gradient-success .card-text,
+:host ::ng-deep app-dashboard .bg-gradient-success .card-text,
+:host ::ng-deep .dashboard-bg .bg-gradient-warning .card-text,
+:host ::ng-deep .dashboard .bg-gradient-warning .card-text,
+:host ::ng-deep app-dashboard .bg-gradient-warning .card-text,
+:host ::ng-deep .dashboard-bg .bg-gradient-info .card-text,
+:host ::ng-deep .dashboard .bg-gradient-info .card-text,
+:host ::ng-deep app-dashboard .bg-gradient-info .card-text {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* Fix dashboard icons */
+:host ::ng-deep .dashboard-bg .bg-gradient-primary .icon-box i,
+:host ::ng-deep .dashboard .bg-gradient-primary .icon-box i,
+:host ::ng-deep app-dashboard .bg-gradient-primary .icon-box i,
+:host ::ng-deep .dashboard-bg .bg-gradient-success .icon-box i,
+:host ::ng-deep .dashboard .bg-gradient-success .icon-box i,
+:host ::ng-deep app-dashboard .bg-gradient-success .icon-box i,
+:host ::ng-deep .dashboard-bg .bg-gradient-warning .icon-box i,
+:host ::ng-deep .dashboard .bg-gradient-warning .icon-box i,
+:host ::ng-deep app-dashboard .bg-gradient-warning .icon-box i,
+:host ::ng-deep .dashboard-bg .bg-gradient-info .icon-box i,
+:host ::ng-deep .dashboard .bg-gradient-info .icon-box i,
+:host ::ng-deep app-dashboard .bg-gradient-info .icon-box i {
+  color: #2c3e50 !important;
+}
+
+/* Fix dashboard small text */
+:host ::ng-deep .dashboard-bg .bg-gradient-primary small,
+:host ::ng-deep .dashboard .bg-gradient-primary small,
+:host ::ng-deep app-dashboard .bg-gradient-primary small,
+:host ::ng-deep .dashboard-bg .bg-gradient-success small,
+:host ::ng-deep .dashboard .bg-gradient-success small,
+:host ::ng-deep app-dashboard .bg-gradient-success small,
+:host ::ng-deep .dashboard-bg .bg-gradient-warning small,
+:host ::ng-deep .dashboard .bg-gradient-warning small,
+:host ::ng-deep app-dashboard .bg-gradient-warning small,
+:host ::ng-deep .dashboard-bg .bg-gradient-info small,
+:host ::ng-deep .dashboard .bg-gradient-info small,
+:host ::ng-deep app-dashboard .bg-gradient-info small {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* ==========================================
+   DASHBOARD COMPONENT SPECIFIC FIXES
+   ========================================== */
+
+/* Override white background for dashboard cards */
+:host ::ng-deep .dashboard .card,
+:host ::ng-deep .dashboard .kpi-card,
+:host ::ng-deep .dashboard .stat-card,
+:host ::ng-deep .dashboard .info-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+  border: 1px solid #e9ecef !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Restore proper card header backgrounds for dashboard */
+:host ::ng-deep .dashboard .card-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border-bottom: 3px solid #3498db !important;
+}
+
+/* Dashboard specific card body backgrounds */
+:host ::ng-deep .dashboard .card-body {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-radius: 0 0 12px 12px !important;
+}
+
+/* Dashboard KPI card fixes */
+:host ::ng-deep .dashboard .kpi-card {
+  background: linear-gradient(135deg, var(--card-color-start), var(--card-color-end)) !important;
+  color: white !important;
+  border: none !important;
+}
+
+:host ::ng-deep .dashboard .kpi-card .card-body {
+  background: transparent !important;
+}
+
+/* Dashboard stat card fixes */
+:host ::ng-deep .dashboard .stat-card {
+  background: linear-gradient(135deg, #495057 0%, #6c757d 100%) !important;
+  color: white !important;
+  border: none !important;
+}
+
+/* Dashboard info card fixes */
+:host ::ng-deep .dashboard .info-card {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%) !important;
+  color: white !important;
+  border: none !important;
+}
+
+/* Dashboard specific text fixes */
+:host ::ng-deep .dashboard .card-title,
+:host ::ng-deep .dashboard .stat-title,
+:host ::ng-deep .dashboard .info-title {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+:host ::ng-deep .dashboard .card-text,
+:host ::ng-deep .dashboard .stat-value,
+:host ::ng-deep .dashboard .info-text {
+  color: #ffffff !important;
+  font-weight: 500 !important;
+}
+
+/* Dashboard specific icon fixes */
+:host ::ng-deep .dashboard .card-icon,
+:host ::ng-deep .dashboard .stat-icon {
+  color: #ffffff !important;
+  font-size: 1.5rem !important;
+}
+
+/* ==========================================
+   GLOBAL ERP TABLE STANDARDIZATION
+   ========================================== */
+
+/* Table Container Standards */
+.card:not(.bg-gradient-primary):not(.bg-gradient-success):not(.bg-gradient-warning):not(.bg-gradient-info) {
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.card-header {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  color: white;
+  padding: 1.25rem;
+  border-bottom: 3px solid #3498db;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.card-body:not(.bg-gradient-primary):not(.bg-gradient-success):not(.bg-gradient-warning):not(.bg-gradient-info) {
+  padding: 1.5rem;
+  background: #ffffff;
+}
+
+/* Table Header Standards */
+.table {
+  margin-bottom: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table thead {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+}
+
+.table th {
+  padding: 1rem 0.75rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  border-bottom: 2px solid #495057;
+  text-align: left;
+  position: relative;
+  vertical-align: middle;
+  background: transparent;
+}
+
+.table th:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 70%;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Table Row Standards */
+.table tbody tr {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid #f1f3f4;
+}
+
+.table tbody tr:nth-child(even) {
+  background: #f8f9fa;
+}
+
+.table tbody tr:nth-child(odd) {
+  background: #ffffff;
+}
+
+.table tbody tr:hover {
+  background: rgba(52, 152, 219, 0.08);
+  transform: scale(1.005);
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.1);
+}
+
+.table tbody tr.table-active {
+  background: rgba(52, 152, 219, 0.15) !important;
+  border-left: 4px solid #3498db;
+}
+
+/* Table Cell Standards */
+.table td {
+  padding: 1rem 0.75rem;
+  vertical-align: middle;
+  color: #495057;
+  font-weight: 500;
+  font-size: 0.9rem;
+  border-top: 1px solid transparent;
+  line-height: 1.5;
+}
+
+/* Numeric Data Alignment */
+.table td.text-right,
+.table td.text-end {
+  text-align: right;
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+}
+
+.table td.text-center {
+  text-align: center;
+}
+
+/* Status Badge Standards */
+.status-badge {
+  padding: 0.5rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  min-width: 80px;
+  text-align: center;
+}
+
+.status-badge-success {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border: 1px solid #20c997;
+}
+
+.status-badge-danger {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+  border: 1px solid #c82333;
+}
+
+.status-badge-warning {
+  background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+  color: #212529;
+  border: 1px solid #e0a800;
+}
+
+.status-badge-info {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+  color: white;
+  border: 1px solid #138496;
+}
+
+.status-badge-secondary {
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+  color: white;
+  border: 1px solid #495057;
+}
+
+.status-badge-primary {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  color: white;
+  border: 1px solid #2980b9;
+}
+
+/* Actions Column Standards */
+.table td:last-child {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-action {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.875rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-action::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1));
+  transition: left 0.5s ease;
+}
+
+.btn-action:hover::before {
+  left: 100%;
+}
+
+.btn-action.btn-view {
+  background: #17a2b8;
+  color: white;
+}
+
+.btn-action.btn-view:hover {
+  background: #138496;
+  transform: scale(1.1);
+}
+
+.btn-action.btn-edit {
+  background: #ffc107;
+  color: #212529;
+}
+
+.btn-action.btn-edit:hover {
+  background: #e0a800;
+  transform: scale(1.1);
+}
+
+.btn-action.btn-delete {
+  background: #dc3545;
+  color: white;
+}
+
+.btn-action.btn-delete:hover {
+  background: #c82333;
+  transform: scale(1.1);
+}
+
+/* Table Responsive Standards */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  scrollbar-width: thin;
+  border-radius: 0 0 8px 8px;
+}
+
+/* Special Data Types */
+.table td.currency {
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  color: #28a745;
+  background: rgba(40, 167, 69, 0.1);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  text-align: right;
+}
+
+.table td.code {
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  color: #495057;
+  background: #f8f9fa;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.table td.email {
+  color: #17a2b8;
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+.table td.phone {
+  color: #6c757d;
+  font-family: monospace;
+  font-size: 0.85rem;
+}
+
+/* Table Info Section */
+.table-info {
+  background: rgba(52, 152, 219, 0.1);
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.record-count {
+  color: #ffffff;
+}
+
+/* Main application background */
+body {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Container backgrounds */
+.container-fluid {
+  /* background: rgba(255, 255, 255, 0.95); */
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 2rem;
+  margin: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Card backgrounds - REMOVED WHITE BACKGROUND TO FIX CARDS */
+.card {
+  /* background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); */
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  /* backdrop-filter: blur(10px); */
+  transition: all 0.3s ease;
+}
+
+/* Allow colored cards to override white background - NUCLEAR APPROACH */
+::ng-deep .card.bg-primary,
+::ng-deep .card.bg-success,
+::ng-deep .card.bg-warning,
+::ng-deep .card.bg-info,
+::ng-deep .card.bg-danger,
+::ng-deep .card.bg-secondary,
+::ng-deep .card.kpi-card,
+::ng-deep .card.border-primary,
+::ng-deep .card.border-success,
+::ng-deep .card.border-warning,
+::ng-deep .card.border-info,
+::ng-deep .card.border-danger,
+::ng-deep .card.border-secondary {
+  background: linear-gradient(135deg, var(--card-color-start), var(--card-color-end)) !important;
+  color: white !important;
+  border: none !important;
+}
+
+/* Direct color overrides - GLOBAL */
+::ng-deep .card.kpi-card.bg-primary,
+::ng-deep .card.bg-primary,
+::ng-deep .card.border-primary {
+  background: linear-gradient(135deg, #667eea, #764ba2) !important;
+  color: white !important;
+  border: none !important;
+}
+
+::ng-deep .card.kpi-card.bg-success,
+::ng-deep .card.bg-success,
+::ng-deep .card.border-success {
+  background: linear-gradient(135deg, #48bb78, #38a169) !important;
+  color: white !important;
+  border: none !important;
+}
+
+::ng-deep .card.kpi-card.bg-warning,
+::ng-deep .card.bg-warning,
+::ng-deep .card.border-warning {
+  background: linear-gradient(135deg, #f6ad55, #ed8936) !important;
+  color: white !important;
+  border: none !important;
+}
+
+::ng-deep .card.kpi-card.bg-info,
+::ng-deep .card.bg-info,
+::ng-deep .card.border-info {
+  background: linear-gradient(135deg, #4299e1, #3182ce) !important;
+  color: white !important;
+  border: none !important;
+}
+
+::ng-deep .card.kpi-card.bg-danger,
+::ng-deep .card.bg-danger,
+::ng-deep .card.border-danger {
+  background: linear-gradient(135deg, #fc8181, #f56565) !important;
+  color: white !important;
+  border: none !important;
+}
+
+::ng-deep .card.kpi-card.bg-secondary,
+::ng-deep .card.bg-secondary,
+::ng-deep .card.border-secondary {
+  background: linear-gradient(135deg, #a0aec0, #718096) !important;
+  color: white !important;
+  border: none !important;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px 12px 0 0 !important;
+  border: none;
+  padding: 1.25rem;
+}
+
+.card-body {
+  /* background: rgba(255, 255, 255, 0.9); */
+  border-radius: 0 0 12px 12px;
+}
+
+/* Override card-body background for colored cards */
+.card.bg-primary .card-body,
+.card.bg-success .card-body,
+.card.bg-warning .card-body,
+.card.bg-info .card-body,
+.card.bg-danger .card-body,
+.card.bg-secondary .card-body,
+.card.kpi-card .card-body,
+.card.border-primary .card-body,
+.card.border-success .card-body,
+.card.border-warning .card-body,
+.card.border-info .card-body,
+.card.border-danger .card-body,
+.card.border-secondary .card-body {
+  background: transparent !important;
+}
+
+/* Table backgrounds */
+.table {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table thead th {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  color: white;
+  border: none;
+  font-weight: 600;
+  padding: 1rem;
+}
+
+.table tbody tr {
+  background: rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+  background: rgba(102, 126, 234, 0.1);
+  transform: scale(1.01);
+}
+
+/* Modal backgrounds */
+.modal-content {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 15px;
+  border: none;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 15px 15px 0 0;
+  border: none;
+}
+
+.modal-body {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 0 0 15px 15px;
+}
+
+/* Form backgrounds */
+.form-control, .form-select {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  background: rgba(255, 255, 255, 1);
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* Button enhancements */
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+  color: white;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+}
+
+.btn-info {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+  color: white;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+  color: white;
+}
+
+/* Badge backgrounds */
+.badge {
+  border-radius: 6px;
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+}
+
+/* Stats card backgrounds - REMOVED WHITE BACKGROUND */
+.card.border-0 {
+  /* background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); */
+  border: 1px solid rgba(102, 126, 234, 0.1) !important;
+}
+
+/* Loading spinner background */
+.spinner-border {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Alert backgrounds */
+.alert {
+  border-radius: 10px;
+  border: none;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+/* Professional text colors */
+.text-muted {
+  color: #6c757d !important;
+}
+
+.text-primary {
+  color: #667eea !important;
+}
+
+.text-success {
+  color: #28a745 !important;
+}
+
+.text-warning {
+  color: #ffc107 !important;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}
+
+.text-info {
+  color: #17a2b8 !important;
+}
+
+/* Professional hover effects */
+.card:hover {
+  box-shadow: 0 10px 40px rgba(102, 126, 234, 0.15);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container-fluid {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+  
+  .card {
+    margin-bottom: 1rem;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  }
+  
+  .container-fluid {
+    background: rgba(30, 30, 46, 0.95);
+    color: #ffffff;
+  }
+  
+  .card {
+    background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+    color: #ffffff;
+  }
+  
+  .table {
+    background: rgba(45, 55, 72, 0.95);
+    color: #ffffff;
+  }
+  
+  .form-control, .form-select {
+    background: rgba(45, 55, 72, 0.9);
+    color: #ffffff;
+    border-color: rgba(102, 126, 234, 0.3);
+  }
+}
+
+/* Smooth transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Professional scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+/* ==========================================
+   HR MODULE NAVIGATION CONTAINER FIX
+   ========================================== */
+
+/* HR Module Navigation Container - OVERFLOW AWARE */
+:host ::ng-deep .navbar .navbar-nav,
+:host ::ng-deep .lpx-navbar .navbar-nav {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  padding: 0.5rem 1rem !important;
+  white-space: nowrap !important;
+}
+
+/* When sidebar is open - adjust navigation */
+body.sidebar-open :host ::ng-deep .navbar .navbar-nav,
+body.sidebar-open :host ::ng-deep .lpx-navbar .navbar-nav {
+  margin-left: 250px !important;
+  padding-right: 1rem !important;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 991px) {
+  :host ::ng-deep .navbar .navbar-nav,
+  :host ::ng-deep .lpx-navbar .navbar-nav {
+    flex-wrap: wrap !important;
+    gap: 0.25rem !important;
+    padding: 0.25rem 0.5rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  :host ::ng-deep .navbar .navbar-nav,
+  :host ::ng-deep .lpx-navbar .navbar-nav {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.25rem !important;
+    padding: 0.25rem 0.5rem !important;
+  }
+}
+
+/* Navigation items - ensure they don't shrink */
+:host ::ng-deep .navbar .navbar-nav > *,
+:host ::ng-deep .lpx-navbar .navbar-nav > * {
+  flex: 0 0 auto !important;
+  min-width: fit-content !important;
+  white-space: nowrap !important;
+}
+
+/* Ensure proper scrolling behavior */
+:host ::ng-deep .navbar .navbar-nav {
+  scrollbar-width: thin !important;
+  scrollbar-height: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  -ms-overflow-style: -ms-autohiding-scrollbar !important;
+}
+
+/* Active tab highlighting */
+:host ::ng-deep .navbar .navbar-nav .active {
+  background: rgba(52, 152, 219, 0.1) !important;
+  border-radius: 4px !important;
+}
+
+/* ==========================================
+   SIDEBAR RESPONSIVE LAYOUT FIX
+   ========================================== */
+
+/* ROOT FIX - DISABLE WHITE CARD BACKGROUND FOR ERP DASHBOARD */
+.erp-dashboard .card,
+.erp-dashboard .card-body {
+  background: transparent !important;
+}
+
+/* FORCE KPI CARD COLORS - BOOTSTRAP + SCSS ONLY */
+.erp-dashboard .inventory-card {
+  background: linear-gradient(135deg, #1e293b, #312e81) !important;
+  color: #ffffff !important;
+}
+
+.erp-dashboard .revenue-card {
+  background: linear-gradient(135deg, #047857, #065f46) !important;
+  color: #ffffff !important;
+}
+
+.erp-dashboard .orders-card {
+  background: linear-gradient(135deg, #0369a1, #1e3a8a) !important;
+  color: #ffffff !important;
+}
+
+.erp-dashboard .customers-card {
+  background: linear-gradient(135deg, #b45309, #7c2d12) !important;
+  color: #ffffff !important;
+}
+
+.erp-dashboard .employees-card {
+  background: linear-gradient(135deg, #6d28d9, #4c1d95) !important;
+  color: #ffffff !important;
+}
+
+/* PROFESSIONAL HEADINGS */
+h1 {
+  font-weight: 700;
+  color: #1e293b;
+}
+
+h2 {
+  font-weight: 600;
+  color: #334155;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #334155;
+}
+
+/* Dashboard page specific overrides - REMOVED TO PREVENT WHITE BACKGROUNDS */
+
+/* Main content area responsive adjustments */
+:host ::ng-deep .page-content,
+:host ::ng-deep .content,
+:host ::ng-deep .main-content,
+:host ::ng-deep .page-content-wrapper,
+:host ::ng-deep .router-outlet + *,
+:host ::ng-deep .abp-page-content {
+  transition: margin-left 0.3s ease, padding 0.3s ease;
+  margin-left: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  min-height: calc(100vh - 200px) !important;
+}
+
+/* When sidebar is open - adjust main content */
+body.sidebar-open :host ::ng-deep .page-content,
+body.sidebar-open :host ::ng-deep .content,
+body.sidebar-open :host ::ng-deep .main-content,
+body.sidebar-open :host ::ng-deep .page-content-wrapper,
+body.sidebar-open :host ::ng-deep .router-outlet + *,
+body.sidebar-open :host ::ng-deep .abp-page-content {
+  margin-left: 250px !important;
+  padding-right: 1rem !important;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 991px) {
+  :host ::ng-deep .page-content,
+  :host ::ng-deep .content,
+  :host ::ng-deep .main-content,
+  :host ::ng-deep .page-content-wrapper,
+  :host ::ng-deep .router-outlet + *,
+  :host ::ng-deep .abp-page-content {
+    margin-left: 0 !important;
+    padding: 1rem !important;
+  }
+}
+
+/* Ensure content doesn't overflow */
+:host ::ng-deep .page-content-wrapper,
+:host ::ng-deep .abp-dynamic-content {
+  overflow-x: hidden !important;
+  max-width: 100% !important;
+}
+
+/* ABP specific layout adjustments */
+:host ::ng-deep .abp-dynamic-content .content {
+  margin-left: 0 !important;
+  transition: margin-left 0.3s ease !important;
+  background: transparent !important;
+}
+
+body.sidebar-open :host ::ng-deep .abp-dynamic-content .content {
+  margin-left: 250px !important;
+}
+
+/* Sidebar width detection */
+:host ::ng-deep .sidebar,
+:host ::ng-deep .lpx-sidebar {
+  width: 250px !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 1000 !important;
+  transition: transform 0.3s ease !important;
+}
+
+/* Collapsed sidebar state */
+:host ::ng-deep .sidebar.collapsed,
+:host ::ng-deep .lpx-sidebar.collapsed {
+  transform: translateX(-250px) !important;
+}
+
+/* Ensure proper content flow */
+:host ::ng-deep .abp-dynamic-content {
+  display: flex !important;
+  flex-direction: row !important;
+  min-height: 100vh !important;
+}
+
+:host ::ng-deep .abp-dynamic-content .sidebar {
+  flex-shrink: 0 !important;
+}
+
+:host ::ng-deep .abp-dynamic-content .content {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+  overflow: visible !important;
+}
+
+/* ==========================================
+   NAVIGATION BAR RESPONSIVE FIX
+   ========================================== */
+
+/* Navigation bar responsive adjustments */
+:host ::ng-deep .navbar,
+:host ::ng-deep .lpx-navbar {
+  transition: all 0.3s ease !important;
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  white-space: nowrap !important;
+}
+
+/* When sidebar is open - adjust navigation */
+body.sidebar-open :host ::ng-deep .navbar,
+body.sidebar-open :host ::ng-deep .lpx-navbar {
+  margin-left: 250px !important;
+  padding-right: 1rem !important;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 991px) {
+  :host ::ng-deep .navbar,
+  :host ::ng-deep .lpx-navbar {
+    margin-left: 0 !important;
+    padding-right: 1rem !important;
+  }
+}
+
+/* Ensure proper navigation scrolling */
+:host ::ng-deep .navbar,
+:host ::ng-deep .lpx-navbar {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  -ms-overflow-style: -ms-autohiding-scrollbar !important;
+  scrollbar-width: thin !important;
+  scrollbar-height: auto !important;
+}
+
+/* Navigation items responsiveness */
+:host ::ng-deep .navbar .navbar-nav,
+:host ::ng-deep .lpx-navbar .navbar-nav {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 0.5rem !important;
+  padding: 0.5rem 1rem !important;
+}
+
+@media (max-width: 768px) {
+  :host ::ng-deep .navbar .navbar-nav,
+  :host ::ng-deep .lpx-navbar .navbar-nav {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.25rem !important;
+    padding: 0.25rem 0.5rem !important;
+  }
+}
+
+/* Navigation items - ensure they don't shrink */
+:host ::ng-deep .navbar .navbar-nav > *,
+:host ::ng-deep .lpx-navbar .navbar-nav > * {
+  flex: 0 0 auto !important;
+  min-width: fit-content !important;
+  white-space: nowrap !important;
+}
+
+/* Ensure proper scrolling behavior */
+:host ::ng-deep .navbar .navbar-nav {
+  scrollbar-width: thin !important;
+  scrollbar-height: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  -ms-overflow-style: -ms-autohiding-scrollbar !important;
+}
+
+/* Active tab highlighting */
+:host ::ng-deep .navbar .navbar-nav .active {
+  background: rgba(52, 152, 219, 0.1) !important;
+  border-radius: 4px !important;
+}

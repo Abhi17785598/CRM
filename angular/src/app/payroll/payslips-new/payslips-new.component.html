@@ -1,0 +1,299 @@
+<div class="container-fluid">
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="mb-0">
+          <i class="fas fa-file-invoice-dollar me-2"></i>
+          Payslip Management
+        </h2>
+        <div class="d-flex align-items-center">
+          <span class="badge bg-primary me-3">
+            <i class="fas fa-database me-1"></i>
+            {{ filteredPayslips.length }} Payslips
+          </span>
+          <button class="btn btn-success me-2" (click)="addPayslip()">
+            <i class="fas fa-plus me-2"></i>
+            Generate Payslip
+          </button>
+          <button class="btn btn-primary" (click)="exportToCSV()">
+            <i class="fas fa-download me-2"></i>
+            Export CSV
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filters -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="input-group">
+        <span class="input-group-text">
+          <i class="fas fa-search"></i>
+        </span>
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Search by employee name, code, month..."
+          [(ngModel)]="searchTerm"
+          (input)="searchPayslips()"
+        >
+      </div>
+    </div>
+    <div class="col-md-6 text-end">
+      <span *ngIf="loading" class="text-warning">
+        <i class="fas fa-spinner fa-spin me-2"></i>
+        Loading payslips...
+      </span>
+    </div>
+  </div>
+
+  <!-- Payslips Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Payslips</h5>
+        </div>
+        <div class="card-body p-0">
+          <div class="hr-professional-table">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="min-width: 120px;">Emp Code</th>
+                  <th style="min-width: 180px;">Employee Name</th>
+                  <th style="min-width: 80px;">Month</th>
+                  <th style="min-width: 80px;">Year</th>
+                  <th style="min-width: 120px;" class="text-end">Basic Salary</th>
+                  <th style="min-width: 100px;" class="text-end">HRA</th>
+                  <th style="min-width: 120px;" class="text-end">Conveyance</th>
+                  <th style="min-width: 100px;" class="text-end">Medical</th>
+                  <th style="min-width: 100px;" class="text-end">Special</th>
+                  <th style="min-width: 120px;" class="text-end">Prof. Tax</th>
+                  <th style="min-width: 100px;" class="text-end">TDS</th>
+                  <th style="min-width: 120px;" class="text-end">Net Salary</th>
+                  <th style="min-width: 100px;">Pay Date</th>
+                  <th style="min-width: 120px;">Payment Method</th>
+                  <th style="min-width: 100px;">Status</th>
+                  <th style="min-width: 120px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let payslip of paginatedPayslips">
+                  <td>
+                    <strong class="text-white">{{ payslip.employeeCode }}</strong>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="avatar-sm bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3">
+                        {{ payslip.employeeName.charAt(0) }}
+                      </div>
+                      <div>
+                        <div class="fw-medium text-white">{{ payslip.employeeName }}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="text-white">{{ payslip.month }}</td>
+                  <td class="text-white">{{ payslip.year }}</td>
+                  <td class="text-end">
+                    <strong class="text-white">₹{{ payslip.basicSalary.toLocaleString('en-IN') }}</strong>
+                  </td>
+                  <td class="text-end">
+                    <strong class="text-white">₹{{ payslip.hra.toLocaleString('en-IN') }}</strong>
+                  </td>
+                  <td class="text-end">
+                    <strong class="text-white">₹{{ payslip.conveyance.toLocaleString('en-IN') }}</strong>
+                  </td>
+                  <td class="text-end">
+                    <strong class="text-white">₹{{ payslip.medicalAllowance.toLocaleString('en-IN') }}</strong>
+                  </td>
+                  <td class="text-end">
+                    <strong class="text-white">₹{{ payslip.specialAllowance.toLocaleString('en-IN') }}</strong>
+                  </td>
+                  <td class="text-end">
+                    <strong class="text-white">₹{{ payslip.professionalTax.toLocaleString('en-IN') }}</strong>
+                  </td>
+                  <td class="text-end">
+                    <strong class="text-white">₹{{ payslip.tds.toLocaleString('en-IN') }}</strong>
+                  </td>
+                  <td class="text-end">
+                    <strong class="text-primary">₹{{ payslip.netSalary.toLocaleString('en-IN') }}</strong>
+                  </td>
+                  <td>
+                    <small class="fw-medium text-white">{{ payslip.payDate | date:'shortDate' }}</small>
+                  </td>
+                  <td>
+                    <span class="badge" [class]="getPaymentMethodClass(payslip.paymentMethod)">
+                      {{ payslip.paymentMethod }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge" [class]="getStatusClass(payslip.status)">
+                      {{ getStatusText(payslip.status) }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="btn-group btn-group-sm">
+                      <button class="btn btn-outline-primary" title="View Details">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="btn btn-outline-warning" (click)="editPayslip(payslip)" title="Edit">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-outline-danger" (click)="deletePayslip(payslip)" title="Delete">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <div>
+              <span class="text-muted">
+                Showing {{ getPaginatedStartIndex() }} to 
+                {{ getPaginatedEndIndex() }} 
+                of {{ filteredPayslips.length }} payslips
+              </span>
+            </div>
+            <nav>
+              <ul class="pagination mb-0">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" href="#" (click)="previousPage(); $event.preventDefault()">
+                    <i class="fas fa-chevron-left"></i>
+                  </a>
+                </li>
+                
+                <li class="page-item" 
+                    *ngFor="let page of getPaginationPages()" 
+                    [class.active]="page === currentPage">
+                  <a class="page-link" href="#" (click)="goToPage(page); $event.preventDefault()">
+                    {{ page }}
+                  </a>
+                </li>
+                
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <a class="page-link" href="#" (click)="nextPage(); $event.preventDefault()">
+                    <i class="fas fa-chevron-right"></i>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Payslip Modal -->
+<div class="modal fade" [class.show]="showAddPayslipModal" [style.display]="showAddPayslipModal ? 'block' : 'none'" tabindex="-1">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fas fa-file-invoice-dollar me-2"></i>
+          {{ editingPayslip ? 'Edit Payslip' : 'Generate New Payslip' }}
+        </h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Employee Code</label>
+              <input type="text" class="form-control" [(ngModel)]="payslipForm.employeeCode" name="employeeCode" required>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Employee Name</label>
+              <input type="text" class="form-control" [(ngModel)]="payslipForm.employeeName" name="employeeName" required>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Month</label>
+              <select class="form-select" [(ngModel)]="payslipForm.month" name="month">
+                <option value="">Select Month</option>
+                <option value="January">January</option>
+                <option value="February">February</option>
+                <option value="March">March</option>
+                <option value="April">April</option>
+                <option value="May">May</option>
+                <option value="June">June</option>
+                <option value="July">July</option>
+                <option value="August">August</option>
+                <option value="September">September</option>
+                <option value="October">October</option>
+                <option value="November">November</option>
+                <option value="December">December</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Year</label>
+              <input type="number" class="form-control" [(ngModel)]="payslipForm.year" name="year" min="2020" max="2030">
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Basic Salary (₹)</label>
+              <input type="number" class="form-control" [(ngModel)]="payslipForm.basicSalary" name="basicSalary" step="100">
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label">HRA (₹)</label>
+              <input type="number" class="form-control" [(ngModel)]="payslipForm.hra" name="hra" step="100">
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Conveyance (₹)</label>
+              <input type="number" class="form-control" [(ngModel)]="payslipForm.conveyance" name="conveyance" step="100">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Medical Allowance (₹)</label>
+              <input type="number" class="form-control" [(ngModel)]="payslipForm.medicalAllowance" name="medicalAllowance" step="100">
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Special Allowance (₹)</label>
+              <input type="number" class="form-control" [(ngModel)]="payslipForm.specialAllowance" name="specialAllowance" step="100">
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Professional Tax (₹)</label>
+              <input type="number" class="form-control" [(ngModel)]="payslipForm.professionalTax" name="professionalTax" step="100">
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label">TDS (₹)</label>
+              <input type="number" class="form-control" [(ngModel)]="payslipForm.tds" name="tds" step="100">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Net Salary (₹)</label>
+              <input type="number" class="form-control" [(ngModel)]="payslipForm.netSalary" name="netSalary" step="100" readonly>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Pay Date</label>
+              <input type="date" class="form-control" [(ngModel)]="payslipForm.payDate" name="payDate">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Payment Method</label>
+              <select class="form-select" [(ngModel)]="payslipForm.paymentMethod" name="paymentMethod">
+                <option value="Bank Transfer">Bank Transfer</option>
+                <option value="Cash">Cash</option>
+                <option value="Cheque">Cheque</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="savePayslip()">
+          <i class="fas fa-save me-2"></i>
+          {{ editingPayslip ? 'Update' : 'Generate' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" [class.show]="showAddPayslipModal" [style.display]="showAddPayslipModal ? 'block' : 'none'"></div>

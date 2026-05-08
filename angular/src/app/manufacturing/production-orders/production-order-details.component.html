@@ -1,0 +1,313 @@
+<div class="enterprise-page">
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Loading production order details...</p>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!isLoading && productionOrder" class="details-container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <div class="header-left">
+        <div class="page-breadcrumb">
+          <span class="breadcrumb-item">Manufacturing</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item">Production Orders</span>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-item active">{{ productionOrder.orderNumber }}</span>
+        </div>
+        <div class="page-title-section">
+          <h1 class="page-title">{{ productionOrder.orderNumber }}</h1>
+          <p class="page-subtitle">{{ productionOrder.productName }} - {{ productionOrder.quantity }} {{ productionOrder.unit }}</p>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="status-section">
+          <span class="status-badge" [ngClass]="getStatusClass(productionOrder.status)">
+            {{ getStatusText(productionOrder.status) }}
+          </span>
+          <span class="priority-badge" [ngClass]="getPriorityClass(productionOrder.priority || 'medium')">
+            {{ (productionOrder.priority || 'medium').toUpperCase() }}
+          </span>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-ghost" (click)="goBack()">
+            <i class="fas fa-arrow-left"></i>
+            Back
+          </button>
+          <button class="btn btn-primary" (click)="editOrder()">
+            <i class="fas fa-edit"></i>
+            Edit Order
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Overview Cards -->
+    <div class="overview-grid">
+      <div class="overview-card">
+        <div class="card-header">
+          <h3 class="card-title">Order Information</h3>
+        </div>
+        <div class="card-content">
+          <div class="info-grid">
+            <div class="info-item">
+              <label>Order Number</label>
+              <span>{{ productionOrder.orderNumber }}</span>
+            </div>
+            <div class="info-item">
+              <label>Product</label>
+              <span>{{ productionOrder.productName }}</span>
+            </div>
+            <div class="info-item">
+              <label>Quantity</label>
+              <span>{{ productionOrder.quantity }} {{ productionOrder.unit }}</span>
+            </div>
+            <div class="info-item">
+              <label>Assigned To</label>
+              <span>{{ productionOrder.assignedTo }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview-card">
+        <div class="card-header">
+          <h3 class="card-title">Schedule</h3>
+        </div>
+        <div class="card-content">
+          <div class="info-grid">
+            <div class="info-item">
+              <label>Start Date</label>
+              <span>{{ productionOrder.startDate | date:'MMM dd, yyyy' }}</span>
+            </div>
+            <div class="info-item">
+              <label>Expected End</label>
+              <span>{{ productionOrder.expectedEndDate | date:'MMM dd, yyyy' }}</span>
+            </div>
+            <div class="info-item">
+              <label>Actual End</label>
+              <span>{{ productionOrder.actualEndDate ? (productionOrder.actualEndDate | date:'MMM dd, yyyy') : 'Not completed' }}</span>
+            </div>
+            <div class="info-item">
+              <label>Created</label>
+              <span>{{ productionOrder.createdDate | date:'MMM dd, yyyy' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview-card progress-card">
+        <div class="card-header">
+          <h3 class="card-title">Progress</h3>
+        </div>
+        <div class="card-content">
+          <div class="progress-display">
+            <div class="progress-circle">
+              <svg width="120" height="120">
+                <circle cx="60" cy="60" r="50" fill="none" stroke="#e2e8f0" stroke-width="8"/>
+                <circle cx="60" cy="60" r="50" fill="none" stroke="#10b981" stroke-width="8"
+                        [attr.stroke-dasharray]="circumference"
+                        [attr.stroke-dashoffset]="circumference - (productionOrder.progress / 100) * circumference"
+                        transform="rotate(-90 60 60)"/>
+              </svg>
+              <div class="progress-text">{{ productionOrder.progress }}%</div>
+            </div>
+            <div class="progress-info">
+              <p>Production is {{ productionOrder.progress }}% complete</p>
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="productionOrder.progress"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs Section -->
+    <div class="tabs-container">
+      <div class="tabs-header">
+        <button 
+          class="tab-button" 
+          [class.active]="activeTab === 'overview'"
+          (click)="switchTab('overview')"
+        >
+          Overview
+        </button>
+        <button 
+          class="tab-button" 
+          [class.active]="activeTab === 'materials'"
+          (click)="switchTab('materials')"
+        >
+          Materials
+        </button>
+        <button 
+          class="tab-button" 
+          [class.active]="activeTab === 'quality'"
+          (click)="switchTab('quality')"
+        >
+          Quality Checks
+        </button>
+        <button 
+          class="tab-button" 
+          [class.active]="activeTab === 'activity'"
+          (click)="switchTab('activity')"
+        >
+          Activity Log
+        </button>
+      </div>
+
+      <div class="tabs-content">
+        <!-- Overview Tab -->
+        <div *ngIf="activeTab === 'overview'" class="tab-pane">
+          <div class="overview-tab">
+            <div class="notes-card">
+              <h3>Notes</h3>
+              <p>{{ productionOrder.notes || 'No notes available' }}</p>
+            </div>
+            
+            <div class="timeline-card">
+              <h3>Status Timeline</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-marker created"></div>
+                  <div class="timeline-content">
+                    <h4>Order Created</h4>
+                    <p>{{ productionOrder.createdDate | date:'MMM dd, yyyy HH:mm' }}</p>
+                  </div>
+                </div>
+                <div class="timeline-item" *ngIf="productionOrder.status !== 'pending'">
+                  <div class="timeline-marker in-progress"></div>
+                  <div class="timeline-content">
+                    <h4>Production Started</h4>
+                    <p>{{ productionOrder.startDate | date:'MMM dd, yyyy HH:mm' }}</p>
+                  </div>
+                </div>
+                <div class="timeline-item" *ngIf="productionOrder.status === 'completed'">
+                  <div class="timeline-marker completed"></div>
+                  <div class="timeline-content">
+                    <h4>Production Completed</h4>
+                    <p>{{ productionOrder.actualEndDate | date:'MMM dd, yyyy HH:mm' }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Materials Tab -->
+        <div *ngIf="activeTab === 'materials'" class="tab-pane">
+          <div class="materials-tab">
+            <div class="materials-header">
+              <h3>Materials Consumption</h3>
+              <button class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+                Add Material
+              </button>
+            </div>
+            <div class="materials-table">
+              <table class="enterprise-table">
+                <thead>
+                  <tr>
+                    <th>Material Name</th>
+                    <th>Required Quantity</th>
+                    <th>Unit</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let material of productionOrder.materials">
+                    <td>{{ material.materialName }}</td>
+                    <td>{{ material.requiredQuantity }}</td>
+                    <td>{{ material.unit }}</td>
+                    <td>
+                      <span class="status-badge status-completed">Allocated</span>
+                    </td>
+                    <td>
+                      <button class="btn-action btn-view">View</button>
+                    </td>
+                  </tr>
+                  <tr *ngIf="productionOrder.materials.length === 0">
+                    <td colspan="5" class="no-data">No materials assigned</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quality Tab -->
+        <div *ngIf="activeTab === 'quality'" class="tab-pane">
+          <div class="quality-tab">
+            <div class="quality-header">
+              <h3>Quality Checks</h3>
+              <button class="btn btn-primary">
+                <i class="fas fa-plus"></i>
+                Add Check
+              </button>
+            </div>
+            <div class="quality-grid">
+              <div *ngFor="let check of productionOrder.qualityChecks" class="quality-card">
+                <div class="quality-header">
+                  <h4>{{ check.checkType }}</h4>
+                  <span class="status-badge" [ngClass]="check.result === 'pass' ? 'status-completed' : 'status-planned'">
+                    {{ check.result === 'pass' ? 'Passed' : 'Pending' }}
+                  </span>
+                </div>
+                <div class="quality-details">
+                  <p>Check Date: {{ check.checkedDate | date:'MMM dd, yyyy' }}</p>
+                  <p>Checked By: {{ check.checkedBy || 'Not assigned' }}</p>
+                  <p>Notes: {{ check.notes || 'No notes' }}</p>
+                </div>
+              </div>
+              <div *ngIf="productionOrder.qualityChecks.length === 0" class="no-data">
+                No quality checks performed
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity Tab -->
+        <div *ngIf="activeTab === 'activity'" class="tab-pane">
+          <div class="activity-tab">
+            <h3>Activity Log</h3>
+            <div class="activity-list">
+              <div class="activity-item">
+                <div class="activity-icon created">
+                  <i class="fas fa-plus"></i>
+                </div>
+                <div class="activity-content">
+                  <h4>Order Created</h4>
+                  <p>{{ productionOrder.createdDate | date:'MMM dd, yyyy HH:mm' }}</p>
+                  <span>System</span>
+                </div>
+              </div>
+              <div class="activity-item" *ngIf="productionOrder.status !== 'pending'">
+                <div class="activity-icon in-progress">
+                  <i class="fas fa-play"></i>
+                </div>
+                <div class="activity-content">
+                  <h4>Production Started</h4>
+                  <p>{{ productionOrder.startDate | date:'MMM dd, yyyy HH:mm' }}</p>
+                  <span>{{ productionOrder.assignedTo }}</span>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon updated">
+                  <i class="fas fa-edit"></i>
+                </div>
+                <div class="activity-content">
+                  <h4>Order Updated</h4>
+                  <p>{{ productionOrder.updatedDate | date:'MMM dd, yyyy HH:mm' }}</p>
+                  <span>{{ productionOrder.assignedTo }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,351 @@
+<div class="erp-dashboard container-fluid py-4">
+
+  <!-- Header -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <h1 class="mb-0">Enterprise ERP Dashboard</h1>
+          <p class="text-muted mb-0">Manufacturing operations overview</p>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary">
+            <i class="fas fa-industry me-2"></i>Manufacturing
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPI Overview -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2 class="mb-3">Business Overview</h2>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-8">
+    <!-- Inventory Turnover - FIRST and Featured -->
+    <div class="col-lg-3 col-md-6">
+      <div class="card inventory-card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-title text-white">Inventory Turnover</h6>
+              <small class="text-white opacity-75">Times per Year</small>
+            </div>
+            <div class="text-end">
+              <h1 class="card-value text-white">{{ inventoryTurnover }}x</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Revenue -->
+    <div class="col-lg-3 col-md-6">
+      <div class="card revenue-card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-title text-white">Total Revenue</h6>
+              <small class="text-white opacity-75">This Month</small>
+            </div>
+            <div class="text-end">
+              <h1 class="card-value text-white">₹{{ totalRevenue.toLocaleString() }}</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Orders -->
+    <div class="col-lg-3 col-md-6">
+      <div class="card orders-card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-title text-white">Total Orders</h6>
+              <small class="text-white opacity-75">All Time</small>
+            </div>
+            <div class="text-end">
+              <h1 class="card-value text-white">{{ totalOrders.toLocaleString() }}</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Customers -->
+    <div class="col-lg-3 col-md-6">
+      <div class="card customers-card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-title text-white">Total Customers</h6>
+              <small class="text-white opacity-75">Active</small>
+            </div>
+            <div class="text-end">
+              <h1 class="card-value text-white">{{ totalCustomers.toLocaleString() }}</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Employees -->
+    <div class="col-lg-3 col-md-6">
+      <div class="card employees-card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="card-title text-white">Total Employees</h6>
+              <small class="text-white opacity-75">Active Staff</small>
+            </div>
+            <div class="text-end">
+              <h1 class="card-value text-white">{{ totalEmployees.toLocaleString() }}</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Performance Metrics -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2 class="mb-3">Performance Metrics</h2>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-8">
+    <div class="col-lg-3 col-md-6">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body border-left-4 border-left-primary">
+          <h5 class="card-title text-dark">Production Efficiency</h5>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h2 class="text-primary fw-bold">{{ productionEfficiency }}%</h2>
+              <p class="text-muted mb-0">Overall Efficiency</p>
+            </div>
+            <div class="text-end">
+              <i class="fas fa-chart-line fa-2x text-primary"></i>
+            </div>
+          </div>
+          <div class="progress">
+            <div class="progress-bar bg-primary" [style.width.%]="productionEfficiency"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-3 col-md-6">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body border-left-4 border-left-success">
+          <h5 class="card-title text-dark">Quality Rate</h5>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h2 class="text-success fw-bold">{{ qualityRate }}%</h2>
+              <p class="text-muted mb-0">Pass Rate</p>
+            </div>
+            <div class="text-end">
+              <i class="fas fa-check-circle fa-2x text-success"></i>
+            </div>
+          </div>
+          <div class="progress">
+            <div class="progress-bar bg-success" [style.width.%]="qualityRate"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-3 col-md-6">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body border-left-4 border-left-warning">
+          <h5 class="card-title text-dark">On-Time Delivery</h5>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h2 class="text-warning fw-bold">{{ onTimeDelivery }}%</h2>
+              <p class="text-muted mb-0">Delivery Performance</p>
+            </div>
+            <div class="text-end">
+              <i class="fas fa-truck fa-2x text-warning"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-3 col-md-6">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body border-left-4 border-left-info">
+          <h5 class="card-title text-dark">Inventory Turnover</h5>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <h2 class="text-info fw-bold">{{ inventoryTurnover }}x</h2>
+              <p class="text-muted mb-0">Times per Year</p>
+            </div>
+            <div class="text-end">
+              <i class="fas fa-sync fa-2x text-info"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts Section -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2 class="mb-3">Analytics & Insights</h2>
+    </div>
+  </div>
+
+  <div class="row g-4 mb-8">
+    <!-- Revenue Trend Chart -->
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-dark">Revenue Trend (6 Months)</h5>
+          <div class="revenue-chart">
+            <div class="chart-bars">
+              <div class="bar" style="height: 70%">
+                <span class="bar-label">Jan</span>
+                <span class="bar-value">₹2.2M</span>
+              </div>
+              <div class="bar" style="height: 78%">
+                <span class="bar-label">Feb</span>
+                <span class="bar-value">₹2.45M</span>
+              </div>
+              <div class="bar" style="height: 85%">
+                <span class="bar-label">Mar</span>
+                <span class="bar-value">₹2.67M</span>
+              </div>
+              <div class="bar" style="height: 90%">
+                <span class="bar-label">Apr</span>
+                <span class="bar-value">₹2.85M</span>
+              </div>
+              <div class="bar" style="height: 94%">
+                <span class="bar-label">May</span>
+                <span class="bar-value">₹2.98M</span>
+              </div>
+              <div class="bar" style="height: 100%">
+                <span class="bar-label">Jun</span>
+                <span class="bar-value">₹3.1M</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Production Efficiency Chart -->
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-dark">Production Efficiency by Line</h5>
+          <div class="efficiency-chart">
+            <div class="efficiency-bars">
+              <div class="efficiency-item">
+                <span class="efficiency-label">Line 1</span>
+                <div class="efficiency-bar">
+                  <div class="efficiency-fill" style="width: 95%"></div>
+                </div>
+                <span class="efficiency-value">95%</span>
+              </div>
+              <div class="efficiency-item">
+                <span class="efficiency-label">Line 2</span>
+                <div class="efficiency-bar">
+                  <div class="efficiency-fill" style="width: 88%"></div>
+                </div>
+                <span class="efficiency-value">88%</span>
+              </div>
+              <div class="efficiency-item">
+                <span class="efficiency-label">Line 3</span>
+                <div class="efficiency-bar">
+                  <div class="efficiency-fill" style="width: 97%"></div>
+                </div>
+                <span class="efficiency-value">97%</span>
+              </div>
+              <div class="efficiency-item">
+                <span class="efficiency-label">Line 4</span>
+                <div class="efficiency-bar">
+                  <div class="efficiency-fill" style="width: 76%"></div>
+                </div>
+                <span class="efficiency-value">76%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activities -->
+  <div class="row g-4">
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-light">
+          <h5 class="card-title text-dark mb-0">Recent Orders</h5>
+        </div>
+        <div class="card-body">
+          <div *ngIf="isLoadingOrders" class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2 text-muted">Loading recent orders...</p>
+          </div>
+          <div *ngIf="!isLoadingOrders" class="table-responsive">
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let order of recentOrders">
+                  <td>
+                    <span class="badge bg-primary">{{ order.id }}</span>
+                  </td>
+                  <td>{{ order.customer }}</td>
+                  <td class="fw-bold">₹{{ order.amount.toLocaleString() }}</td>
+                  <td>
+                    <span class="badge" [ngClass]="getStatusClass(order.status)">{{ order.status }}</span>
+                  </td>
+                  <td class="text-muted">{{ order.time }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card border-0 shadow-sm">
+        <div class="card-header bg-light">
+          <h5 class="card-title text-dark mb-0">System Alerts</h5>
+        </div>
+        <div class="card-body">
+          <div class="list-group">
+            <div class="list-group-item" *ngFor="let alert of recentAlerts">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-{{ alert.icon }} me-3" [ngClass]="getAlertClass(alert.type)"></i>
+                <div class="ms-3">
+                  <div>
+                    <strong>{{ alert.message }}</strong>
+                  </div>
+                  <small class="text-muted">{{ alert.time }}</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

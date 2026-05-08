@@ -1,0 +1,160 @@
+<div class="enterprise-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <div class="page-breadcrumb">
+        <span class="breadcrumb-item">Manufacturing</span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item">Production Orders</span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item active">Create Production Order</span>
+      </div>
+      <div class="page-title-section">
+        <h1 class="page-title">Create Production Order</h1>
+        <p class="page-subtitle">Set up a new manufacturing production order</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-ghost" (click)="cancel()">
+        <i class="fas fa-times"></i>
+        Cancel
+      </button>
+    </div>
+  </div>
+
+  <!-- Progress Steps -->
+  <div class="steps-container">
+    <div class="steps-header">
+      <div class="step-item" [class.completed]="true">
+        <div class="step-number">
+          <i class="fas fa-check"></i>
+        </div>
+        <div class="step-info">
+          <div class="step-title">Basic Information</div>
+          <div class="step-icon">
+            <i class="fas fa-info-circle"></i>
+          </div>
+        </div>
+      </div>
+      <div class="step-item" [class.completed]="true">
+        <div class="step-number">
+          <i class="fas fa-check"></i>
+        </div>
+        <div class="step-info">
+          <div class="step-title">Materials & BOM</div>
+          <div class="step-icon">
+            <i class="fas fa-boxes"></i>
+          </div>
+        </div>
+      </div>
+      <div class="step-item active">
+        <div class="step-number">3</div>
+        <div class="step-info">
+          <div class="step-title">Scheduling</div>
+          <div class="step-icon">
+            <i class="fas fa-calendar"></i>
+          </div>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">4</div>
+        <div class="step-info">
+          <div class="step-title">Review & Confirm</div>
+          <div class="step-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Content -->
+  <div class="form-container">
+    <div class="step-card">
+      <div class="card-header">
+        <h3 class="card-title">
+          <i class="fas fa-calendar"></i>
+          Production Scheduling
+        </h3>
+        <p class="card-subtitle">Set the timeline and duration for production</p>
+      </div>
+      <div class="card-content">
+        <div class="scheduling-grid">
+          <div class="form-field">
+            <label class="form-label">Start Date *</label>
+            <input type="date" class="form-control" [(ngModel)]="formData.startDate" 
+                   name="startDate" (change)="onStartDateChange()" required>
+            <small class="form-hint">When production should begin</small>
+          </div>
+          
+          <div class="form-field">
+            <label class="form-label">Expected End Date *</label>
+            <input type="date" class="form-control" [(ngModel)]="formData.expectedEndDate" 
+                   name="expectedEndDate" (change)="saveFormData()" required>
+            <small class="form-hint">When production should be completed</small>
+          </div>
+          
+          <div class="form-field">
+            <label class="form-label">Estimated Hours *</label>
+            <input type="number" class="form-control" [(ngModel)]="formData.estimatedHours" 
+                   name="estimatedHours" (change)="saveFormData()" min="1" required>
+            <small class="form-hint">Total production time in hours</small>
+          </div>
+        </div>
+
+        <!-- Schedule Summary -->
+        <div class="schedule-summary">
+          <h4>Schedule Summary</h4>
+          <div class="summary-grid">
+            <div class="summary-item">
+              <label>Production Duration:</label>
+              <span>{{ calculateEstimatedDays() }} days</span>
+            </div>
+            <div class="summary-item">
+              <label>Daily Hours Required:</label>
+              <span>{{ formData.estimatedHours > 0 && calculateEstimatedDays() > 0 ? (formData.estimatedHours / calculateEstimatedDays() | number:'1.1-1') : 0 }} hours</span>
+            </div>
+            <div class="summary-item">
+              <label>Start Date:</label>
+              <span>{{ formData.startDate ? (formData.startDate | date:'MMM dd, yyyy') : 'Not set' }}</span>
+            </div>
+            <div class="summary-item">
+              <label>End Date:</label>
+              <span>{{ formData.expectedEndDate ? (formData.expectedEndDate | date:'MMM dd, yyyy') : 'Not set' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Production Calendar Preview -->
+        <div class="calendar-preview">
+          <h4>Production Timeline</h4>
+          <div class="timeline-bar">
+            <div class="timeline-start">
+              <span class="timeline-date">{{ formData.startDate ? (formData.startDate | date:'MMM dd') : 'Start' }}</span>
+            </div>
+            <div class="timeline-progress" [style.width.%]="calculateEstimatedDays() > 0 ? 100 : 0">
+              <div class="timeline-duration">
+                {{ calculateEstimatedDays() }} days
+              </div>
+            </div>
+            <div class="timeline-end">
+              <span class="timeline-date">{{ formData.expectedEndDate ? (formData.expectedEndDate | date:'MMM dd') : 'End' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="form-navigation">
+      <button type="button" class="btn btn-ghost" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i>
+        Previous
+      </button>
+      <button type="button" class="btn btn-primary" (click)="goToNext()" [disabled]="!isFormValid()">
+        Next
+        <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+</div>

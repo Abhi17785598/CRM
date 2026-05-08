@@ -1,0 +1,30 @@
+.card {
+  transition: transform 0.2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+}
+.badge {
+  font-size: 0.75rem;
+}
+.product-image-container {
+  height: 200px;
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.product-image:hover {
+  transform: scale(1.05);
+}
+.product-thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}

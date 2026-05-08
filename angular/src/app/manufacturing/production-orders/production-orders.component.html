@@ -1,0 +1,224 @@
+<div class="enterprise-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-breadcrumb">
+      <span class="breadcrumb-item">Manufacturing</span>
+      <span class="breadcrumb-separator">/</span>
+      <span class="breadcrumb-item active">Production Orders</span>
+    </div>
+    <div class="page-title-section">
+      <h1 class="page-title">Production Orders</h1>
+      <p class="page-subtitle">Manage and monitor manufacturing production orders</p>
+    </div>
+    <div class="page-actions">
+      <button class="btn btn-primary" (click)="createOrder()">
+        <i class="fas fa-plus"></i>
+        Create Production Order
+      </button>
+    </div>
+  </div>
+
+  <!-- Advanced Filters -->
+  <div class="filter-card">
+    <div class="filter-header">
+      <h3 class="filter-title">
+        <i class="fas fa-filter"></i>
+        Advanced Filters
+      </h3>
+      <button class="btn btn-ghost" (click)="clearFilters()">Clear All</button>
+    </div>
+    <div class="filter-grid">
+      <div class="filter-field">
+        <label class="filter-label">Order Number</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          [(ngModel)]="filterOrderNumber" 
+          (input)="applyFilters()"
+          placeholder="Search order number..."
+        >
+      </div>
+      <div class="filter-field">
+        <label class="filter-label">Product</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          [(ngModel)]="filterProduct" 
+          (input)="applyFilters()"
+          placeholder="Search product..."
+        >
+      </div>
+      <div class="filter-field">
+        <label class="filter-label">Status</label>
+        <select class="form-control" [(ngModel)]="filterStatus" (change)="applyFilters()">
+          <option value="">All Statuses</option>
+          <option value="pending">Planned</option>
+          <option value="in-progress">In Progress</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div class="filter-field">
+        <label class="filter-label">Date From</label>
+        <input 
+          type="date" 
+          class="form-control" 
+          [(ngModel)]="filterDateFrom" 
+          (change)="applyFilters()"
+        >
+      </div>
+      <div class="filter-field">
+        <label class="filter-label">Date To</label>
+        <input 
+          type="date" 
+          class="form-control" 
+          [(ngModel)]="filterDateTo" 
+          (change)="applyFilters()"
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Table -->
+  <div class="data-table-card">
+    <div class="table-header">
+      <div class="table-info">
+        <h3 class="table-title">Production Orders</h3>
+        <span class="record-count">{{ filteredOrders.length }} records</span>
+      </div>
+      <div class="table-actions">
+        <button class="btn btn-ghost" (click)="exportProductionOrders()">
+          <i class="fas fa-download"></i>
+          Export
+        </button>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="enterprise-table">
+        <thead class="table-sticky-header">
+          <tr>
+            <th class="checkbox-column">
+              <input 
+                type="checkbox" 
+                (change)="selectAllOrders($event)"
+                [checked]="selectedOrders.length === filteredOrders.length && filteredOrders.length > 0"
+              >
+            </th>
+            <th>Order Number</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Status</th>
+            <th>Priority</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Progress</th>
+            <th class="actions-column">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr 
+            *ngFor="let order of paginatedOrders" 
+            class="table-row"
+            [class.selected]="selectedOrders.includes(order.id)"
+          >
+            <td class="checkbox-column">
+              <input 
+                type="checkbox" 
+                [checked]="selectedOrders.includes(order.id)"
+                (change)="toggleOrderSelection(order.id)"
+              >
+            </td>
+            <td class="order-number">
+              <span class="order-link" (click)="viewOrder(order.id)">
+                {{ order.orderNumber }}
+              </span>
+            </td>
+            <td class="product-name">{{ order.productName }}</td>
+            <td class="quantity">{{ order.quantity }} {{ order.unit }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(order.status)">
+                {{ getStatusText(order.status) }}
+              </span>
+            </td>
+            <td>
+              <span class="priority-badge" [ngClass]="getPriorityClass(order.priority)">
+                {{ order.priority?.toUpperCase() }}
+              </span>
+            </td>
+            <td class="date">{{ order.startDate | date:'MMM dd, yyyy' }}</td>
+            <td class="date">{{ order.expectedEndDate | date:'MMM dd, yyyy' }}</td>
+            <td>
+              <div class="progress-cell">
+                <div class="progress-bar">
+                  <div class="progress-fill" [style.width.%]="order.progress"></div>
+                </div>
+                <span class="progress-text">{{ order.progress }}%</span>
+              </div>
+            </td>
+            <td class="actions-column">
+              <div class="action-buttons">
+                <button 
+                  class="btn-action btn-view" 
+                  (click)="viewOrder(order.id)"
+                  title="View Details"
+                >
+                  View
+                </button>
+                <button 
+                  class="btn-action btn-edit" 
+                  (click)="editOrder(order.id)"
+                  title="Edit Order"
+                >
+                  Edit
+                </button>
+                <button 
+                  class="btn-action btn-delete" 
+                  (click)="deleteOrder(order.id)"
+                  title="Delete Order"
+                >
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-container" *ngIf="totalPages > 1">
+      <div class="pagination-info">
+        Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to 
+        {{ Math.min(currentPage * itemsPerPage, filteredOrders.length) }} 
+        of {{ filteredOrders.length }} entries
+      </div>
+      <div class="pagination-controls">
+        <button 
+          class="pagination-btn" 
+          (click)="changePage(currentPage - 1)"
+          [disabled]="currentPage === 1"
+        >
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <span class="pagination-pages">
+          <button 
+            *ngFor="let page of [].constructor(totalPages); let i = index" 
+            class="pagination-page"
+            [class.active]="currentPage === i + 1"
+            (click)="changePage(i + 1)"
+          >
+            {{ i + 1 }}
+          </button>
+        </span>
+        <button 
+          class="pagination-btn" 
+          (click)="changePage(currentPage + 1)"
+          [disabled]="currentPage === totalPages"
+        >
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

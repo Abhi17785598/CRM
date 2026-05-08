@@ -1,0 +1,142 @@
+/* Product Report Component Styles */
+.report-container {
+  background: white;
+  padding: 20px;
+}
+
+.stat-box {
+  padding: 15px;
+  border-radius: 8px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  transition: transform 0.2s ease-in-out;
+}
+
+.stat-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.progress-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.progress-circle.text-success {
+  background: conic-gradient(#28a745 0deg var(--progress), #e9ecef var(--progress) 360deg);
+}
+
+.progress-circle.text-warning {
+  background: conic-gradient(#ffc107 0deg var(--progress), #e9ecef var(--progress) 360deg);
+}
+
+.progress-circle.text-danger {
+  background: conic-gradient(#dc3545 0deg var(--progress), #e9ecef var(--progress) 360deg);
+}
+
+.progress-text {
+  background: white;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 18px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  margin-bottom: 1rem;
+}
+
+.card-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 8px 8px 0 0 !important;
+  border: none;
+  padding: 1rem;
+}
+
+.card-header h6 {
+  margin: 0;
+  font-weight: 600;
+}
+
+.btn {
+  border-radius: 0.375rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.alert {
+  border-radius: 8px;
+  border: none;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.alert-info {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Print styles */
+@media print {
+  .btn, .no-print {
+    display: none !important;
+  }
+  
+  .report-container {
+    padding: 0;
+  }
+  
+  .card {
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+  
+  .card-header {
+    background: #f8f9fa !important;
+    color: #000 !important;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .stat-box {
+    margin-bottom: 1rem;
+  }
+  
+  .progress-circle {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .progress-text {
+    width: 70px;
+    height: 70px;
+    font-size: 16px;
+  }
+}

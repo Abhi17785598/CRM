@@ -1,0 +1,167 @@
+<div class="container-fluid">
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2 class="mb-0">
+          <i class="fas fa-users me-2"></i>
+          All Employees
+        </h2>
+        <div class="d-flex align-items-center">
+          <span class="badge bg-primary me-3">
+            <i class="fas fa-database me-1"></i>
+            {{ filteredEmployees.length }} Employees
+          </span>
+          <button class="btn btn-success" (click)="exportToCSV()">
+            <i class="fas fa-download me-2"></i>
+            Export CSV
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filters -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="input-group">
+        <span class="input-group-text">
+          <i class="fas fa-search"></i>
+        </span>
+        <input 
+          type="text" 
+          class="form-control" 
+          placeholder="Search by name, code, email, department..."
+          [(ngModel)]="searchTerm"
+          (input)="searchEmployees()"
+        >
+      </div>
+    </div>
+    <div class="col-md-6 text-end">
+      <span *ngIf="loading" class="text-warning">
+        <i class="fas fa-spinner fa-spin me-2"></i>
+        Loading employees...
+      </span>
+    </div>
+  </div>
+
+  <!-- Employees Table -->
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Employee List</h5>
+        </div>
+        <div class="card-body p-0">
+          <div class="hr-professional-table scrollable">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Employee Code</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Department</th>
+                  <th>Position</th>
+                  <th>Salary</th>
+                  <th>Status</th>
+                  <th>Years of Service</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let employee of paginatedEmployees">
+                  <td>
+                    <strong>{{ employee.employeeCode }}</strong>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="avatar-sm bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3">
+                        {{ employee.firstName.charAt(0) }}{{ employee.lastName.charAt(0) }}
+                      </div>
+                      <div>
+                        <div class="fw-medium">{{ employee.fullName }}</div>
+                        <small class="text-muted">{{ employee.address }}</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <a href="mailto:{{ employee.email }}" class="text-decoration-none">
+                      {{ employee.email }}
+                    </a>
+                  </td>
+                  <td>{{ employee.phone }}</td>
+                  <td>
+                    <span class="badge bg-info">{{ employee.department }}</span>
+                  </td>
+                  <td>{{ employee.position }}</td>
+                  <td class="text-end">
+                    <span class="fw-medium">
+                      ₹{{ employee.baseSalary.toLocaleString('en-IN') }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge" [class]="getStatusClass(employee.isActive)">
+                      {{ getStatusText(employee.isActive) }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="badge bg-secondary">
+                      {{ employee.yearsOfService }} years
+                    </span>
+                  </td>
+                  <td>
+                    <div class="btn-group btn-group-sm">
+                      <button class="btn btn-outline-primary" title="View Details">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="btn btn-outline-warning" title="Edit">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-outline-danger" title="Delete">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <div>
+              <span class="text-muted">
+                Showing {{ getPaginatedStartIndex() }} to 
+                {{ getPaginatedEndIndex() }} 
+                of {{ filteredEmployees.length }} employees
+              </span>
+            </div>
+            <nav>
+              <ul class="pagination mb-0">
+                <li class="page-item" [class.disabled]="currentPage === 1">
+                  <a class="page-link" href="#" (click)="previousPage(); $event.preventDefault()">
+                    <i class="fas fa-chevron-left"></i>
+                  </a>
+                </li>
+                
+                <li class="page-item" 
+                    *ngFor="let page of getPaginationPages()" 
+                    [class.active]="page === currentPage">
+                  <a class="page-link" href="#" (click)="goToPage(page); $event.preventDefault()">
+                    {{ page }}
+                  </a>
+                </li>
+                
+                <li class="page-item" [class.disabled]="currentPage === totalPages">
+                  <a class="page-link" href="#" (click)="nextPage(); $event.preventDefault()">
+                    <i class="fas fa-chevron-right"></i>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

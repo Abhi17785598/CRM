@@ -1,0 +1,560 @@
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { TagModule } from 'primeng/tag';
+import { ImageModule } from 'primeng/image';
+import { RatingModule } from 'primeng/rating';
+import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { SliderModule } from 'primeng/slider';
+import { FormsModule } from '@angular/forms';
+import { ProductService } from './product.service';
+
+interface Product {
+  id: string;
+  productCode: string;
+  productName: string;
+  description: string;
+  brand: string;
+  model: string;
+  category: string;
+  subCategory: string;
+  specifications: string;
+  dimensions: string;
+  weight: number;
+  color: string;
+  material: string;
+  costPrice: number;
+  sellingPrice: number;
+  retailPrice: number;
+  currentStock: number;
+  imageUrls: string;
+  tags: string;
+  status: number;
+  sku: string;
+  creationTime: string;
+}
+
+interface Category {
+  name: string;
+  value: string;
+}
+
+@Component({
+  selector: 'app-products',
+  standalone: false,
+  templateUrl: './products.component.html',
+  styleUrls: ['./products.component.scss']
+})
+export class ProductsComponent implements OnInit {
+  products: Product[] = [];
+  filteredProducts: Product[] = [];
+  categories: Category[] = [];
+  loading = false;
+  
+  // Filter properties
+  selectedCategory: Category | null = null;
+  searchQuery: string = '';
+  priceRange: number[] = [0, 5000];
+  inStockOnly: boolean = false;
+
+  private apiUrl = 'http://localhost:5000/api/products';
+
+  constructor(private http: HttpClient, private productService: ProductService, private router: Router) {}
+
+  ngOnInit(): void {
+    console.log('ProductsComponent initialized');
+    this.loadProducts();
+    this.loadCategories();
+  }
+
+  loadLGProducts(): void {
+    this.loading = true;
+    this.productService.getProducts().subscribe({
+      next: (response) => {
+        console.log('API Response:', response);
+        // Map response to match Product interface
+        this.products = (response.items || []).map((item: any) => ({
+          id: item.id,
+          productCode: item.productCode || item.itemCode,
+          productName: item.productName || item.itemName,
+          description: item.description,
+          brand: item.brand || '',
+          model: item.model || '',
+          category: item.category,
+          subCategory: item.subCategory || '',
+          specifications: item.specifications || '',
+          dimensions: item.dimensions || '',
+          weight: item.weight || 0,
+          color: item.color || '',
+          material: item.material || '',
+          costPrice: item.costPrice || item.unitCost || 0,
+          sellingPrice: item.sellingPrice || item.unitPrice || 0,
+          retailPrice: item.retailPrice || item.sellingPrice || item.unitPrice || 0,
+          currentStock: item.currentStock || item.quantity || 0,
+          imageUrls: item.imageUrls || '[]',
+          tags: item.tags || '',
+          status: item.status || 1,
+          sku: item.sku || item.itemCode || '',
+          creationTime: item.creationTime || new Date().toISOString()
+        }));
+        console.log('Mapped products:', this.products);
+        this.filteredProducts = this.products;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error loading products:', error);
+        this.loading = false;
+        // Fallback to demo data if API fails
+        this.loadDemoData();
+      }
+    });
+  }
+
+  loadCategories(): void {
+    this.productService.getProductCategories().subscribe({
+      next: (data) => {
+        this.categories = data.map(cat => ({ name: cat, value: cat }));
+      },
+      error: (error) => {
+        console.error('Error loading categories:', error);
+        // Fallback categories
+        this.categories = [
+          { name: 'TVs', value: 'TVs' },
+          { name: 'Refrigerators', value: 'Refrigerators' },
+          { name: 'Laptops', value: 'Laptops' },
+          { name: 'Washing Machines', value: 'Washing Machines' },
+          { name: 'Dryers', value: 'Dryers' },
+          { name: 'Audio', value: 'Audio' },
+          { name: 'Air Conditioners', value: 'Air Conditioners' }
+        ];
+      }
+    });
+  }
+
+  loadDemoData(): void {
+    this.products = [
+      {
+        id: '1',
+        productCode: 'LG-OLED55C3',
+        productName: 'LG OLED55C3 55" 4K Smart OLED TV',
+        description: '55-inch OLED TV with AI Picture Pro, Dolby Vision IQ, and Perfect Black',
+        brand: 'LG',
+        model: 'OLED55C3',
+        category: 'TVs',
+        subCategory: 'OLED TVs',
+        specifications: '55" OLED Display, 4K UHD, 120Hz Refresh Rate, AI Picture Pro, Dolby Vision IQ, Dolby Atmos, webOS 23, Smart TV',
+        dimensions: '48.3" x 28.0" x 1.8"',
+        weight: 18.7,
+        color: 'Black',
+        material: 'Plastic/Metal',
+        costPrice: 1299.99,
+        sellingPrice: 1899.99,
+        retailPrice: 1899.99,
+        currentStock: 50,
+        imageUrls: '["https://example.com/lg-oled55c3-1.jpg", "https://example.com/lg-oled55c3-2.jpg"]',
+        tags: 'OLED,4K,Smart TV,Dolby Vision,AI',
+        status: 1,
+        sku: 'LG-OLED55C3-US',
+        creationTime: new Date().toISOString()
+      },
+      {
+        id: '2',
+        productCode: 'LG-GRAM17Z90Q',
+        productName: 'LG Gram 17" Lightweight Laptop',
+        description: '17-inch ultra-lightweight laptop with Intel 12th Gen processor and long battery life',
+        brand: 'LG',
+        model: '17Z90Q',
+        category: 'Laptops',
+        subCategory: 'Ultrabook',
+        specifications: '17" IPS Display, Intel Core i7-1260P, 16GB RAM, 1TB SSD, Intel Iris Xe Graphics, Windows 11 Pro',
+        dimensions: '15.0" x 10.3" x 0.7"',
+        weight: 2.98,
+        color: 'Dark Silver',
+        material: 'Magnesium Alloy',
+        costPrice: 1299.99,
+        sellingPrice: 1799.99,
+        retailPrice: 1799.99,
+        currentStock: 40,
+        imageUrls: '["https://example.com/lg-gram17z90q-1.jpg", "https://example.com/lg-gram17z90q-2.jpg"]',
+        tags: 'Ultrabook,Lightweight,Intel i7,Long Battery',
+        status: 1,
+        sku: 'LG-GRAM17Z90Q-US',
+        creationTime: new Date().toISOString()
+      },
+      {
+        id: '3',
+        productCode: 'LG-WM4000HWA',
+        productName: 'LG WM4000HWA 4.5 cu. ft. Front Load Washing Machine',
+        description: 'Ultra-large capacity washing machine with AI Direct Drive and TurboWash technology',
+        brand: 'LG',
+        model: 'WM4000HWA',
+        category: 'Washing Machines',
+        subCategory: 'Front Load',
+        specifications: '4.5 cu. ft. Capacity, AI Direct Drive Motor, TurboWash 360°, Steam Technology, SmartThinQ®',
+        dimensions: '29" x 27" x 39"',
+        weight: 201.4,
+        color: 'White',
+        material: 'Stainless Steel',
+        costPrice: 899.99,
+        sellingPrice: 1299.99,
+        retailPrice: 1299.99,
+        currentStock: 35,
+        imageUrls: '[]',
+        tags: 'Front Load,AI,Steam,Smart',
+        status: 1,
+        sku: 'LG-WM4000HWA-US',
+        creationTime: new Date().toISOString()
+      },
+      {
+        id: '4',
+        productCode: 'LG-LMXS28626S',
+        productName: 'LG LMXS28626S 27 cu. ft. Smart Refrigerator',
+        description: 'Large capacity French door refrigerator with InstaView and Door-in-Door design',
+        brand: 'LG',
+        model: 'LMXS28626S',
+        category: 'Refrigerators',
+        subCategory: 'French Door',
+        specifications: '27 cu. ft. Capacity, InstaView Door-in-Door, Smart Cooling Plus, IcePlus, Water Dispenser',
+        dimensions: '35.75" x 36.25" x 69.75"',
+        weight: 298,
+        color: 'Stainless Steel',
+        material: 'Stainless Steel',
+        costPrice: 2199.99,
+        sellingPrice: 3299.99,
+        retailPrice: 3299.99,
+        currentStock: 25,
+        imageUrls: '[]',
+        tags: 'French Door,Smart,InstaView,Ice Maker',
+        status: 1,
+        sku: 'LG-LMXS28626S-US',
+        creationTime: new Date().toISOString()
+      },
+      {
+        id: '5',
+        productCode: 'LG-LW1517ERSM',
+        productName: 'LG LW1517ERSM 15,000 BTU Window Air Conditioner',
+        description: 'High-efficiency window AC with remote control and multiple cooling modes',
+        brand: 'LG',
+        model: 'LW1517ERSM',
+        category: 'Air Conditioners',
+        subCategory: 'Window AC',
+        specifications: '15,000 BTU Cooling, 115V, Remote Control, 3 Cooling Speeds, 4-Way Air Direction, Energy Star',
+        dimensions: '26.15" x 19.5" x 18.5"',
+        weight: 85,
+        color: 'White',
+        material: 'Plastic/Metal',
+        costPrice: 399.99,
+        sellingPrice: 599.99,
+        retailPrice: 599.99,
+        currentStock: 45,
+        imageUrls: '[]',
+        tags: 'Window AC,Remote,Energy Star,15000 BTU',
+        status: 1,
+        sku: 'LG-LW1517ERSM-US',
+        creationTime: new Date().toISOString()
+      },
+      {
+        id: '6',
+        productCode: 'LG-LMWS203ST',
+        productName: 'LG LMWS203ST 2.0 cu. ft. Microwave Oven',
+        description: 'Countertop microwave with EasyClean interior and SmartCooking technology',
+        brand: 'LG',
+        model: 'LMWS203ST',
+        category: 'Microwave Ovens',
+        subCategory: 'Countertop',
+        specifications: '2.0 cu. ft. Capacity, 1200W Power, EasyClean Interior, SmartCooking, Sensor Cooking',
+        dimensions: '24" x 13.19" x 19.5"',
+        weight: 35.3,
+        color: 'Stainless Steel',
+        material: 'Stainless Steel',
+        costPrice: 199.99,
+        sellingPrice: 299.99,
+        retailPrice: 299.99,
+        currentStock: 60,
+        imageUrls: '[]',
+        tags: 'Countertop,Sensor Cooking,EasyClean,Smart',
+        status: 1,
+        sku: 'LG-LMWS203ST-US',
+        creationTime: new Date().toISOString()
+      },
+      {
+        id: '7',
+        productCode: 'LG-LDFN3432T',
+        productName: 'LG LDFN3432T TrueSteam Dishwasher',
+        description: 'QuadWash dishwasher with TrueSteam technology and SmartThinQ connectivity',
+        brand: 'LG',
+        model: 'LDFN3432T',
+        category: 'Dishwashers',
+        subCategory: 'Built-in',
+        specifications: '24" Built-in, QuadWash System, TrueSteam, SmartThinQ, 3rd Rack, 47 dBA Quiet Operation',
+        dimensions: '24" x 24" x 34.5"',
+        weight: 95,
+        color: 'Black Stainless Steel',
+        material: 'Stainless Steel',
+        costPrice: 799.99,
+        sellingPrice: 1199.99,
+        retailPrice: 1199.99,
+        currentStock: 30,
+        imageUrls: '[]',
+        tags: 'Built-in,TrueSteam,QuadWash,Smart',
+        status: 1,
+        sku: 'LG-LDFN3432T-US',
+        creationTime: new Date().toISOString()
+      },
+      {
+        id: '8',
+        productCode: 'LG-SL10YG',
+        productName: 'LG SL10YG 4.2 Channel Sound Bar with Dolby Atmos',
+        description: 'Premium sound bar with wireless subwoofer and AI Sound Pro',
+        brand: 'LG',
+        model: 'SL10YG',
+        category: 'Audio',
+        subCategory: 'Sound Bars',
+        specifications: '4.2 Channel, 520W Total Power, Dolby Atmos/DTS:X, Wireless Subwoofer, AI Sound Pro, Bluetooth',
+        dimensions: '45.7" x 2.4" x 5.3"',
+        weight: 15.4,
+        color: 'Black',
+        material: 'Metal/Plastic',
+        costPrice: 699.99,
+        sellingPrice: 999.99,
+        retailPrice: 999.99,
+        currentStock: 55,
+        imageUrls: '[]',
+        tags: 'Sound Bar,Dolby Atmos,Wireless,AI Sound',
+        status: 1,
+        sku: 'LG-SL10YG-US',
+        creationTime: new Date().toISOString()
+      },
+      {
+        id: '9',
+        productCode: 'LG-OLED65G3',
+        productName: 'LG OLED65G3 65" Gallery Evo 4K OLED TV',
+        description: '65-inch Gallery Series OLED TV with wireless design and perfect viewing angles',
+        brand: 'LG',
+        model: 'OLED65G3',
+        category: 'TVs',
+        subCategory: 'OLED TVs',
+        specifications: '65" OLED Display, 4K UHD, 120Hz Refresh Rate, Gallery Design, Wireless Connectivity, webOS 23',
+        dimensions: '56.7" x 32.2" x 0.9"',
+        weight: 37.5,
+        color: 'Dark Silver',
+        material: 'Metal/Glass',
+        costPrice: 2499.99,
+        sellingPrice: 3499.99,
+        retailPrice: 3499.99,
+        currentStock: 20,
+        imageUrls: '[]',
+        tags: 'Gallery Series,Wireless,OLED,4K',
+        status: 1,
+        sku: 'LG-OLED65G3-US',
+        creationTime: new Date().toISOString()
+      },
+      {
+        id: '10',
+        productCode: 'LG-DLEX4000W',
+        productName: 'LG DLEX4000W 7.4 cu. ft. Electric Dryer',
+        description: 'Large capacity electric dryer with steam technology and smart features',
+        brand: 'LG',
+        model: 'DLEX4000W',
+        category: 'Dryers',
+        subCategory: 'Electric',
+        specifications: '7.4 cu. ft. Capacity, Steam Sanitary Cycle, SmartThinQ, Sensor Dry, 10 Cycles',
+        dimensions: '29" x 27" x 39"',
+        weight: 125,
+        color: 'White',
+        material: 'Painted Steel',
+        costPrice: 799.99,
+        sellingPrice: 1099.99,
+        retailPrice: 1099.99,
+        currentStock: 38,
+        imageUrls: '[]',
+        tags: 'Electric,Steam,Smart,Sensor Dry',
+        status: 1,
+        sku: 'LG-DLEX4000W-US',
+        creationTime: new Date().toISOString()
+      }
+    ];
+    this.filteredProducts = this.products;
+  }
+
+  applyFilters(): void {
+    console.log('Applying filters...');
+    console.log('Selected category:', this.selectedCategory);
+    console.log('Search query:', this.searchQuery);
+    console.log('Price range:', this.priceRange);
+    console.log('In stock only:', this.inStockOnly);
+    
+    this.filteredProducts = this.products.filter(product => {
+      // Category filter
+      if (this.selectedCategory && product.category !== this.selectedCategory.value) {
+        return false;
+      }
+      
+      // Search filter
+      if (this.searchQuery && !product.productName.toLowerCase().includes(this.searchQuery.toLowerCase()) &&
+          !product.description.toLowerCase().includes(this.searchQuery.toLowerCase())) {
+        return false;
+      }
+      
+      // Price filter
+      if (product.sellingPrice < this.priceRange[0] || product.sellingPrice > this.priceRange[1]) {
+        return false;
+      }
+      
+      // Stock filter
+      if (this.inStockOnly && product.currentStock <= 0) {
+        return false;
+      }
+      
+      return true;
+    });
+    
+    console.log('Filtered products:', this.filteredProducts);
+  }
+
+  onCategoryChange(): void {
+    this.applyFilters();
+  }
+
+  onSearchChange(): void {
+    this.applyFilters();
+  }
+
+  onPriceRangeChange(): void {
+    this.applyFilters();
+  }
+
+  onStockFilterChange(): void {
+    this.applyFilters();
+  }
+
+  getImageUrls(product: Product): string[] {
+    try {
+      const urls = JSON.parse(product.imageUrls || '[]');
+      if (urls.length > 0) {
+        return urls;
+      }
+    } catch {
+      // Fallback to dynamic image based on product name
+    }
+    
+    // Generate image based on product name
+    return [this.getProductImage(product.productName)];
+  }
+
+  getProductImage(productName: string): string {
+    if (!productName) return 'assets/images/products/1.jpg';
+    
+    const name = productName.toLowerCase();
+    
+    // LG TV Products
+    if (name.includes('tv') || name.includes('television') || name.includes('oled') || name.includes('led')) {
+      if (name.includes('oled')) {
+        return 'assets/images/products/2.jpg';
+      } else {
+        return 'assets/images/products/4.jpg';
+      }
+    }
+    
+    // LG Laptops
+    if (name.includes('laptop') || name.includes('gram') || name.includes('ultrabook')) {
+      return 'assets/images/products/1.jpg';
+    }
+    
+    // LG Washing Machines
+    if (name.includes('washing') || name.includes('washer') || name.includes('laundry')) {
+      return 'assets/images/products/3.jpg';
+    }
+    
+    // LG Refrigerators
+    if (name.includes('refrigerator') || name.includes('fridge') || name.includes('refrigerator')) {
+      return 'assets/images/products/5.jpg';
+    }
+    
+    // LG Air Conditioners
+    if (name.includes('air conditioner') || name.includes('ac') || name.includes('conditioner')) {
+      return 'assets/images/products/3.jpg';
+    }
+    
+    // LG Microwave Ovens
+    if (name.includes('microwave') || name.includes('oven')) {
+      return 'assets/images/products/3.jpg';
+    }
+    
+    // LG Dishwashers
+    if (name.includes('dishwasher') || name.includes('dish')) {
+      return 'assets/images/products/3.jpg';
+    }
+    
+    // LG Sound Systems
+    if (name.includes('sound') || name.includes('audio') || name.includes('speaker') || name.includes('music')) {
+      return 'assets/images/products/6.jpg';
+    }
+    
+    // Default LG product image
+    if (name.includes('lg')) {
+      return 'assets/images/products/3.jpg';
+    }
+    
+    // Generic electronics placeholder
+    return 'assets/images/products/3.jpg';
+  }
+
+  getTags(product: Product): string[] {
+    return product.tags ? product.tags.split(',').map(tag => tag.trim()) : [];
+  }
+
+  formatPrice(price: number): string {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR'
+    }).format(price);
+  }
+
+  onImageError(event: any) {
+    // Fallback to placeholder if image fails to load
+    event.target.src = 'https://via.placeholder.com/300x200?text=LG+Product';
+  }
+
+  getStockStatus(product: Product): { severity: 'success' | 'warning' | 'danger', text: string } {
+    if (product.currentStock === 0) {
+      return { severity: 'danger', text: 'Out of Stock' };
+    } else if (product.currentStock <= 10) {
+      return { severity: 'warning', text: `Only ${product.currentStock} left` };
+    } else {
+      return { severity: 'success', text: 'In Stock' };
+    }
+  }
+
+  viewProductDetails(product: Product) {
+    console.log('View Product Details clicked for:', product);
+    console.log('Product ID:', product.id);
+    console.log('Navigation to:', ['/products/catalog', product.id]);
+    // Navigate to product details page using the correct route
+    this.router.navigate(['/products/catalog', product.id]);
+  }
+
+  generateReport(product: Product) {
+    console.log('Generate Report clicked for product:', product);
+    console.log('Product ID:', product.id);
+    console.log('Navigation to:', ['/products/catalog', product.id, 'report']);
+    // Navigate to product report page
+    this.router.navigate(['/products/catalog', product.id, 'report']);
+  }
+
+  checkInventory(product: Product) {
+    console.log('Check Inventory clicked for product:', product);
+    alert(`Checking inventory status for: ${product.productName}`);
+  }
+
+  deleteProduct(product: Product) {
+    if (confirm('Are you sure you want to delete this product?')) {
+      console.log('Deleting product:', product);
+      alert('Product deleted successfully');
+    }
+  }
+}

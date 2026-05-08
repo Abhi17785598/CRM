@@ -1,0 +1,316 @@
+<div class="enterprise-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <div class="page-breadcrumb">
+        <span class="breadcrumb-item">Manufacturing</span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item">Production Orders</span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item">{{ formData.orderNumber }}</span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item active">Edit</span>
+      </div>
+      <div class="page-title-section">
+        <h1 class="page-title">Edit Production Order</h1>
+        <p class="page-subtitle">Update production order: {{ formData.orderNumber }}</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-ghost" (click)="cancel()">
+        <i class="fas fa-times"></i>
+        Cancel
+      </button>
+    </div>
+  </div>
+
+  <!-- Progress Steps -->
+  <div class="steps-container">
+    <div class="steps-header">
+      <div *ngFor="let step of [].constructor(totalSteps); let i = index" 
+           class="step-item" 
+           [class.active]="currentStep === i + 1"
+           [class.completed]="isStepCompleted(i + 1)">
+        <div class="step-number">
+          <i *ngIf="isStepCompleted(i + 1)" class="fas fa-check"></i>
+          <span *ngIf="!isStepCompleted(i + 1)">{{ i + 1 }}</span>
+        </div>
+        <div class="step-info">
+          <div class="step-title">{{ getStepTitle(i + 1) }}</div>
+          <div class="step-icon">
+            <i [ngClass]="getStepIcon(i + 1)"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form Content -->
+  <div class="form-container">
+    <form (ngSubmit)="updateOrder()">
+      <!-- Step 1: Basic Information -->
+      <div *ngIf="currentStep === 1" class="step-content">
+        <div class="step-card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fas fa-info-circle"></i>
+              Basic Information
+            </h3>
+            <p class="card-subtitle">Update the basic details for the production order</p>
+          </div>
+          <div class="card-content">
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">Order Number</label>
+                <input type="text" class="form-control" [(ngModel)]="formData.orderNumber" name="orderNumber" readonly>
+                <small class="form-help">Order number cannot be changed</small>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Product Name</label>
+                <input type="text" class="form-control" [(ngModel)]="formData.productName" name="productName" required>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Product Category</label>
+                <select class="form-control" [(ngModel)]="formData.productCategory" name="productCategory" required>
+                  <option value="">Select category</option>
+                  <option *ngFor="let category of productCategories" [value]="category">{{ category }}</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Quantity</label>
+                <input type="number" class="form-control" [(ngModel)]="formData.quantity" name="quantity" min="1" required>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Unit</label>
+                <select class="form-control" [(ngModel)]="formData.unit" name="unit">
+                  <option *ngFor="let unit of units" [value]="unit">{{ unit }}</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Priority</label>
+                <select class="form-control" [(ngModel)]="formData.priority" name="priority">
+                  <option *ngFor="let priority of priorities" [value]="priority.value">{{ priority.label }}</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Status</label>
+                <select class="form-control" [(ngModel)]="formData.status" name="status">
+                  <option *ngFor="let status of statuses" [value]="status.value">{{ status.label }}</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Assigned To</label>
+                <input type="text" class="form-control" [(ngModel)]="formData.assignedTo" name="assignedTo" placeholder="Enter employee name or leave blank">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Materials & BOM -->
+      <div *ngIf="currentStep === 2" class="step-content">
+        <div class="step-card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fas fa-boxes"></i>
+              Materials & Bill of Materials
+            </h3>
+            <p class="card-subtitle">Update the materials required for production</p>
+          </div>
+          <div class="card-content">
+            <div class="materials-section">
+              <div class="section-header">
+                <h4>Required Materials</h4>
+                <button type="button" class="btn btn-primary" (click)="addMaterial()">
+                  <i class="fas fa-plus"></i>
+                  Add Material
+                </button>
+              </div>
+              
+              <div *ngFor="let material of formData.materials; let i = index" class="material-row">
+                <div class="material-grid">
+                  <div class="form-field">
+                    <label class="form-label">Material</label>
+                    <select class="form-control" [(ngModel)]="material.materialId" 
+                            name="material_{{ i }}" 
+                            (change)="onMaterialChange(i, material.materialId)">
+                      <option value="">Select material</option>
+                      <option *ngFor="let mat of availableMaterials" [value]="mat.id">{{ mat.name }}</option>
+                    </select>
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label">Required Quantity</label>
+                    <input type="number" class="form-control" [(ngModel)]="material.requiredQuantity" 
+                           name="quantity_{{ i }}" min="0">
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label">Unit</label>
+                    <input type="text" class="form-control" [(ngModel)]="material.unit" name="unit_{{ i }}" readonly>
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label">Cost per Unit</label>
+                    <input type="number" class="form-control" [(ngModel)]="material.cost" name="cost_{{ i }}" readonly>
+                  </div>
+                  <div class="form-field">
+                    <label class="form-label">Actions</label>
+                    <button type="button" class="btn btn-danger" (click)="removeMaterial(i)">
+                      <i class="fas fa-trash"></i>
+                      Remove
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              <div *ngIf="formData.materials.length === 0" class="no-materials">
+                <p>No materials added yet. Click "Add Material" to get started.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Scheduling -->
+      <div *ngIf="currentStep === 3" class="step-content">
+        <div class="step-card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fas fa-calendar-alt"></i>
+              Scheduling
+            </h3>
+            <p class="card-subtitle">Update the production timeline and schedule</p>
+          </div>
+          <div class="card-content">
+            <div class="form-grid">
+              <div class="form-field">
+                <label class="form-label">Planned Start Date</label>
+                <input type="date" class="form-control" [(ngModel)]="formData.startDate" name="startDate" required>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Expected End Date</label>
+                <input type="date" class="form-control" [(ngModel)]="formData.expectedEndDate" name="expectedEndDate" required>
+              </div>
+              <div class="form-field">
+                <label class="form-label">Estimated Production Hours</label>
+                <input type="number" class="form-control" [(ngModel)]="formData.estimatedHours" 
+                       name="estimatedHours" min="0" step="0.5">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Review & Update -->
+      <div *ngIf="currentStep === 4" class="step-content">
+        <div class="step-card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fas fa-edit"></i>
+              Review & Update
+            </h3>
+            <p class="card-subtitle">Review all changes before updating the production order</p>
+          </div>
+          <div class="card-content">
+            <div class="review-section">
+              <div class="review-grid">
+                <div class="review-group">
+                  <h4>Order Information</h4>
+                  <div class="review-item">
+                    <label>Order Number:</label>
+                    <span>{{ formData.orderNumber }}</span>
+                  </div>
+                  <div class="review-item">
+                    <label>Product:</label>
+                    <span>{{ formData.productName }}</span>
+                  </div>
+                  <div class="review-item">
+                    <label>Category:</label>
+                    <span>{{ formData.productCategory }}</span>
+                  </div>
+                  <div class="review-item">
+                    <label>Quantity:</label>
+                    <span>{{ formData.quantity }} {{ formData.unit }}</span>
+                  </div>
+                  <div class="review-item">
+                    <label>Priority:</label>
+                    <span class="priority-badge" [ngClass]="'priority-' + formData.priority">{{ formData.priority.toUpperCase() }}</span>
+                  </div>
+                  <div class="review-item">
+                    <label>Status:</label>
+                    <span class="status-badge" [ngClass]="getStatusClass(formData.status)">{{ getStatusText(formData.status) }}</span>
+                  </div>
+                </div>
+                
+                <div class="review-group">
+                  <h4>Schedule</h4>
+                  <div class="review-item">
+                    <label>Start Date:</label>
+                    <span>{{ formData.startDate | date:'MMM dd, yyyy' }}</span>
+                  </div>
+                  <div class="review-item">
+                    <label>End Date:</label>
+                    <span>{{ formData.expectedEndDate | date:'MMM dd, yyyy' }}</span>
+                  </div>
+                  <div class="review-item">
+                    <label>Assigned To:</label>
+                    <span>{{ formData.assignedTo || 'Unassigned' }}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="review-group full-width">
+                <h4>Materials ({{ formData.materials.length }} items)</h4>
+                <div class="materials-review">
+                  <div *ngFor="let material of formData.materials" class="material-review-item">
+                    <span>{{ material.materialName }}</span>
+                    <span>{{ material.requiredQuantity }} {{ material.unit }}</span>
+                    <span>${{ material.cost.toFixed(2) }} per unit</span>
+                  </div>
+                  <div *ngIf="formData.materials.length === 0" class="no-materials">
+                    No materials specified
+                  </div>
+                </div>
+              </div>
+              
+              <div class="review-group full-width">
+                <h4>Additional Information</h4>
+                <div class="form-field">
+                  <label class="form-label">Notes</label>
+                  <textarea class="form-control" [(ngModel)]="formData.notes" 
+                            name="notes" rows="3" placeholder="Enter any additional notes or instructions"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="form-navigation">
+        <div class="nav-left">
+          <button *ngIf="currentStep > 1" type="button" class="btn btn-ghost" (click)="previousStep()">
+            <i class="fas fa-arrow-left"></i>
+            Previous
+          </button>
+        </div>
+        
+        <div class="nav-center">
+          <div class="step-indicator">
+            Step {{ currentStep }} of {{ totalSteps }}
+          </div>
+        </div>
+        
+        <div class="nav-right">
+          <button *ngIf="currentStep < totalSteps" type="button" class="btn btn-primary" (click)="nextStep()">
+            Next
+            <i class="fas fa-arrow-right"></i>
+          </button>
+          <button *ngIf="currentStep === totalSteps" type="submit" class="btn btn-success" [disabled]="isSubmitting">
+            <i *ngIf="!isSubmitting" class="fas fa-save"></i>
+            <i *ngIf="isSubmitting" class="fas fa-spinner fa-spin"></i>
+            {{ isSubmitting ? 'Updating...' : 'Update Production Order' }}
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

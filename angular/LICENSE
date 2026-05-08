@@ -1,0 +1,60 @@
+HYD ERP System - License Information
+=====================================
+
+Copyright © 2026 HYD ERP System
+All Rights Reserved
+
+This project includes the following components:
+
+1. CUSTOM ERP MODULES (Copyright © 2026 HYD ERP System)
+   - HRMS (Human Resource Management System)
+   - Payroll Management
+   - Inventory Management
+   - Logistics Management
+   - CRM (Customer Relationship Management)
+   - Accounting Management
+   - Manufacturing Management
+   - Barcode Management
+   - Product Management
+   
+   License: Proprietary - All rights reserved to HYD ERP System
+
+2. ABP FRAMEWORK (LGPL License)
+   - Framework Core
+   - Authentication & Authorization
+   - Multi-tenancy Support
+   - Setting Management
+   - Audit Logging
+   
+   License: GNU Lesser General Public License (LGPL) v3.0
+   Source: https://abp.io/
+   Copyright: Volosoft
+
+3. LEPTON X THEME (Commercial License Required for Production)
+   - UI Theme Framework
+   - Layout Components
+   - Design System
+   
+   License: Commercial - Requires license from Volosoft for production use
+   Source: https://volosoft.com/
+   Copyright: Volosoft
+
+ATTRIBUTION REQUIREMENTS:
+========================
+
+1. ABP Framework attribution must be displayed in the application
+2. Lepton X theme attribution must be displayed in the application
+3. Links to ABP.io and Volosoft.com must be maintained
+
+COMMERCIAL USAGE:
+=================
+
+For commercial deployment, ensure:
+1. Purchase commercial license for Lepton X theme from Volosoft
+2. Maintain proper attribution as shown in the application footer
+3. Comply with LGPL terms for ABP Framework usage
+
+For more information:
+- ABP Framework: https://abp.io/
+- Volosoft: https://volosoft.com/
+- Lepton X Theme: https://commercial.abp.io/

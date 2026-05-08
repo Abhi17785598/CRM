@@ -1,0 +1,244 @@
+<div class="enterprise-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <div class="page-breadcrumb">
+        <span class="breadcrumb-item">Manufacturing</span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item">Production Orders</span>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-item active">Create Production Order</span>
+      </div>
+      <div class="page-title-section">
+        <h1 class="page-title">Create Production Order</h1>
+        <p class="page-subtitle">Review and confirm the production order details</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-ghost" (click)="cancel()">
+        <i class="fas fa-times"></i>
+        Cancel
+      </button>
+    </div>
+  </div>
+
+  <!-- Progress Steps -->
+  <div class="steps-container">
+    <div class="steps-header">
+      <div class="step-item" [class.completed]="true">
+        <div class="step-number">
+          <i class="fas fa-check"></i>
+        </div>
+        <div class="step-info">
+          <div class="step-title">Basic Information</div>
+          <div class="step-icon">
+            <i class="fas fa-info-circle"></i>
+          </div>
+        </div>
+      </div>
+      <div class="step-item" [class.completed]="true">
+        <div class="step-number">
+          <i class="fas fa-check"></i>
+        </div>
+        <div class="step-info">
+          <div class="step-title">Materials & BOM</div>
+          <div class="step-icon">
+            <i class="fas fa-boxes"></i>
+          </div>
+        </div>
+      </div>
+      <div class="step-item" [class.completed]="true">
+        <div class="step-number">
+          <i class="fas fa-check"></i>
+        </div>
+        <div class="step-info">
+          <div class="step-title">Scheduling</div>
+          <div class="step-icon">
+            <i class="fas fa-calendar"></i>
+          </div>
+        </div>
+      </div>
+      <div class="step-item active">
+        <div class="step-number">4</div>
+        <div class="step-info">
+          <div class="step-title">Review & Confirm</div>
+          <div class="step-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Review Content -->
+  <div class="form-container">
+    <div class="review-section">
+      <h2 class="section-title">Production Order Summary</h2>
+      
+      <!-- Basic Information -->
+      <div class="review-card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="fas fa-info-circle"></i>
+            Basic Information
+          </h3>
+          <button class="btn btn-ghost btn-sm" (click)="router.navigate(['/manufacturing/production-orders/create'])">
+            <i class="fas fa-edit"></i>
+            Edit
+          </button>
+        </div>
+        <div class="card-content">
+          <div class="review-grid">
+            <div class="review-item">
+              <label>Order Number:</label>
+              <span>{{ formData.orderNumber }}</span>
+            </div>
+            <div class="review-item">
+              <label>Product Name:</label>
+              <span>{{ formData.productName }}</span>
+            </div>
+            <div class="review-item">
+              <label>Product Category:</label>
+              <span>{{ formData.productCategory || 'Not specified' }}</span>
+            </div>
+            <div class="review-item">
+              <label>Quantity:</label>
+              <span>{{ formData.quantity }} {{ formData.unit || 'units' }}</span>
+            </div>
+            <div class="review-item">
+              <label>Priority:</label>
+              <span class="priority-badge" [ngClass]="getPriorityClass(formData.priority)">
+                {{ (formData.priority || 'medium').toUpperCase() }}
+              </span>
+            </div>
+            <div class="review-item">
+              <label>Assigned To:</label>
+              <span>{{ formData.assignedTo || 'Not assigned' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Materials Summary -->
+      <div class="review-card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="fas fa-boxes"></i>
+            Materials & BOM
+          </h3>
+          <button class="btn btn-ghost btn-sm" (click)="router.navigate(['/manufacturing/production-orders/create/materials'])">
+            <i class="fas fa-edit"></i>
+            Edit
+          </button>
+        </div>
+        <div class="card-content">
+          <div *ngIf="formData.materials && formData.materials.length > 0" class="materials-summary">
+            <div class="materials-list">
+              <div *ngFor="let material of formData.materials" class="material-item">
+                <div class="material-info">
+                  <span class="material-name">{{ material.materialName }}</span>
+                  <span class="material-quantity">{{ material.requiredQuantity }} {{ material.unit }}</span>
+                </div>
+                <span class="material-cost">${{ (material.requiredQuantity * material.cost) | number:'1.2-2' }}</span>
+              </div>
+            </div>
+            <div class="materials-total">
+              <label>Total Materials Cost:</label>
+              <span class="total-cost">${{ getTotalMaterialsCost() | number:'1.2-2' }}</span>
+            </div>
+          </div>
+          <div *ngIf="!formData.materials || formData.materials.length === 0" class="no-materials">
+            <p>No materials specified</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scheduling Summary -->
+      <div class="review-card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="fas fa-calendar"></i>
+            Production Schedule
+          </h3>
+          <button class="btn btn-ghost btn-sm" (click)="router.navigate(['/manufacturing/production-orders/create/scheduling'])">
+            <i class="fas fa-edit"></i>
+            Edit
+          </button>
+        </div>
+        <div class="card-content">
+          <div class="schedule-summary">
+            <div class="schedule-grid">
+              <div class="review-item">
+                <label>Start Date:</label>
+                <span>{{ formData.startDate | date:'MMM dd, yyyy' }}</span>
+              </div>
+              <div class="review-item">
+                <label>Expected End Date:</label>
+                <span>{{ formData.expectedEndDate | date:'MMM dd, yyyy' }}</span>
+              </div>
+              <div class="review-item">
+                <label>Production Duration:</label>
+                <span>{{ getProductionDuration() }} days</span>
+              </div>
+              <div class="review-item">
+                <label>Estimated Hours:</label>
+                <span>{{ formData.estimatedHours }} hours</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Information -->
+      <div class="review-card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="fas fa-sticky-note"></i>
+            Additional Information
+          </h3>
+        </div>
+        <div class="card-content">
+          <div class="additional-info">
+            <div class="info-item">
+              <label>Notes:</label>
+              <p>{{ formData.notes || 'No notes provided' }}</p>
+            </div>
+            <div class="info-item">
+              <label>Special Instructions:</label>
+              <p>{{ formData.specialInstructions || 'No special instructions' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirmation Section -->
+    <div class="confirmation-section">
+      <div class="confirmation-card">
+        <h3>Confirmation</h3>
+        <p>Please review all the information above before creating the production order. Once submitted, the order will be added to the production schedule.</p>
+        
+        <div class="confirmation-checkbox">
+          <label class="checkbox-label">
+            <input type="checkbox" [(ngModel)]="confirmationChecked" name="confirmation">
+            <span>I confirm that all the information provided is accurate and complete.</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="form-navigation">
+      <button type="button" class="btn btn-ghost" (click)="goBack()">
+        <i class="fas fa-arrow-left"></i>
+        Previous
+      </button>
+      <button type="button" class="btn btn-primary" (click)="submitOrder()" 
+              [disabled]="!confirmationChecked || !isFormValid() || isSubmitting">
+        <i *ngIf="isSubmitting" class="fas fa-spinner fa-spin"></i>
+        <i *ngIf="!isSubmitting" class="fas fa-check"></i>
+        {{ isSubmitting ? 'Creating...' : 'Create Production Order' }}
+      </button>
+    </div>
+  </div>
+</div>
