@@ -1,0 +1,35 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MyCrmApp.Application.Contracts/MyCrmApp.Application.Contracts.csproj" />
+    <Project Path="src/MyCrmApp.Application/MyCrmApp.Application.csproj" />
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <Project Path="src/MyCrmApp.DbMigrator/MyCrmApp.DbMigrator.csproj" />
+    <Project Path="src/MyCrmApp.Domain.Shared/MyCrmApp.Domain.Shared.csproj" />
+    <Project Path="src/MyCrmApp.Domain/MyCrmApp.Domain.csproj" />
+    <Project Path="src/MyCrmApp.EntityFrameworkCore/MyCrmApp.EntityFrameworkCore.csproj" />
+    <Project Path="src/MyCrmApp.HttpApi.Client/MyCrmApp.HttpApi.Client.csproj" />
+    
+    <Project Path="src/MyCrmApp.HttpApi.Host/MyCrmApp.HttpApi.Host.csproj" />
+    <Project Path="src/MyCrmApp.HttpApi/MyCrmApp.HttpApi.csproj" />
+    
+    
+    
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/MyCrmApp.Application.Tests/MyCrmApp.Application.Tests.csproj" />
+    <Project Path="test/MyCrmApp.Domain.Tests/MyCrmApp.Domain.Tests.csproj" />
+    <Project Path="test/MyCrmApp.EntityFrameworkCore.Tests/MyCrmApp.EntityFrameworkCore.Tests.csproj" />
+    <Project Path="test/MyCrmApp.HttpApi.Client.ConsoleTestApp/MyCrmApp.HttpApi.Client.ConsoleTestApp.csproj" />
+    
+    <Project Path="test/MyCrmApp.TestBase/MyCrmApp.TestBase.csproj" />
+    
+  </Folder>
+</Solution>
