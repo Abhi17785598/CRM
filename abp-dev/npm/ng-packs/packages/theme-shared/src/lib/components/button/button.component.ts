@@ -1,0 +1,90 @@
+/* eslint-disable @angular-eslint/no-output-native */
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewChild,
+  inject,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ABP, StopPropagationDirective } from '@abp/ng.core';
+
+@Component({
+  selector: 'abp-button',
+  template: `
+    <button
+      #button
+      [id]="buttonId"
+      [attr.type]="buttonType"
+      [attr.form]="formName"
+      [ngClass]="buttonClass"
+      [disabled]="loading || disabled"
+      (click.stop)="click.next($event); abpClick.next($event)"
+      (focus)="focus.next($event); abpFocus.next($event)"
+      (blur)="blur.next($event); abpBlur.next($event)"
+    >
+      <i [ngClass]="icon" class="me-1" aria-hidden="true"></i><ng-content></ng-content>
+    </button>
+  `,
+  imports: [CommonModule, StopPropagationDirective],
+})
+export class ButtonComponent implements OnInit {
+  private renderer = inject(Renderer2);
+
+  @Input()
+  buttonId = '';
+
+  @Input()
+  buttonClass = 'btn btn-primary';
+
+  @Input()
+  buttonType = 'button';
+
+  @Input()
+  formName?: string = undefined;
+
+  @Input()
+  iconClass?: string;
+
+  @Input()
+  loading = false;
+
+  @Input()
+  disabled: boolean | undefined = false;
+
+  @Input()
+  attributes?: ABP.Dictionary<string>;
+
+  @Output() readonly click = new EventEmitter<MouseEvent>();
+
+  @Output() readonly focus = new EventEmitter<FocusEvent>();
+
+  @Output() readonly blur = new EventEmitter<FocusEvent>();
+
+  @Output() readonly abpClick = new EventEmitter<MouseEvent>();
+
+  @Output() readonly abpFocus = new EventEmitter<FocusEvent>();
+
+  @Output() readonly abpBlur = new EventEmitter<FocusEvent>();
+
+  @ViewChild('button', { static: true })
+  buttonRef!: ElementRef<HTMLButtonElement>;
+
+  get icon(): string {
+    return `${this.loading ? 'fa fa-spinner fa-spin' : this.iconClass || 'd-none'}`;
+  }
+
+  ngOnInit() {
+    if (this.attributes) {
+      Object.keys(this.attributes).forEach(key => {
+        if (this.attributes?.[key]) {
+          this.renderer.setAttribute(this.buttonRef.nativeElement, key, this.attributes[key]);
+        }
+      });
+    }
+  }
+}

@@ -1,0 +1,138 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+using Shouldly;
+using Volo.Abp.Authorization.Permissions;
+using Volo.Abp.Security.Claims;
+using Xunit;
+
+namespace Volo.Abp.PermissionManagement.Application.Tests.Volo.Abp.PermissionManagement;
+
+public class PermissionAppService_Tests : AbpPermissionManagementApplicationTestBase
+{
+    private readonly IPermissionAppService _permissionAppService;
+    private readonly IPermissionGrantRepository _permissionGrantRepository;
+    private readonly ICurrentPrincipalAccessor _currentPrincipalAccessor;
+
+    public PermissionAppService_Tests()
+    {
+        _permissionAppService = GetRequiredService<IPermissionAppService>();
+        _permissionGrantRepository = GetRequiredService<IPermissionGrantRepository>();
+        _currentPrincipalAccessor = GetRequiredService<ICurrentPrincipalAccessor>();
+    }
+
+    [Fact]
+    public async Task GetAsync()
+    {
+        var permissionListResultDto = await _permissionAppService.GetAsync(UserPermissionValueProvider.ProviderName,
+            PermissionTestDataBuilder.User1Id.ToString());
+
+        permissionListResultDto.ShouldNotBeNull();
+        permissionListResultDto.EntityDisplayName.ShouldBe(PermissionTestDataBuilder.User1Id.ToString());
+
+        permissionListResultDto.Groups.Count.ShouldBe(3);
+        permissionListResultDto.Groups.ShouldContain(x => x.Name == "TestGroup");
+
+        var testGroup = permissionListResultDto.Groups.FirstOrDefault(g => g.Name == "TestGroup");
+        testGroup.ShouldNotBeNull();
+        testGroup.Permissions.ShouldContain(x => x.Name == "MyPermission1");
+        testGroup.Permissions.ShouldContain(x => x.Name == "MyPermission2");
+        testGroup.Permissions.ShouldContain(x => x.Name == "MyPermission2.ChildPermission1");
+        testGroup.Permissions.ShouldContain(x => x.Name == "MyPermission3");
+        testGroup.Permissions.ShouldContain(x => x.Name == "MyPermission4");
+
+        testGroup.Permissions.ShouldNotContain(x => x.Name == "MyPermission5");
+        testGroup.Permissions.ShouldNotContain(x => x.Name == "MyPermission5.ChildPermission1");
+
+        using (_currentPrincipalAccessor.Change(new Claim(AbpClaimTypes.Role, "super-admin")))
+        {
+            var result = await _permissionAppService.GetAsync(UserPermissionValueProvider.ProviderName, PermissionTestDataBuilder.User1Id.ToString());
+            var testGroupWithRole = result.Groups.FirstOrDefault(g => g.Name == "TestGroup");
+            testGroupWithRole.ShouldNotBeNull();
+            testGroupWithRole.Permissions.ShouldContain(x => x.Name == "MyPermission5");
+            testGroupWithRole.Permissions.ShouldContain(x => x.Name == "MyPermission5.ChildPermission1");
+        }
+
+        testGroup.Permissions.ShouldContain(x => x.Name == "MyPermission6");
+        testGroup.Permissions.ShouldNotContain(x => x.Name == "MyPermission6.ChildDisabledPermission1");
+        testGroup.Permissions.ShouldContain(x => x.Name == "MyPermission6.ChildPermission2");
+
+        testGroup.Permissions.ShouldNotContain(x => x.Name == "MyDisabledPermission1");
+        testGroup.Permissions.ShouldNotContain(x => x.Name == "MyDisabledPermission2");
+        testGroup.Permissions.ShouldNotContain(x => x.Name == "MyDisabledPermission2.ChildPermission1");
+        testGroup.Permissions.ShouldNotContain(x => x.Name == "MyDisabledPermission2.ChildPermission2");
+        testGroup.Permissions.ShouldNotContain(x => x.Name == "MyDisabledPermission2.ChildPermission2.ChildPermission1");
+    }
+
+    [Fact]
+    public async Task GetByGroupAsync()
+    {
+        var permissionListResultDto = await _permissionAppService.GetByGroupAsync("TestGroup2", UserPermissionValueProvider.ProviderName,
+            PermissionTestDataBuilder.User1Id.ToString());
+
+        permissionListResultDto.ShouldNotBeNull();
+        permissionListResultDto.EntityDisplayName.ShouldBe(PermissionTestDataBuilder.User1Id.ToString());
+        permissionListResultDto.Groups.Count.ShouldBe(1);
+        permissionListResultDto.Groups.ShouldContain(x => x.Name == "TestGroup2");
+
+        permissionListResultDto.Groups.First().Permissions.ShouldContain(x => x.Name == "MyPermission7");
+        permissionListResultDto.Groups.First().Permissions.ShouldContain(x => x.Name == "MyPermission8");
+    }
+
+    [Fact]
+    public async Task UpdateAsync()
+    {
+        (await _permissionGrantRepository.FindAsync("MyPermission1", "Test",
+            "Test")).ShouldBeNull();
+
+        await _permissionAppService.UpdateAsync("Test",
+            "Test", new UpdatePermissionsDto()
+            {
+                Permissions = new UpdatePermissionDto[]
+                {
+                        new UpdatePermissionDto()
+                        {
+                            IsGranted = true,
+                            Name = "MyPermission1"
+                        }
+                }
+            });
+
+        (await _permissionGrantRepository.FindAsync("MyPermission1", "Test",
+            "Test")).ShouldNotBeNull();
+    }
+
+    [Fact]
+    public async Task Update_Revoke_Test()
+    {
+        await _permissionGrantRepository.InsertAsync(
+            new PermissionGrant(
+                Guid.NewGuid(),
+                "MyPermission1",
+                "Test",
+                "Test"
+            )
+        );
+        (await _permissionGrantRepository.FindAsync("MyPermission1", "Test",
+            "Test")).ShouldNotBeNull();
+
+        await _permissionAppService.UpdateAsync("Test",
+            "Test", new UpdatePermissionsDto()
+            {
+                Permissions = new UpdatePermissionDto[]
+                {
+                        new UpdatePermissionDto()
+                        {
+                            IsGranted = false,
+                            Name = "MyPermission1"
+                        }
+                }
+            });
+
+        (await _permissionGrantRepository.FindAsync("MyPermission1", "Test",
+            "Test")).ShouldBeNull();
+    }
+}
